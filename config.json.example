@@ -1,0 +1,5 @@
+{
+    "godotcpp": {
+        "path": "path/to/godot-cpp"
+    }
+}
