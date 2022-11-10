@@ -1,17 +1,27 @@
 #!python
-import os, subprocess, json
+import os
+import json
+import sys
 
 opts = Variables([], ARGUMENTS)
 
 # Gets the standard flags CC, CCX, etc.
 env = DefaultEnvironment()
 
+host_platform = ''
+if sys.platform.startswith('linux'):
+    host_platform = 'linux'
+elif sys.platform == 'darwin':
+    host_platform = 'osx'
+elif sys.platform == 'win32' or sys.platform == 'msys':
+    host_platform = 'windows'
+
 # Define our options
 opts.Add(
     EnumVariable('target', "Compilation target", 'debug',
                  ['d', 'debug', 'r', 'release']))
 opts.Add(
-    EnumVariable('platform', "Compilation platform", '',
+    EnumVariable('platform', "Compilation platform", host_platform,
                  ['', 'windows', 'x11', 'linux', 'osx']))
 opts.Add(
     EnumVariable('p', "Compilation target, alias for 'platform'", '',

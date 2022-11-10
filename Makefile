@@ -4,17 +4,21 @@ $(shell node -p "require('./config.json').$(1)")
 endef
 
 GODOT_CPP_PATH := $(call GetFromConfig,godotcpp.path)
-SCONS_LAB = python3 /usr/bin/scons
+IS_LAB := $(call GetFromConfig,isLab)
+
+ifeq ($(IS_LAB), true)
+	SCONS = python3 /usr/bin/scons
+else
+	SCONS = scons
+endif
+
 BINDINGS_FLAGS = -C "${GODOT_CPP_PATH}" -j4 bits=64
 
-bindings-lab:
-	${SCONS_LAB} ${BINDINGS_FLAGS}
-
 bindings:
-	scons ${BINDINGS_FLAGS}
+	${SCONS} ${BINDINGS_FLAGS}
 	
-plugin-lab:
-	${SCONS_LAB} ./src p=x11
-
 plugin:
-	scons ./src p=$(p)
+	${SCONS} --no-cache
+
+plugin-clean:
+	${SCONS} --clean
