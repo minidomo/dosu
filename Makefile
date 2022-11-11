@@ -22,3 +22,6 @@ plugin:
 
 plugin-clean:
 	${SCONS} --clean
+
+config:
+	node scripts/config.js
