@@ -1,4 +1,4 @@
-# Dosu
+# dosu
 
 ## Building
 
@@ -11,13 +11,13 @@ cd dosu
 
 2. Setup `config.json`
 
-If you don't have a `config.json` file in the root directory, run the following to create `config.json`:
+If you don't have a `config.json` file in the root directory, run the following to create the file:
 
 ```
 make config
 ```
 
-Follow the comments in the `config.json` to properly set values.
+Follow the comments in `config.json` to properly assign values.
 
 
 3. Build the Godot bindings for C++ 
