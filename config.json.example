@@ -1,0 +1,8 @@
+{
+    // indicate whether this is on a lab machine or not
+    "isLab": false,
+    "godotcpp": {
+        // can be an absolute or relative path to the godot-cpp directory
+        "path": "path/to/godot-cpp"
+    }
+}

@@ -6,5 +6,6 @@
         "**/*.import": true,
         "**/*.obj": true,
         "**/*.os": true
-    }
+    },
+    "python.formatting.provider": "yapf"
 }

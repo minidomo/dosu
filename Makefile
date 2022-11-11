@@ -1,28 +1,27 @@
-MAIN_DIR = Assignment
-SCONS_LAB = python3 /usr/bin/scons
-BINDINGS_FLAGS = -C ${MAIN_DIR}/godot-cpp -j4 bits=64
-PLUGIN_FLAGS = -C ${MAIN_DIR}
-SERVER_SCONSTRUCT_FLAG = -f SConstruct.server
-CLIENT_SCONSTRUCT_FLAG = -f SConstruct.client
+# https://stackoverflow.com/a/36683917
+define GetFromConfig
+$(shell node -p "require('./config.json').$(1)")
+endef
 
-bindings-lab:
-	${SCONS_LAB} ${BINDINGS_FLAGS}
+GODOT_CPP_PATH := $(call GetFromConfig,godotcpp.path)
+IS_LAB := $(call GetFromConfig,isLab)
+
+ifeq ($(IS_LAB), true)
+	SCONS = python3 /usr/bin/scons
+else
+	SCONS = scons
+endif
+
+BINDINGS_FLAGS = -C "${GODOT_CPP_PATH}" -j4 bits=64
 
 bindings:
-	scons ${BINDINGS_FLAGS}
+	${SCONS} ${BINDINGS_FLAGS}
 	
-plugin-lab: plugin-server-lab plugin-client-lab
+plugin:
+	${SCONS} --no-cache
 
-plugin-server-lab:
-	${SCONS_LAB} ${PLUGIN_FLAGS} ${SERVER_SCONSTRUCT_FLAG} p=x11
+plugin-clean:
+	${SCONS} --clean
 
-plugin-client-lab:
-	${SCONS_LAB} ${PLUGIN_FLAGS} ${CLIENT_SCONSTRUCT_FLAG} p=x11
-
-plugin: plugin-server plugin-client
-
-plugin-server:
-	scons ${PLUGIN_FLAGS} ${SERVER_SCONSTRUCT_FLAG} p=$(p)
-
-plugin-client:
-	scons ${PLUGIN_FLAGS} ${CLIENT_SCONSTRUCT_FLAG} p=$(p)
+config:
+	node scripts/config.js
