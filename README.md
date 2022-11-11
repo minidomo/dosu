@@ -9,15 +9,15 @@ git clone https://gitlab.com/minidomo/dosu.git
 cd dosu
 ```
 
-2. Setup `config.json`
+2. Set up `config.json`
 
 If you don't have a `config.json` file in the root directory, run the following to create the file:
 
 ```
-make config
+node scripts/config-init.js
 ```
 
-Follow the comments in `config.json` to properly assign values.
+Follow the comments in `config.json` to properly assign values. Since it's a JSON file, delete the comments once the file is set up.
 
 
 3. Build the Godot bindings for C++ 
