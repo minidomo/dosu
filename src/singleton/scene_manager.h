@@ -19,6 +19,7 @@ class SceneManager : public Node {
     void exit();
     void to_edit_scene();
     void to_play_scene();
+    void to_main_menu_scene();
 };
 
 #endif

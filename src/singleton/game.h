@@ -15,6 +15,9 @@ class Game : public Node {
     void _init();
 
     void _ready();
+
+    void set_borderless(bool borderless);
+    void set_confine_mouse(bool confine);
 };
 
 #endif

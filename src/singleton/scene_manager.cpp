@@ -16,6 +16,12 @@ void SceneManager::_ready() { Godot::print("scene manager ready"); }
 
 void SceneManager::exit() { get_tree()->quit(); }
 
-void SceneManager::to_edit_scene() { Godot::print("edit scene wow"); }
+void SceneManager::to_edit_scene() {
+    get_tree()->change_scene("res://scenes/edit/MainEdit.tscn");
+}
 
 void SceneManager::to_play_scene() { Godot::print("TODO play scene"); }
+
+void SceneManager::to_main_menu_scene() {
+    get_tree()->change_scene("res://scenes/MainMenu.tscn");
+}

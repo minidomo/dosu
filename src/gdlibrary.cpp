@@ -19,5 +19,6 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
     register_class<SceneManager>();
 
     // ui
+    register_class<MainEdit>();
     register_class<MainMenu>();
 }

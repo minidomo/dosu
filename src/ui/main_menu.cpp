@@ -1,5 +1,6 @@
 #include "./main_menu.h"
 
+#include "../singleton/game.h"
 #include "../singleton/scene_manager.h"
 
 void MainMenu::_register_methods() {
@@ -30,6 +31,9 @@ void MainMenu::_ready() {
     dev_assert(!play_button_path.is_empty());
     dev_assert(!edit_button_path.is_empty());
     dev_assert(!exit_button_path.is_empty());
+
+    Game::get_singleton(this)->set_borderless(false);
+    Game::get_singleton(this)->set_confine_mouse(true);
 
     play_button = get_node<Button>(play_button_path);
     edit_button = get_node<Button>(edit_button_path);
