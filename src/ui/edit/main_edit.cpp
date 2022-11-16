@@ -3,6 +3,7 @@
 #include <SceneTree.hpp>
 
 #include "../../singleton/game.h"
+#include "../../singleton/map_manager.h"
 #include "../../singleton/scene_manager.h"
 
 void MainEdit::_register_methods() {
@@ -53,5 +54,9 @@ void MainEdit::on_back_button_pressed() {
 void MainEdit::on_files_dropped(PoolStringArray files, int screen) {
     String path = files[0];
 
-    Godot::print(path);
+    if (MapManager::get_singleton(this)->is_valid_audio_extension(path)) {
+        MapManager::get_singleton(this)->create_set(path);
+    } else {
+        // TODO display error message to user?
+    }
 }

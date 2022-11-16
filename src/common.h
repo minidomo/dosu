@@ -12,4 +12,9 @@ using namespace godot;
                            __FILE__, __LINE__);                         \
     }
 
+// https://www.learncpp.com/cpp-tutorial/scoped-enumerations-enum-classes/#operatorplus
+constexpr auto operator+(Error o) noexcept {
+    return static_cast<std::underlying_type_t<Error>>(o);
+}
+
 #endif

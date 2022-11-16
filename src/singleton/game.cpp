@@ -1,5 +1,7 @@
 #include "./game.h"
 
+#include <Directory.hpp>
+#include <File.hpp>
 #include <Input.hpp>
 #include <OS.hpp>
 
@@ -9,12 +11,12 @@ Game* Game::get_singleton(Node* node) {
 
 void Game::_register_methods() { register_method("_ready", &Game::_ready); }
 
-void Game::_init() {}
+void Game::_init() { songs_dir_path = "user://songs"; }
 
 void Game::_ready() {
     Godot::print("game ready");
-    Godot::print("" + OS::get_singleton()->get_window_size());
-    Input::get_singleton()->set_mouse_mode(Input::MOUSE_MODE_CONFINED);
+    set_confine_mouse(true);
+    init_songs_directory();
 }
 
 /**
@@ -39,3 +41,14 @@ void Game::set_confine_mouse(bool confine) {
         input->set_mouse_mode(target_mode);
     }
 }
+
+void Game::init_songs_directory() {
+    auto dir = Directory::_new();
+
+    if (!dir->dir_exists(songs_dir_path)) {
+        dev_assert(dir->make_dir(songs_dir_path) == Error::OK);
+        Godot::print("created songs directory: " + songs_dir_path);
+    }
+}
+
+String Game::get_songs_dir_path() { return songs_dir_path; }
