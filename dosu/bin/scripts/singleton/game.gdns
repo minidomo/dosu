@@ -4,6 +4,6 @@
 
 [resource]
 
-resource_name = "main_menu"
-class_name = "MainMenu"
+resource_name = "game"
+class_name = "Game"
 library = ExtResource( 1 )

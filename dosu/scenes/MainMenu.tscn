@@ -1,6 +1,68 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://bin/scripts/ui/main_menu.gdns" type="Script" id=1]
+[ext_resource path="res://assets/font/Torus SemiBold.otf" type="DynamicFontData" id=2]
 
-[node name="MainMenu" type="Node"]
+[sub_resource type="DynamicFont" id=1]
+size = 40
+font_data = ExtResource( 2 )
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = -1.0
+margin_right = 8.0
+margin_bottom = -1.0
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+play_button_path = NodePath("VBoxContainer/PlayButton")
+edit_button_path = NodePath("VBoxContainer/EditButton")
+exit_button_path = NodePath("VBoxContainer/ExitButton")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_left = 0.285
+anchor_top = 0.338
+anchor_right = 0.715
+anchor_bottom = 0.662
+margin_left = -0.340027
+margin_top = 0.199982
+margin_right = 0.339966
+margin_bottom = -0.200043
+custom_constants/separation = 16
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayButton" type="Button" parent="VBoxContainer"]
+margin_top = 77.0
+margin_right = 826.0
+margin_bottom = 131.0
+custom_fonts/font = SubResource( 1 )
+text = "Play"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EditButton" type="Button" parent="VBoxContainer"]
+margin_top = 147.0
+margin_right = 826.0
+margin_bottom = 201.0
+custom_fonts/font = SubResource( 1 )
+text = "Edit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ExitButton" type="Button" parent="VBoxContainer"]
+margin_top = 217.0
+margin_right = 826.0
+margin_bottom = 271.0
+custom_fonts/font = SubResource( 1 )
+text = "Exit"
+__meta__ = {
+"_edit_use_anchors_": false
+}

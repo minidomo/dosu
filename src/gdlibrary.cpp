@@ -1,4 +1,5 @@
 #include "./common.h"
+#include "./singleton/index.h"
 #include "./ui/index.h"
 
 extern "C" void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *o) {
@@ -13,5 +14,10 @@ godot_gdnative_terminate(godot_gdnative_terminate_options *o) {
 extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
     Godot::nativescript_init(handle);
 
+    // singleton
+    register_class<Game>();
+    register_class<SceneManager>();
+
+    // ui
     register_class<MainMenu>();
 }

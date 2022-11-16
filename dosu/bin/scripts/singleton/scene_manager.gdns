@@ -4,6 +4,6 @@
 
 [resource]
 
-resource_name = "main_menu"
-class_name = "MainMenu"
+resource_name = "scene_manager"
+class_name = "SceneManager"
 library = ExtResource( 1 )
