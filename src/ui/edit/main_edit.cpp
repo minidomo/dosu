@@ -56,6 +56,7 @@ void MainEdit::on_files_dropped(PoolStringArray files, int screen) {
 
     if (MapManager::get_singleton(this)->is_valid_audio_extension(path)) {
         MapManager::get_singleton(this)->create_set(path);
+        SceneManager::get_singleton(this)->to_editor_scene();
     } else {
         // TODO display error message to user?
     }

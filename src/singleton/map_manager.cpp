@@ -3,6 +3,7 @@
 #include <Directory.hpp>
 #include <File.hpp>
 
+#include "../object/beatmap.h"
 #include "./game.h"
 
 MapManager* MapManager::get_singleton(Node* node) {
@@ -20,21 +21,21 @@ void MapManager::_init() {
 
 void MapManager::_ready() { Godot::print("map manager ready"); }
 
-void MapManager::create_map(String set_id) {
+void MapManager::create_map(String set_id, String audio_filename) {
     auto dir = Directory::_new();
 
     String set_path =
         Game::get_singleton(this)->get_songs_dir_path() + "/" + set_id;
 
     String map_id = create_unique_map_id(set_id);
-
     String map_path = set_path + "/" + map_id + ".osu";
 
     File* file = File::_new();
     dev_assert(file->open(map_path, File::WRITE) == Error::OK);
 
-    // TODO create beatmap default info
-    file->store_line(map_path);
+    Beatmap beatmap;
+    beatmap.init();
+    beatmap.write_contents(file);
 
     file->close();
 }
@@ -48,11 +49,11 @@ void MapManager::create_set(String audio_path) {
 
     dev_assert(dir->make_dir(set_path) == Error::OK);
 
-    String new_audio_path =
-        set_path + "/audio" + extract_audio_extension(audio_path);
+    String audio_filename = "audio" + extract_audio_extension(audio_path);
+    String new_audio_path = set_path + "/" + audio_filename;
     dev_assert(dir->copy(audio_path, new_audio_path) == Error::OK);
 
-    create_map(set_id);
+    create_map(set_id, audio_filename);
 }
 
 String MapManager::create_unique_set_id() {

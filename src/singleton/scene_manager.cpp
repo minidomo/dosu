@@ -25,3 +25,7 @@ void SceneManager::to_play_scene() { Godot::print("TODO play scene"); }
 void SceneManager::to_main_menu_scene() {
     get_tree()->change_scene("res://scenes/MainMenu.tscn");
 }
+
+void SceneManager::to_editor_scene() {
+    get_tree()->change_scene("res://scenes/editor/MainEditor.tscn");
+}

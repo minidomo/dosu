@@ -4,7 +4,7 @@
 #include <Button.hpp>
 #include <Node.hpp>
 
-#include "../common.h"
+#include "../../common.h"
 
 class MainEdit : public Node {
     GODOT_CLASS(MainEdit, Node);

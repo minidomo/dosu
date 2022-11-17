@@ -24,7 +24,7 @@ class MapManager : public Node {
 
     void _ready();
 
-    void create_map(String set_id);
+    void create_map(String set_id, String audio_filename);
     void create_set(String audio_path);
 
     bool is_valid_audio_extension(String file_path);

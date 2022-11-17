@@ -1,4 +1,5 @@
 #include "./common.h"
+#include "./object/index.h"
 #include "./singleton/index.h"
 #include "./ui/index.h"
 
@@ -20,6 +21,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
     register_class<SceneManager>();
 
     // ui
+    register_class<MainEditor>();
     register_class<MainEdit>();
     register_class<MainMenu>();
 }
