@@ -1,4 +1,6 @@
 #include "./beatmap.h"
 #include "./break_period.h"
+#include "./enum/index.h"
 #include "./hit_object.h"
+#include "./slider_data.h"
 #include "./timing_point.h"
