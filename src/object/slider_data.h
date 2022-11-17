@@ -2,10 +2,14 @@
 #define DOSU_SLIDER_DATA_H
 
 #include "../common.h"
+#include "./slider_path.h"
 
 class SliderData {
    private:
     int repeats;
+    SliderPath path;
+
+    void convert_path_string(String path_string);
 
    public:
     SliderData();
