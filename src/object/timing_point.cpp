@@ -16,7 +16,7 @@ void TimingPoint::parse_line(String line) {
 
     if (uninherited) {
         /* red lines */
-        bpm = 60000 / beat_length;
+        bpm = calculate_bpm(beat_length);
     } else {
         /* green lines */
         slider_velocity = 100 / -beat_length;
@@ -36,3 +36,34 @@ String TimingPoint::to_file_string() {
 
     return ret;
 }
+
+void TimingPoint::init_red_line() {
+    set_time(0);
+    set_meter(4);
+    set_uninherited(true);
+    set_bpm(100);
+}
+
+void TimingPoint::set_time(int64_t time) { this->time = time; }
+
+void TimingPoint::set_beat_length(float beat_length) {
+    this->beat_length = beat_length;
+    bpm = calculate_bpm(beat_length);
+}
+
+void TimingPoint::set_meter(int64_t meter) { this->meter = meter; }
+
+void TimingPoint::set_uninherited(bool uninherited) {
+    this->uninherited = uninherited;
+}
+
+void TimingPoint::set_bpm(float bpm) {
+    this->bpm = bpm;
+    beat_length = calculate_beat_length(bpm);
+}
+
+float TimingPoint::calculate_bpm(float beat_length) {
+    return 60000 / beat_length;
+}
+
+float TimingPoint::calculate_beat_length(float bpm) { return 60000 / bpm; }

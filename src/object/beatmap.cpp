@@ -38,7 +38,9 @@ void Beatmap::init() {
     break_periods;
 
     /* timing points */
-    timing_points;
+    TimingPoint first_tp;
+    first_tp.init_red_line();
+    timing_points.push_back(first_tp);
 
     /* hit objects */
     hit_objects;

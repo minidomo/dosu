@@ -17,12 +17,23 @@ class TimingPoint {
     /* red lines */
     float bpm;
 
+    static float calculate_bpm(float beat_length);
+    static float calculate_beat_length(float bpm);
+
    public:
     TimingPoint();
     ~TimingPoint();
 
     void parse_line(String line);
     String to_file_string();
+
+    void init_red_line();
+
+    void set_time(int64_t time);
+    void set_beat_length(float beat_length);
+    void set_meter(int64_t meter);
+    void set_uninherited(bool uninherited);
+    void set_bpm(float bpm);
 };
 
 #endif
