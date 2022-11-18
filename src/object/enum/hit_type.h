@@ -1,7 +1,7 @@
-#ifndef DOSU_HIT_TYPE_H
-#define DOSU_HIT_TYPE_H
+#ifndef dosu_file_hit_type
+#define dosu_file_hit_type
 
-#include "../../common.h"
+#include "common/common.h"
 
 // https://github.com/kionell/osu-classes/blob/08a608a2005d0e9671567d4b9ef6c1d452d2edcd/src/Objects/Enums/HitType.ts
 enum class HitType {

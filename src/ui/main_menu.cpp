@@ -1,7 +1,7 @@
 #include "./main_menu.h"
 
-#include "../singleton/game.h"
-#include "../singleton/scene_manager.h"
+#include "singleton/game.h"
+#include "singleton/scene_manager.h"
 
 void MainMenu::_register_methods() {
     register_method("_ready", &MainMenu::_ready);

@@ -1,7 +1,7 @@
-#include "./common.h"
-#include "./object/index.h"
-#include "./singleton/index.h"
-#include "./ui/index.h"
+#include "common/index.h"
+#include "object/index.h"
+#include "singleton/index.h"
+#include "ui/index.h"
 
 extern "C" void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *o) {
     Godot::gdnative_init(o);

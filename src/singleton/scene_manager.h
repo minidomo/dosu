@@ -1,9 +1,9 @@
-#ifndef DOSU_SCENE_MANAGER_H
-#define DOSU_SCENE_MANAGER_H
+#ifndef dosu_file_scene_manager
+#define dosu_file_scene_manager
 
 #include <Node.hpp>
 
-#include "../common.h"
+#include "common/common.h"
 
 class SceneManager : public Node {
     GODOT_CLASS(SceneManager, Node);

@@ -1,9 +1,9 @@
-#ifndef DOSU_MAP_MANAGER_H
-#define DOSU_MAP_MANAGER_H
+#ifndef dosu_file_map_manager
+#define dosu_file_map_manager
 
 #include <Node.hpp>
 
-#include "../common.h"
+#include "common/common.h"
 
 class MapManager : public Node {
     GODOT_CLASS(MapManager, Node);

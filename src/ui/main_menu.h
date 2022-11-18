@@ -1,10 +1,10 @@
-#ifndef DOSU_MAIN_MENU_H
-#define DOSU_MAIN_MENU_H
+#ifndef dosu_file_main_menu
+#define dosu_file_main_menu
 
 #include <Button.hpp>
 #include <Node.hpp>
 
-#include "../common.h"
+#include "common/common.h"
 
 class MainMenu : public Node {
     GODOT_CLASS(MainMenu, Node);

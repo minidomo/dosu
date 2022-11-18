@@ -1,10 +1,10 @@
-#ifndef DOSU_MAIN_EDITOR_H
-#define DOSU_MAIN_EDITOR_H
+#ifndef dosu_file_main_editor
+#define dosu_file_main_editor
 
 #include <Button.hpp>
 #include <Node.hpp>
 
-#include "../../common.h"
+#include "common/common.h"
 
 class MainEditor : public Node {
     GODOT_CLASS(MainEditor, Node);

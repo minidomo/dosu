@@ -1,9 +1,9 @@
-#ifndef DOSU_GAME_H
-#define DOSU_GAME_H
+#ifndef dosu_file_game
+#define dosu_file_game
 
 #include <Node.hpp>
 
-#include "../common.h"
+#include "common/common.h"
 
 class Game : public Node {
     GODOT_CLASS(Game, Node);

@@ -1,13 +1,13 @@
-#ifndef DOSU_BEATMAP_H
-#define DOSU_BEATMAP_H
+#ifndef dosu_file_beatmap
+#define dosu_file_beatmap
 
 #include <File.hpp>
 #include <vector>
 
-#include "../common.h"
 #include "./break_period.h"
 #include "./hit_object.h"
 #include "./timing_point.h"
+#include "common/common.h"
 
 class Beatmap {
    private:

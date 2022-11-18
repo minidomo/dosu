@@ -1,7 +1,7 @@
-#ifndef DOSU_SLIDER_PATH_H
-#define DOSU_SLIDER_PATH_H
+#ifndef dosu_file_slider_path
+#define dosu_file_slider_path
 
-#include "../common.h"
+#include "common/common.h"
 
 class SliderPath {
    private:

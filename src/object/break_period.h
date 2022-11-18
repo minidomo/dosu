@@ -1,7 +1,7 @@
-#ifndef DOSU_BREAK_PERIOD_H
-#define DOSU_BREAK_PERIOD_H
+#ifndef dosu_file_break_period
+#define dosu_file_break_period
 
-#include "../common.h"
+#include "common/common.h"
 
 class BreakPeriod {
    private:

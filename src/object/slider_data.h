@@ -1,8 +1,8 @@
-#ifndef DOSU_SLIDER_DATA_H
-#define DOSU_SLIDER_DATA_H
+#ifndef dosu_file_slider_data
+#define dosu_file_slider_data
 
-#include "../common.h"
 #include "./slider_path.h"
+#include "common/common.h"
 
 class SliderData {
    private:

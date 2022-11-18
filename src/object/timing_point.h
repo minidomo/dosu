@@ -1,7 +1,7 @@
-#ifndef DOSU_TIMING_POINT_H
-#define DOSU_TIMING_POINT_H
+#ifndef dosu_file_timing_point
+#define dosu_file_timing_point
 
-#include "../common.h"
+#include "common/common.h"
 
 class TimingPoint {
    private:

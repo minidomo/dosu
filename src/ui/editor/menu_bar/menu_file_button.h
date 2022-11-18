@@ -1,9 +1,9 @@
-#ifndef DOSU_MENU_FILE_BUTTON
-#define DOSU_MENU_FILE_BUTTON
+#ifndef dosu_file_menu_file_button
+#define dosu_file_menu_file_button
 
 #include <MenuButton.hpp>
 
-#include "../../common.h"
+#include "common/common.h"
 
 class MenuFileButton : public MenuButton {
     GODOT_CLASS(MenuFileButton, MenuButton);

@@ -1,6 +1,6 @@
 #include "./hit_object.h"
 
-#include "./enum/hit_type.h"
+#include "enum/hit_type.h"
 
 HitObject::HitObject() {}
 

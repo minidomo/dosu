@@ -1,8 +1,8 @@
-#ifndef DOSU_HIT_OBJECT_H
-#define DOSU_HIT_OBJECT_H
+#ifndef dosu_file_hit_object
+#define dosu_file_hit_object
 
-#include "../common.h"
 #include "./slider_data.h"
+#include "common/common.h"
 
 class HitObject {
    private:

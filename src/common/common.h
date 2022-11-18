@@ -1,5 +1,5 @@
-#ifndef DOSU_COMMON_H
-#define DOSU_COMMON_H
+#ifndef dosu_file_common
+#define dosu_file_common
 
 #include <Godot.hpp>
 

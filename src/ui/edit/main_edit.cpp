@@ -2,9 +2,9 @@
 
 #include <SceneTree.hpp>
 
-#include "../../singleton/game.h"
-#include "../../singleton/map_manager.h"
-#include "../../singleton/scene_manager.h"
+#include "singleton/game.h"
+#include "singleton/map_manager.h"
+#include "singleton/scene_manager.h"
 
 void MainEdit::_register_methods() {
     register_method("_ready", &MainEdit::_ready);

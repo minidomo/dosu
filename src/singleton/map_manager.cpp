@@ -3,8 +3,8 @@
 #include <Directory.hpp>
 #include <File.hpp>
 
-#include "../object/beatmap.h"
 #include "./game.h"
+#include "object/beatmap.h"
 
 MapManager* MapManager::get_singleton(Node* node) {
     return node->get_node<MapManager>("/root/MapManager");
