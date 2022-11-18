@@ -1,0 +1,98 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/font/Torus Regular.otf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/font/Torus SemiBold.otf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 30
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 24
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 24
+font_data = ExtResource( 2 )
+
+[node name="BeatmapListing" type="Control"]
+anchor_right = 0.45
+anchor_bottom = 0.127778
+margin_bottom = -1.52588e-05
+rect_min_size = Vector2( 864, 138 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Background" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Outer" type="ColorRect" parent="Background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.054902, 0.0666667, 0.141176, 0.862745 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="Background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Inner" type="ColorRect" parent="Background/MarginContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 856.0
+margin_bottom = 130.0
+color = Color( 1, 1, 1, 0.0392157 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TitleLabel" type="Label" parent="."]
+anchor_left = 0.0277778
+anchor_top = 0.101449
+anchor_right = 1.0
+anchor_bottom = 0.362319
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.611765, 0.662745, 0.831373, 1 )
+text = "Title"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ArtistMapperLabel" type="Label" parent="."]
+anchor_left = 0.0277778
+anchor_top = 0.362319
+anchor_right = 1.0
+anchor_bottom = 0.572464
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.611765, 0.662745, 0.831373, 1 )
+text = "Artist // Mapper"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="VersionLabel" type="Label" parent="."]
+anchor_left = 0.0277778
+anchor_top = 0.572464
+anchor_right = 1.0
+anchor_bottom = 0.782609
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.611765, 0.662745, 0.831373, 1 )
+text = "Difficulty Name"
+__meta__ = {
+"_edit_use_anchors_": true
+}
