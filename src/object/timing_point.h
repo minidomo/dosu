@@ -10,8 +10,12 @@ class TimingPoint {
     int64_t meter;
     bool uninherited;
 
+    /* green lines */
     float bpm_multiplier;
     float slider_velocity;
+
+    /* red lines */
+    float bpm;
 
    public:
     TimingPoint();

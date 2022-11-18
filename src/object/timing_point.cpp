@@ -14,9 +14,15 @@ void TimingPoint::parse_line(String line) {
     meter = data[2].to_int();
     uninherited = data[6].to_int() == 1;
 
-    slider_velocity = 100 / -beat_length;
-    bpm_multiplier = Math::min(Math::floor(-beat_length), 10000.f);
-    bpm_multiplier = Math::max(10.f, bpm_multiplier) / 100;
+    if (uninherited) {
+        /* red lines */
+        bpm = 60000 / beat_length;
+    } else {
+        /* green lines */
+        slider_velocity = 100 / -beat_length;
+        bpm_multiplier = Math::min(Math::floor(-beat_length), 10000.f);
+        bpm_multiplier = Math::max(10.f, bpm_multiplier) / 100;
+    }
 }
 
 String TimingPoint::to_file_string() {
