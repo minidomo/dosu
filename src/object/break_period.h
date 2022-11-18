@@ -5,19 +5,19 @@
 
 class BreakPeriod {
    private:
-    int start_time;
-    int end_time;
+    int64_t start_time;
+    int64_t end_time;
 
    public:
-    BreakPeriod(int start_time, int end_time);
+    BreakPeriod(int64_t start_time, int64_t end_time);
     BreakPeriod();
     ~BreakPeriod();
 
-    int get_start_time();
-    void set_start_time(int start_time);
+    int64_t get_start_time();
+    void set_start_time(int64_t start_time);
 
-    int get_end_time();
-    void set_end_time(int end_time);
+    int64_t get_end_time();
+    void set_end_time(int64_t end_time);
 
     void parse_line(String line);
     String to_file_string();

@@ -6,16 +6,16 @@
 
 class HitObject {
    private:
-    int hit_type;
-    int start_x;
-    int start_y;
-    int start_time;
+    int64_t hit_type;
+    int64_t start_x;
+    int64_t start_y;
+    int64_t start_time;
 
     /* normal, slider */
     bool new_combo;
 
     /* spinner */
-    int end_time;
+    int64_t end_time;
 
     /* slider */
     SliderData slider_data;

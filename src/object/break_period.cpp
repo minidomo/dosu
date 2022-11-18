@@ -1,6 +1,6 @@
 #include "./break_period.h"
 
-BreakPeriod::BreakPeriod(int start_time, int end_time) {
+BreakPeriod::BreakPeriod(int64_t start_time, int64_t end_time) {
     this->start_time = start_time;
     this->end_time = end_time;
 }
@@ -9,15 +9,15 @@ BreakPeriod::BreakPeriod() {}
 
 BreakPeriod::~BreakPeriod() {}
 
-int BreakPeriod::get_start_time() { return start_time; }
+int64_t BreakPeriod::get_start_time() { return start_time; }
 
-void BreakPeriod::set_start_time(int start_time) {
+void BreakPeriod::set_start_time(int64_t start_time) {
     this->start_time = start_time;
 }
 
-int BreakPeriod::get_end_time() { return end_time; }
+int64_t BreakPeriod::get_end_time() { return end_time; }
 
-void BreakPeriod::set_end_time(int end_time) { this->end_time = end_time; }
+void BreakPeriod::set_end_time(int64_t end_time) { this->end_time = end_time; }
 
 void BreakPeriod::parse_line(String line) {
     auto arr = line.split(",");

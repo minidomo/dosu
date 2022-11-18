@@ -6,7 +6,7 @@
 
 class SliderData {
    private:
-    int repeats;
+    int64_t repeats;
     SliderPath path;
 
     void convert_path_string(String path_string);

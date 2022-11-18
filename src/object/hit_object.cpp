@@ -39,7 +39,14 @@ String HitObject::to_file_string() {
     ret += "," + String::num_int64(start_y);
     ret += "," + String::num_int64(start_time);
     ret += "," + String::num_int64(hit_type);
-    // TODO based on type
+
+    if (hit_type & +HitType::Spinner) {
+        ret += "," + String::num_int64(end_time);
+    } else if (hit_type & +HitType::Slider) {
+        // TODO
+    }
+
+    ret += ",0:0:0:0:";
 
     return ret;
 }

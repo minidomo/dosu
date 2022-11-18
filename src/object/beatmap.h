@@ -13,10 +13,10 @@ class Beatmap {
    private:
     /* general */
     String audio_filename;
-    int preview_time;
+    int64_t preview_time;
 
     /* editor */
-    int beat_divisor;
+    int64_t beat_divisor;
     float timeline_zoom;
 
     /* metadata */

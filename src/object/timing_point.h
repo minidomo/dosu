@@ -5,9 +5,9 @@
 
 class TimingPoint {
    private:
-    int time;
+    int64_t time;
     float beat_length;
-    int meter;
+    int64_t meter;
     bool uninherited;
 
     float bpm_multiplier;

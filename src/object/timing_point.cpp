@@ -10,7 +10,7 @@ void TimingPoint::parse_line(String line) {
 
     auto data = line.split(",");
     time = data[0].to_int();
-    beat_length = data[1].to_int();
+    beat_length = data[1].to_float();
     meter = data[2].to_int();
     uninherited = data[6].to_int() == 1;
 

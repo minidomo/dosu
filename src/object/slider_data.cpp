@@ -6,7 +6,7 @@ SliderData::~SliderData() {}
 
 void SliderData::parse_array(PoolStringArray data) {
     repeats = data[1].to_int();
-    repeats = Math::max(0, repeats - 1);
+    repeats = Math::max(0LL, repeats - 1);
 
     int length = data[2].to_int();
 
