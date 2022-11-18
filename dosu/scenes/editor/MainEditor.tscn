@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://bin/scripts/ui/editor/main_editor.gdns" type="Script" id=1]
 [ext_resource path="res://scenes/Background.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://assets/images/icons/seek-start-play.png" type="Texture" id=5]
 [ext_resource path="res://assets/images/icons/toggle-pause.png" type="Texture" id=6]
 [ext_resource path="res://assets/images/icons/seek-start-pause.png" type="Texture" id=7]
+[ext_resource path="res://bin/scripts/ui/editor/menu_bar/menu_file_button.gdns" type="Script" id=8]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -76,7 +77,8 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 text = "File"
-items = [ "Exit", null, 0, false, false, 0, 0, null, "", false ]
+switch_on_hover = true
+script = ExtResource( 8 )
 
 [node name="EditButton" type="MenuButton" parent="MenuBar/MarginContainer/HBoxContainer"]
 margin_left = 45.0
@@ -89,6 +91,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 text = "Edit"
+switch_on_hover = true
 
 [node name="HelpButton" type="MenuButton" parent="MenuBar/MarginContainer/HBoxContainer"]
 margin_left = 94.0
@@ -101,6 +104,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 text = "Help"
+switch_on_hover = true
 
 [node name="TopBar" type="ColorRect" parent="."]
 anchor_right = 1.0
