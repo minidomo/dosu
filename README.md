@@ -49,3 +49,5 @@ git restore .
 ## Other
 
 - [Technical Design Document](pdf/cs354r-final-project-tech-doc.pdf)
+- [Alpha Document](pdf/cs354r-alpha.pdf)
+- [Alpha Video](https://www.youtube.com/watch?v=HFe5l2v143Q)
