@@ -34,8 +34,10 @@ void MapManager::create_map(String set_id, String audio_filename) {
     dev_assert(file->open(map_path, File::WRITE) == Error::OK);
 
     Beatmap beatmap;
-    beatmap.init();
+    beatmap.init(set_id, map_id);
     beatmap.write_contents(file);
+
+    all_beatmaps.push_back(beatmap);
 
     file->close();
 }
@@ -125,4 +127,47 @@ String MapManager::extract_audio_extension(String file_path) {
     }
 
     return "";
+}
+
+void MapManager::load_beatmaps() {
+    auto dir = Directory::_new();
+
+    dev_assert(dir->open(Game::get_singleton(this)->get_songs_dir_path()) ==
+               Error::OK);
+
+    all_beatmaps.clear();
+
+    dir->list_dir_begin();
+    for (String set_id = dir->get_next(); set_id != "";
+         set_id = dir->get_next()) {
+        if (dir->current_is_dir()) {
+            String set_path =
+                Game::get_singleton(this)->get_songs_dir_path() + "/" + set_id;
+
+            auto set_dir = Directory::_new();
+
+            dev_assert(set_dir->open(set_path) == Error::OK);
+
+            set_dir->list_dir_begin();
+            for (String name = set_dir->get_next(); name != "";
+                 name = set_dir->get_next()) {
+                if (!set_dir->current_is_dir() &&
+                    name.ends_with(map_extension)) {
+                    String map_path = set_path + "/" + name;
+
+                    File* file = File::_new();
+                    dev_assert(file->open(map_path, File::READ) == Error::OK);
+
+                    Beatmap beatmap;
+                    beatmap.parse_contents(file);
+                    all_beatmaps.push_back(beatmap);
+
+                    file->close();
+                }
+            }
+        }
+    }
+
+    int64_t beatmap_count = all_beatmaps.size();
+    Godot::print("loaded " + String::num_int64(beatmap_count) + " beatmaps");
 }

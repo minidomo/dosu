@@ -5,6 +5,8 @@
 #include <Input.hpp>
 #include <OS.hpp>
 
+#include "singleton/map_manager.h"
+
 Game* Game::get_singleton(Node* node) {
     return node->get_node<Game>("/root/Game");
 }
@@ -17,6 +19,7 @@ void Game::_ready() {
     Godot::print("game ready");
     set_confine_mouse(true);
     init_songs_directory();
+    MapManager::get_singleton(this)->load_beatmaps();
 }
 
 /**

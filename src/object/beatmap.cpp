@@ -4,7 +4,7 @@ Beatmap::Beatmap() {}
 
 Beatmap::~Beatmap() {}
 
-void Beatmap::init() {
+void Beatmap::init(String beatmap_set_id, String beatmap_id) {
     /* general */
     audio_filename = "audio.mp3";
     preview_time = 0;
@@ -22,8 +22,8 @@ void Beatmap::init() {
     version = "unknown";
     source;
     tags;
-    beatmap_id;
-    beatmap_set_id;
+    this->beatmap_id = beatmap_id;
+    this->beatmap_set_id = beatmap_set_id;
 
     /* difficulty */
     hp_drain_rate = 6;
@@ -46,7 +46,139 @@ void Beatmap::init() {
     hit_objects;
 }
 
-void Beatmap::parse_contents(File *file) {}
+void Beatmap::parse_contents(File *file) {
+    PoolStringArray lines = get_lines(file);
+    parse_general_section(lines);
+    parse_editor_section(lines);
+    parse_metadata_section(lines);
+    parse_difficulty_section(lines);
+    parse_events_section(lines);
+    parse_timing_points(lines);
+    parse_hit_objects_section(lines);
+}
+
+void Beatmap::parse_general_section(PoolStringArray lines) {
+    int origin = find_line_index(lines, "[General]");
+    dev_assert(origin >= 0);
+
+    audio_filename = get_right_value(lines[origin + 1], "AudioFilename: ");
+    preview_time = get_right_value(lines[origin + 3], "PreviewTime: ").to_int();
+}
+
+void Beatmap::parse_editor_section(PoolStringArray lines) {
+    int origin = find_line_index(lines, "[Editor]");
+    dev_assert(origin >= 0);
+
+    beat_divisor = get_right_value(lines[origin + 2], "BeatDivisor: ").to_int();
+    timeline_zoom =
+        get_right_value(lines[origin + 4], "TimelineZoom: ").to_float();
+}
+
+void Beatmap::parse_metadata_section(PoolStringArray lines) {
+    int origin = find_line_index(lines, "[Metadata]");
+    dev_assert(origin >= 0);
+
+    title = get_right_value(lines[origin + 1], "Title:");
+    title_unicode = get_right_value(lines[origin + 2], "TitleUnicode:");
+    artist = get_right_value(lines[origin + 3], "Artist:");
+    artist_unicode = get_right_value(lines[origin + 4], "ArtistUnicode:");
+    creator = get_right_value(lines[origin + 5], "Creator:");
+    version = get_right_value(lines[origin + 6], "Version:");
+    source = get_right_value(lines[origin + 7], "Source:");
+    tags = get_right_value(lines[origin + 8], "Tags:").split(" ");
+    beatmap_id = get_right_value(lines[origin + 9], "BeatmapID:");
+    beatmap_set_id = get_right_value(lines[origin + 10], "BeatmapSetID:");
+}
+
+void Beatmap::parse_difficulty_section(PoolStringArray lines) {
+    int origin = find_line_index(lines, "[Difficulty]");
+    dev_assert(origin >= 0);
+
+    hp_drain_rate =
+        get_right_value(lines[origin + 1], "HPDrainRate:").to_float();
+    circle_size = get_right_value(lines[origin + 2], "CircleSize:").to_float();
+    overall_difficulty =
+        get_right_value(lines[origin + 3], "OverallDifficulty:").to_float();
+    approach_rate =
+        get_right_value(lines[origin + 4], "ApproachRate:").to_float();
+    slider_multiplier =
+        get_right_value(lines[origin + 5], "SliderMultiplier:").to_float();
+    slider_tick_rate =
+        get_right_value(lines[origin + 6], "SliderTickRate:").to_float();
+}
+
+void Beatmap::parse_events_section(PoolStringArray lines) {
+    int bg_index = find_line_index(lines, "//Background and Video events");
+    dev_assert(bg_index >= 0);
+
+    int bp_index = find_line_index(lines, "//Break Periods");
+    dev_assert(bp_index >= 0);
+
+    int sbbg_index =
+        find_line_index(lines, "//Storyboard Layer 0 (Background)");
+    dev_assert(sbbg_index >= 0);
+
+    // check if there's a background
+    if (bp_index - bg_index > 1) {
+        String line = lines[bg_index + 1];
+        line = line.trim_prefix("0,0,\"");
+        line = line.trim_suffix("\",0,0");
+        background_filename = line;
+    }
+
+    for (int i = bp_index + 1; i < sbbg_index; i++) {
+        BreakPeriod bp;
+        bp.parse_line(lines[i]);
+        break_periods.push_back(bp);
+    }
+}
+
+void Beatmap::parse_timing_points(PoolStringArray lines) {
+    int origin = find_line_index(lines, "[TimingPoints]");
+    dev_assert(origin >= 0);
+
+    for (int i = origin + 1; lines[i] != "[HitObjects]"; i++) {
+        TimingPoint tp;
+        tp.parse_line(lines[i]);
+        timing_points.push_back(tp);
+    }
+}
+
+void Beatmap::parse_hit_objects_section(PoolStringArray lines) {
+    int origin = find_line_index(lines, "[HitObjects]");
+    dev_assert(origin >= 0);
+
+    for (int i = origin + 1; i < lines.size(); i++) {
+        HitObject ho;
+        ho.parse_line(lines[i]);
+        hit_objects.push_back(ho);
+    }
+}
+
+String Beatmap::get_right_value(String line, String prefix) {
+    return line.right(prefix.length());
+}
+
+PoolStringArray Beatmap::get_lines(File *file) {
+    String content = file->get_as_text();
+    PoolStringArray lines = content.split("\n");
+
+    for (int i = 0; i < lines.size(); i++) {
+        lines[0].strip_edges();
+    }
+
+    return lines;
+}
+
+int Beatmap::find_line_index(PoolStringArray lines, String section) {
+    for (int i = 0; i < lines.size(); i++) {
+        if (lines[i] == section) {
+            return i;
+        }
+    }
+
+    return -1;
+}
 
 void Beatmap::write_contents(File *file) {
     file->store_line("osu file format v14");
@@ -83,8 +215,8 @@ void Beatmap::write_contents(File *file) {
     file->store_line("Version:" + version);
     file->store_line("Source:" + source);
     file->store_line("Tags:" + to_string_tags());
-    file->store_line("BeatmapID:0");
-    file->store_line("BeatmapSetID:-1");
+    file->store_line("BeatmapID:" + beatmap_id);
+    file->store_line("BeatmapSetID:" + beatmap_set_id);
     file->store_line("");
 
     /* difficulty */

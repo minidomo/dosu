@@ -2,13 +2,17 @@
 #define dosu_file_map_manager
 
 #include <Node.hpp>
+#include <vector>
 
 #include "common/common.h"
+#include "object/beatmap.h"
 
 class MapManager : public Node {
     GODOT_CLASS(MapManager, Node);
 
    private:
+    vector<Beatmap> all_beatmaps;
+
     Array audio_extensions;
     String map_extension;
 
@@ -28,6 +32,8 @@ class MapManager : public Node {
     void create_set(String audio_path);
 
     bool is_valid_audio_extension(String file_path);
+
+    void load_beatmaps();
 };
 
 #endif

@@ -49,11 +49,23 @@ class Beatmap {
     /* hit objects */
     vector<HitObject> hit_objects;
 
+    void parse_general_section(PoolStringArray lines);
+    void parse_editor_section(PoolStringArray lines);
+    void parse_metadata_section(PoolStringArray lines);
+    void parse_difficulty_section(PoolStringArray lines);
+    void parse_events_section(PoolStringArray lines);
+    void parse_timing_points(PoolStringArray lines);
+    void parse_hit_objects_section(PoolStringArray lines);
+
+    static String get_right_value(String line, String prefix);
+    static PoolStringArray get_lines(File *file);
+    static int find_line_index(PoolStringArray lines, String section);
+
    public:
     Beatmap();
     ~Beatmap();
 
-    void init();
+    void init(String beatmap_set_id, String beatmap_id);
     void parse_contents(File *file);
     void write_contents(File *file);
 
