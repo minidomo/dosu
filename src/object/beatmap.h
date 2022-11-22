@@ -71,6 +71,37 @@ class Beatmap {
 
     String to_string_tags();
     String to_string_background();
+
+    String get_audio_filename();
+    int64_t get_preview_time();
+
+    int64_t get_beat_divisor();
+    float get_timeline_zoom();
+
+    String get_title();
+    String get_title_unicode();
+    String get_artist();
+    String get_artist_unicode();
+    String get_creator();
+    String get_version();
+    String get_source();
+    PoolStringArray get_tags();
+    String get_beatmap_id();
+    String get_beatmap_set_id();
+
+    float get_hp_drain_rate();
+    float get_circle_size();
+    float get_overall_difficulty();
+    float get_approach_rate();
+    float get_slider_multiplier();
+    float get_slider_tick_rate();
+
+    String get_background_filename();
+    vector<BreakPeriod> get_break_periods();
+
+    vector<TimingPoint> get_timing_points();
+
+    vector<HitObject> get_hit_objects();
 };
 
 #endif

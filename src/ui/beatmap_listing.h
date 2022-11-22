@@ -15,6 +15,7 @@ class BeatmapListing : public Control {
     String artist;
     String mapper;
     String difficulty_name;
+    bool selected;
 
     ColorRect *outer;
     ColorRect *inner;
@@ -36,11 +37,15 @@ class BeatmapListing : public Control {
     void set_artist(String artist);
     void set_mapper(String mapper);
     void set_difficulty_name(String difficulty_name);
+    void set_selected(bool selected);
 
     String get_title();
     String get_artist();
     String get_mapper();
     String get_difficulty_name();
+    bool is_selected();
+
+    void update_view();
 };
 
 #endif

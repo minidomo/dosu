@@ -3,6 +3,7 @@
 
 #include <Button.hpp>
 #include <Node.hpp>
+#include <VBoxContainer.hpp>
 
 #include "common/common.h"
 
@@ -11,10 +12,10 @@ class MainEdit : public Node {
 
    private:
     Button *select_button;
-    NodePath select_button_path;
-
     Button *back_button;
-    NodePath back_button_path;
+    VBoxContainer *map_container;
+
+    void update_beatmaps();
 
    public:
     static void _register_methods();

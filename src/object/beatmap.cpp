@@ -287,3 +287,51 @@ String Beatmap::to_string_tags() {
 String Beatmap::to_string_background() {
     return "0,0,\"" + background_filename + "\",0,0";
 }
+
+String Beatmap::get_audio_filename() { return audio_filename; }
+
+int64_t Beatmap::get_preview_time() { return preview_time; }
+
+int64_t Beatmap::get_beat_divisor() { return beat_divisor; }
+
+float Beatmap::get_timeline_zoom() { return timeline_zoom; }
+
+String Beatmap::get_title() { return title; }
+
+String Beatmap::get_title_unicode() { return title_unicode; }
+
+String Beatmap::get_artist() { return artist; }
+
+String Beatmap::get_artist_unicode() { return artist_unicode; }
+
+String Beatmap::get_creator() { return creator; }
+
+String Beatmap::get_version() { return version; }
+
+String Beatmap::get_source() { return source; }
+
+PoolStringArray Beatmap::get_tags() { return tags; }
+
+String Beatmap::get_beatmap_id() { return beatmap_id; }
+
+String Beatmap::get_beatmap_set_id() { return beatmap_set_id; }
+
+float Beatmap::get_hp_drain_rate() { return hp_drain_rate; }
+
+float Beatmap::get_circle_size() { return circle_size; }
+
+float Beatmap::get_overall_difficulty() { return overall_difficulty; }
+
+float Beatmap::get_approach_rate() { return approach_rate; }
+
+float Beatmap::get_slider_multiplier() { return slider_multiplier; }
+
+float Beatmap::get_slider_tick_rate() { return slider_tick_rate; }
+
+String Beatmap::get_background_filename() { return background_filename; }
+
+vector<BreakPeriod> Beatmap::get_break_periods() { return break_periods; }
+
+vector<TimingPoint> Beatmap::get_timing_points() { return timing_points; }
+
+vector<HitObject> Beatmap::get_hit_objects() { return hit_objects; }

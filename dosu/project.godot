@@ -17,8 +17,8 @@ config/icon="res://icon.png"
 [autoload]
 
 SceneManager="*res://bin/scripts/singleton/scene_manager.gdns"
-Game="*res://bin/scripts/singleton/game.gdns"
 MapManager="*res://bin/scripts/singleton/map_manager.gdns"
+Game="*res://bin/scripts/singleton/game.gdns"
 
 [display]
 

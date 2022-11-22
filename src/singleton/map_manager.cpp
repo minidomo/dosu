@@ -171,3 +171,5 @@ void MapManager::load_beatmaps() {
     int64_t beatmap_count = all_beatmaps.size();
     Godot::print("loaded " + String::num_int64(beatmap_count) + " beatmaps");
 }
+
+vector<Beatmap> MapManager::get_all_beatmaps() { return all_beatmaps; }

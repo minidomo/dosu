@@ -34,6 +34,7 @@ class MapManager : public Node {
     bool is_valid_audio_extension(String file_path);
 
     void load_beatmaps();
+    vector<Beatmap> get_all_beatmaps();
 };
 
 #endif
