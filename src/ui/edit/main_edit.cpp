@@ -38,6 +38,7 @@ void MainEdit::_ready() {
 
     get_tree()->connect("files_dropped", this, "on_files_dropped");
 
+    matches_label = get_node<Label>("RightBody/SearchBody/MatchesLabel");
     background = get_node<Background>("Background");
 
     map_container =
@@ -108,6 +109,13 @@ void MainEdit::update_beatmaps(String filter) {
                 update_background(bm);
             }
         }
+    }
+
+    if (filter.empty()) {
+        matches_label->set_text("");
+    } else {
+        matches_label->set_text(String::num_int64(local_index) +
+                                " matches found!");
     }
 }
 

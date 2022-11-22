@@ -2,6 +2,7 @@
 #define dosu_file_main_edit
 
 #include <Button.hpp>
+#include <Label.hpp>
 #include <LineEdit.hpp>
 #include <Node.hpp>
 #include <VBoxContainer.hpp>
@@ -20,6 +21,7 @@ class MainEdit : public Node {
     Button *select_button;
     Button *back_button;
     VBoxContainer *map_container;
+    Label *matches_label;
 
     void update_beatmaps(String filter);
     BeatmapListing *find_beatmap_listing(int64_t global_index);
