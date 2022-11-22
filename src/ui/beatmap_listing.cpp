@@ -31,3 +31,31 @@ void BeatmapListing::color_scheme_unselect() {
                                             Color::hex(0x984c5846));
     version_label->add_color_override("font_color", Color::hex(0x984c58ff));
 }
+
+void BeatmapListing::set_title(String title) {
+    this->title = title;
+    title_label->set_text(title);
+}
+
+void BeatmapListing::set_artist(String artist) {
+    this->artist = artist;
+    artist_mapper_label->set_text(artist + " // " + mapper);
+}
+
+void BeatmapListing::set_mapper(String mapper) {
+    this->mapper = mapper;
+    artist_mapper_label->set_text(artist + " // " + mapper);
+}
+
+void BeatmapListing::set_difficulty_name(String difficulty_name) {
+    this->difficulty_name = difficulty_name;
+    version_label->set_text(difficulty_name);
+}
+
+String BeatmapListing::get_title() { return title; }
+
+String BeatmapListing::get_artist() { return artist; }
+
+String BeatmapListing::get_mapper() { return mapper; }
+
+String BeatmapListing::get_difficulty_name() { return difficulty_name; }

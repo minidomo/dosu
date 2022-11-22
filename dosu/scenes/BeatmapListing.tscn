@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/font/Torus Regular.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://assets/font/Torus SemiBold.otf" type="DynamicFontData" id=2]
+[ext_resource path="res://bin/scripts/ui/beatmap_listing.gdns" type="Script" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 size = 30
@@ -20,6 +21,7 @@ anchor_right = 0.45
 anchor_bottom = 0.127778
 margin_bottom = -1.52588e-05
 rect_min_size = Vector2( 864, 138 )
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": true
 }

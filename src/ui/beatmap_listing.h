@@ -31,6 +31,16 @@ class BeatmapListing : public Control {
 
     void color_scheme_select();
     void color_scheme_unselect();
+
+    void set_title(String title);
+    void set_artist(String artist);
+    void set_mapper(String mapper);
+    void set_difficulty_name(String difficulty_name);
+
+    String get_title();
+    String get_artist();
+    String get_mapper();
+    String get_difficulty_name();
 };
 
 #endif
