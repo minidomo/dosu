@@ -3,6 +3,7 @@
 
 #include <AudioStreamPlayer.hpp>
 #include <Timer.hpp>
+#include <utility>
 
 #include "common/common.h"
 
@@ -37,7 +38,7 @@ class Conductor : public AudioStreamPlayer {
 
     void report_beat();
     void play_with_beat_offset(int64_t beats);
-    Vector2 closest_beat(float nth);
+    pair<int64_t, float> closest_beat(float nth);
     void play_from_beat(int64_t beat, int64_t offset);
     void on_timeout();
 

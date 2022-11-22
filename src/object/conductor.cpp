@@ -61,7 +61,7 @@ void Conductor::play_with_beat_offset(int64_t beats) {
     start_timer->start();
 }
 
-Vector2 Conductor::closest_beat(float nth) {
+pair<int64_t, float> Conductor::closest_beat(float nth) {
     closest =
         (int64_t)(Math::round((song_position / sec_per_beat) / nth) * nth);
 
@@ -70,7 +70,7 @@ Vector2 Conductor::closest_beat(float nth) {
         time_off_beat = -time_off_beat;
     }
 
-    return Vector2(closest, time_off_beat);
+    return {closest, time_off_beat};
 }
 
 void Conductor::play_from_beat(int64_t beat, int64_t offset) {

@@ -35,7 +35,7 @@ void BeatmapListing::color_scheme_select() {
     version_label->add_color_override("font_color", Color::hex(0x9ca9d4ff));
 }
 
-void BeatmapListing::color_scheme_unselect() {
+void BeatmapListing::color_scheme_deselect() {
     outer->set_frame_color(Color::hex(0x010D28dc));
     inner->set_frame_color(Color::hex(0xffffff05));
     title_label->add_color_override("font_color", Color::hex(0x984c5846));
@@ -86,6 +86,6 @@ void BeatmapListing::update_view() {
     if (selected) {
         color_scheme_select();
     } else {
-        color_scheme_unselect();
+        color_scheme_deselect();
     }
 }

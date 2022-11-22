@@ -184,7 +184,7 @@ void MapManager::load_beatmaps() {
 vector<Beatmap> MapManager::get_all_beatmaps() { return all_beatmaps; }
 
 void MapManager::randomize_selected_beatmap_index() {
-    selected_beatmap_index = random->randi_range(0, all_beatmaps.size() - 1);
+    set_selected_beatmap_index(random->randi_range(0, all_beatmaps.size() - 1));
 }
 
 void MapManager::set_selected_beatmap_index(int64_t selected_beatmap_index) {

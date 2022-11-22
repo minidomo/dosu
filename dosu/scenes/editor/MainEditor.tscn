@@ -1,13 +1,14 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://bin/scripts/ui/editor/main_editor.gdns" type="Script" id=1]
 [ext_resource path="res://scenes/Background.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/font/Torus Regular.otf" type="DynamicFontData" id=3]
-[ext_resource path="res://assets/font/Torus SemiBold.otf" type="DynamicFontData" id=4]
+[ext_resource path="res://scenes/editor/Tab.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/images/icons/seek-start-play.png" type="Texture" id=5]
 [ext_resource path="res://assets/images/icons/toggle-pause.png" type="Texture" id=6]
 [ext_resource path="res://assets/images/icons/seek-start-pause.png" type="Texture" id=7]
 [ext_resource path="res://bin/scripts/ui/editor/menu_bar/menu_file_button.gdns" type="Script" id=8]
+[ext_resource path="res://scenes/object/Conductor.tscn" type="PackedScene" id=9]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -15,22 +16,26 @@
 font_data = ExtResource( 3 )
 
 [sub_resource type="DynamicFont" id=3]
-size = 30
-font_data = ExtResource( 4 )
-
-[sub_resource type="DynamicFont" id=4]
 size = 24
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=4]
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="DynamicFont" id=5]
 size = 20
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="StyleBoxEmpty" id=9]
+
+[sub_resource type="DynamicFont" id=6]
 font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxEmpty" id=14]
+
+[sub_resource type="StyleBoxEmpty" id=19]
+
+[sub_resource type="StyleBoxEmpty" id=24]
 
 [node name="MainEditor" type="Control"]
 anchor_right = 1.0
@@ -125,89 +130,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ComposeTab" type="Control" parent="TopBar/Tabs"]
-anchor_right = 0.333
+[node name="ComposeTab" parent="TopBar/Tabs" instance=ExtResource( 4 )]
+anchor_right = 0.333333
 anchor_bottom = 1.0
-margin_right = 0.220001
-__meta__ = {
-"_edit_use_anchors_": false
-}
+margin_right = -144.375
+margin_bottom = -40.3667
+title = "compose"
 
-[node name="ColorRect" type="ColorRect" parent="TopBar/Tabs/ComposeTab"]
+[node name="TimingTab" parent="TopBar/Tabs" instance=ExtResource( 4 )]
+anchor_left = 0.333333
+anchor_right = 0.666667
+anchor_bottom = 1.0
+margin_bottom = -3.8147e-06
+title = "timing"
+
+[node name="SongSetupTab" parent="TopBar/Tabs" instance=ExtResource( 4 )]
+anchor_left = 0.666667
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0.12549, 0.12549, 0.12549, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="TopBar/Tabs/ComposeTab"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_fonts/font = SubResource( 3 )
-text = "compose"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TimingTab" type="Control" parent="TopBar/Tabs"]
-anchor_left = 0.333
-anchor_right = 0.667
-anchor_bottom = 1.0
-margin_left = 0.220001
-margin_right = -0.220032
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ColorRect" type="ColorRect" parent="TopBar/Tabs/TimingTab"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0.12549, 0.12549, 0.12549, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="TopBar/Tabs/TimingTab"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_fonts/font = SubResource( 3 )
-text = "timing"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="SongSetupTab" type="Control" parent="TopBar/Tabs"]
-anchor_left = 0.667
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -0.220032
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ColorRect" type="ColorRect" parent="TopBar/Tabs/SongSetupTab"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0.12549, 0.12549, 0.12549, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="TopBar/Tabs/SongSetupTab"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_fonts/font = SubResource( 3 )
-text = "song setup"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+margin_bottom = -3.8147e-06
+title = "song setup"
 
 [node name="Body" type="Control" parent="."]
 anchor_top = 0.154
@@ -224,14 +166,36 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 
+[node name="Label" type="Label" parent="Body/ComposeBody"]
+margin_left = 453.997
+margin_top = 212.712
+margin_right = 696.997
+margin_bottom = 372.712
+text = "compose"
+
 [node name="TimingBody" type="Control" parent="Body"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+
+[node name="Label" type="Label" parent="Body/TimingBody"]
+margin_left = 453.997
+margin_top = 212.712
+margin_right = 696.997
+margin_bottom = 372.712
+text = "timing"
 
 [node name="SongSetupBody" type="Control" parent="Body"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+
+[node name="Label" type="Label" parent="Body/SongSetupBody"]
+margin_left = 453.997
+margin_top = 212.712
+margin_right = 696.997
+margin_bottom = 372.712
+text = "song setup"
 
 [node name="BottomBar" type="ColorRect" parent="."]
 anchor_top = 0.959
@@ -256,7 +220,7 @@ __meta__ = {
 [node name="Label" type="Label" parent="BottomBar/Time"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 3 )
 text = "00:00:000"
 align = 1
 valign = 1
@@ -277,7 +241,7 @@ __meta__ = {
 [node name="Label" type="Label" parent="BottomBar/Progress"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 4 )
 text = "0.0%"
 align = 1
 valign = 1
@@ -377,7 +341,7 @@ __meta__ = {
 anchor_right = 0.459
 anchor_bottom = 1.0
 margin_right = 0.169998
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 5 )
 text = "Playback Rate"
 align = 1
 valign = 1
@@ -388,89 +352,68 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 0.169998
 margin_right = -3.05176e-05
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Button25" type="Control" parent="BottomBar/PlaybackRate/Buttons"]
+[node name="Button25" type="Button" parent="BottomBar/PlaybackRate/Buttons"]
 anchor_right = 0.25
-anchor_bottom = 1.0
-margin_right = 7.62939e-06
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="BottomBar/PlaybackRate/Buttons/Button25"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_fonts/font = SubResource( 7 )
+anchor_bottom = 0.999997
+custom_styles/focus = SubResource( 9 )
+custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 1, 1, 1, 0.470588 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 0.470588 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 0.470588 )
 text = "25%"
-align = 1
-valign = 1
+flat = true
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": true
 }
 
-[node name="Button50" type="Control" parent="BottomBar/PlaybackRate/Buttons"]
+[node name="Button50" type="Button" parent="BottomBar/PlaybackRate/Buttons"]
 anchor_left = 0.25
 anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = 7.62939e-06
-margin_right = 1.52588e-05
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="BottomBar/PlaybackRate/Buttons/Button50"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_fonts/font = SubResource( 7 )
+anchor_bottom = 0.999997
+custom_styles/focus = SubResource( 14 )
+custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 1, 1, 1, 0.470588 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 0.470588 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 0.470588 )
 text = "50%"
-align = 1
-valign = 1
+flat = true
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": true
 }
 
-[node name="Button75" type="Control" parent="BottomBar/PlaybackRate/Buttons"]
+[node name="Button75" type="Button" parent="BottomBar/PlaybackRate/Buttons"]
 anchor_left = 0.5
 anchor_right = 0.75
-anchor_bottom = 1.0
-margin_left = 1.52588e-05
-margin_right = 1.52588e-05
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="BottomBar/PlaybackRate/Buttons/Button75"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_fonts/font = SubResource( 7 )
+anchor_bottom = 0.999997
+custom_styles/focus = SubResource( 19 )
+custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 1, 1, 1, 0.470588 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 0.470588 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 0.470588 )
 text = "75%"
-align = 1
-valign = 1
+flat = true
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": true
 }
 
-[node name="Button100" type="Control" parent="BottomBar/PlaybackRate/Buttons"]
-anchor_left = 0.75
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 1.52588e-05
-margin_right = 3.05176e-05
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="BottomBar/PlaybackRate/Buttons/Button100"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_fonts/font = SubResource( 7 )
+[node name="Button100" type="Button" parent="BottomBar/PlaybackRate/Buttons"]
+anchor_left = 0.748331
+anchor_right = 0.998331
+anchor_bottom = 0.999997
+custom_styles/focus = SubResource( 24 )
+custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 1, 1, 1, 0.470588 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 0.470588 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 0.470588 )
 text = "100%"
-align = 1
-valign = 1
+flat = true
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": true
 }
+
+[node name="Conductor" parent="." instance=ExtResource( 9 )]
+volume_db = -15.0

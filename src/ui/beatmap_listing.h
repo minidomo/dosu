@@ -37,7 +37,7 @@ class BeatmapListing : public Control {
     void _gui_input(Ref<InputEvent> event);
 
     void color_scheme_select();
-    void color_scheme_unselect();
+    void color_scheme_deselect();
 
     void set_title(String title);
     void set_artist(String artist);
