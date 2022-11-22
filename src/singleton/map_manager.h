@@ -2,6 +2,7 @@
 #define dosu_file_map_manager
 
 #include <Node.hpp>
+#include <RandomNumberGenerator.hpp>
 #include <vector>
 
 #include "common/common.h"
@@ -11,7 +12,10 @@ class MapManager : public Node {
     GODOT_CLASS(MapManager, Node);
 
    private:
+    RandomNumberGenerator* random;
+
     vector<Beatmap> all_beatmaps;
+    int64_t selected_beatmap_index;
 
     Array audio_extensions;
     String map_extension;
@@ -35,6 +39,10 @@ class MapManager : public Node {
 
     void load_beatmaps();
     vector<Beatmap> get_all_beatmaps();
+
+    void randomize_selected_beatmap_index();
+    void set_selected_beatmap_index(int64_t selected_beatmap_index);
+    int64_t get_selected_beatmap_index();
 };
 
 #endif

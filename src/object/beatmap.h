@@ -102,6 +102,8 @@ class Beatmap {
     vector<TimingPoint> get_timing_points();
 
     vector<HitObject> get_hit_objects();
+
+    bool has_query(String query);
 };
 
 #endif

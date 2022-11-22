@@ -12,6 +12,10 @@ MapManager* MapManager::get_singleton(Node* node) {
 
 void MapManager::_register_methods() {
     register_method("_ready", &MapManager::_ready);
+
+    register_signal<MapManager>("beatmap_index_changed", "old_index",
+                                GODOT_VARIANT_TYPE_INT, "new_index",
+                                GODOT_VARIANT_TYPE_INT);
 }
 
 void MapManager::_init() {
@@ -19,7 +23,12 @@ void MapManager::_init() {
     map_extension = ".osu";
 }
 
-void MapManager::_ready() { Godot::print("map manager ready"); }
+void MapManager::_ready() {
+    random = RandomNumberGenerator::_new();
+    random->randomize();
+
+    Godot::print("map manager ready");
+}
 
 void MapManager::create_map(String set_id, String audio_filename) {
     auto dir = Directory::_new();
@@ -173,3 +182,20 @@ void MapManager::load_beatmaps() {
 }
 
 vector<Beatmap> MapManager::get_all_beatmaps() { return all_beatmaps; }
+
+void MapManager::randomize_selected_beatmap_index() {
+    selected_beatmap_index = random->randi_range(0, all_beatmaps.size() - 1);
+}
+
+void MapManager::set_selected_beatmap_index(int64_t selected_beatmap_index) {
+    if (selected_beatmap_index != this->selected_beatmap_index) {
+        int64_t old_index = this->selected_beatmap_index;
+        this->selected_beatmap_index = selected_beatmap_index;
+
+        emit_signal("beatmap_index_changed", old_index, selected_beatmap_index);
+    }
+}
+
+int64_t MapManager::get_selected_beatmap_index() {
+    return selected_beatmap_index;
+}

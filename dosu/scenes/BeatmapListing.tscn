@@ -29,6 +29,7 @@ __meta__ = {
 [node name="Background" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -36,6 +37,7 @@ __meta__ = {
 [node name="Outer" type="ColorRect" parent="Background"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 color = Color( 0.054902, 0.0666667, 0.141176, 0.862745 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -44,6 +46,7 @@ __meta__ = {
 [node name="MarginContainer" type="MarginContainer" parent="Background"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 custom_constants/margin_right = 8
 custom_constants/margin_top = 8
 custom_constants/margin_left = 8
@@ -57,6 +60,7 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 856.0
 margin_bottom = 130.0
+mouse_filter = 2
 color = Color( 1, 1, 1, 0.0392157 )
 __meta__ = {
 "_edit_use_anchors_": false

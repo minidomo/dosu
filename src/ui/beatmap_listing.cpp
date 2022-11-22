@@ -1,7 +1,10 @@
 #include "./beatmap_listing.h"
 
+#include "singleton/map_manager.h"
+
 void BeatmapListing::_register_methods() {
     register_method("_ready", &BeatmapListing::_ready);
+    register_method("_gui_input", &BeatmapListing::_gui_input);
 }
 
 void BeatmapListing::_init() {}
@@ -14,6 +17,13 @@ void BeatmapListing::_ready() {
     version_label = get_node<Label>("VersionLabel");
 
     update_view();
+}
+
+void BeatmapListing::_gui_input(Ref<InputEvent> event) {
+    if (event->is_action_pressed("primary_click")) {
+        MapManager::get_singleton(this)->set_selected_beatmap_index(
+            global_index);
+    }
 }
 
 void BeatmapListing::color_scheme_select() {
@@ -46,6 +56,14 @@ void BeatmapListing::set_difficulty_name(String difficulty_name) {
 
 void BeatmapListing::set_selected(bool selected) { this->selected = selected; }
 
+void BeatmapListing::set_global_index(int64_t global_index) {
+    this->global_index = global_index;
+}
+
+void BeatmapListing::set_local_index(int64_t local_index) {
+    this->local_index = local_index;
+}
+
 String BeatmapListing::get_title() { return title; }
 
 String BeatmapListing::get_artist() { return artist; }
@@ -56,9 +74,12 @@ String BeatmapListing::get_difficulty_name() { return difficulty_name; }
 
 bool BeatmapListing::is_selected() { return selected; }
 
+int64_t BeatmapListing::get_global_index() { return global_index; }
+
+int64_t BeatmapListing::get_local_index() { return local_index; }
+
 void BeatmapListing::update_view() {
     title_label->set_text(title);
-    artist_mapper_label->set_text(artist + " // " + mapper);
     artist_mapper_label->set_text(artist + " // " + mapper);
     version_label->set_text(difficulty_name);
 

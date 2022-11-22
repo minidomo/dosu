@@ -335,3 +335,23 @@ vector<BreakPeriod> Beatmap::get_break_periods() { return break_periods; }
 vector<TimingPoint> Beatmap::get_timing_points() { return timing_points; }
 
 vector<HitObject> Beatmap::get_hit_objects() { return hit_objects; }
+
+bool Beatmap::has_query(String query) {
+    if (query.empty()) return true;
+
+    query = query.to_lower();
+
+    if (title.to_lower().find(query) >= 0) return true;
+    if (title_unicode.to_lower().find(query) >= 0) return true;
+    if (artist.to_lower().find(query) >= 0) return true;
+    if (artist_unicode.to_lower().find(query) >= 0) return true;
+    if (creator.to_lower().find(query) >= 0) return true;
+    if (version.to_lower().find(query) >= 0) return true;
+    if (source.to_lower().find(query) >= 0) return true;
+
+    for (int i = 0; i < tags.size(); i++) {
+        if (tags[i].to_lower().find(query) >= 0) return true;
+    }
+
+    return false;
+}

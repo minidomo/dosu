@@ -1,6 +1,7 @@
 #ifndef dosu_dir_ui
 #define dosu_dir_ui
 
+#include "./background.h"
 #include "./beatmap_listing.h"
 #include "./main_menu.h"
 #include "edit/index.h"

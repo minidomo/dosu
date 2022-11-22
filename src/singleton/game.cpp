@@ -13,13 +13,17 @@ Game* Game::get_singleton(Node* node) {
 
 void Game::_register_methods() { register_method("_ready", &Game::_ready); }
 
-void Game::_init() { songs_dir_path = "user://songs"; }
+void Game::_init() {
+    songs_dir_path = "user://songs";
+    default_background_path = "res://assets/images/default-background.jpg";
+}
 
 void Game::_ready() {
     Godot::print("game ready");
     set_confine_mouse(true);
     init_songs_directory();
     MapManager::get_singleton(this)->load_beatmaps();
+    MapManager::get_singleton(this)->randomize_selected_beatmap_index();
 }
 
 /**
@@ -55,3 +59,5 @@ void Game::init_songs_directory() {
 }
 
 String Game::get_songs_dir_path() { return songs_dir_path; }
+
+String Game::get_default_background_path() { return default_background_path; }

@@ -9,6 +9,7 @@ class Game : public Node {
     GODOT_CLASS(Game, Node);
 
    private:
+    String default_background_path;
     String songs_dir_path;
 
     void init_songs_directory();
@@ -24,6 +25,7 @@ class Game : public Node {
     void set_confine_mouse(bool confine);
 
     String get_songs_dir_path();
+    String get_default_background_path();
 };
 
 #endif
