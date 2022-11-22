@@ -53,7 +53,6 @@ void MainEdit::_ready() {
 }
 
 void MainEdit::on_select_button_pressed() {
-    Godot::print("enter editor with the selected beat map");
     SceneManager::get_singleton(this)->to_editor_scene();
 }
 
@@ -106,7 +105,7 @@ void MainEdit::update_beatmaps(String filter) {
             local_index++;
 
             if (listing->is_selected()) {
-                update_background(bm);
+                Background::update_background(background, bm);
             }
         }
     }
@@ -135,7 +134,7 @@ void MainEdit::on_beatmap_index_changed(int64_t old_index, int64_t new_index) {
         new_listing->update_view();
 
         auto beatmaps = MapManager::get_singleton(this)->get_all_beatmaps();
-        update_background(beatmaps[new_index]);
+        Background::update_background(background, beatmaps[new_index]);
     }
 }
 
@@ -149,18 +148,4 @@ BeatmapListing *MainEdit::find_beatmap_listing(int64_t global_index) {
     }
 
     return nullptr;
-}
-
-void MainEdit::update_background(Beatmap beatmap) {
-    String bg_filename = beatmap.get_background_filename();
-    String bg_path;
-
-    if (bg_filename.empty()) {
-        bg_path = Game::get_singleton(this)->get_default_background_path();
-    } else {
-        bg_path = Game::get_singleton(this)->get_songs_dir_path() + "/" +
-                  beatmap.get_beatmap_set_id() + "/" + bg_filename;
-    }
-
-    background->set_background_path(bg_path);
 }

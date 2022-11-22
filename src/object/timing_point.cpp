@@ -67,3 +67,13 @@ float TimingPoint::calculate_bpm(float beat_length) {
 }
 
 float TimingPoint::calculate_beat_length(float bpm) { return 60000 / bpm; }
+
+void TimingPoint::copy(TimingPoint timing_point) {
+    time = timing_point.time;
+    beat_length = timing_point.beat_length;
+    meter = timing_point.meter;
+    uninherited = timing_point.uninherited;
+    bpm_multiplier = timing_point.bpm_multiplier;
+    slider_velocity = timing_point.slider_velocity;
+    bpm = timing_point.bpm;
+}

@@ -34,6 +34,8 @@ class TimingPoint {
     void set_meter(int64_t meter);
     void set_uninherited(bool uninherited);
     void set_bpm(float bpm);
+
+    void copy(TimingPoint timing_point);
 };
 
 #endif

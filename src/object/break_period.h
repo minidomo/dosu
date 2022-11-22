@@ -21,6 +21,8 @@ class BreakPeriod {
 
     void parse_line(String line);
     String to_file_string();
+
+    void copy(BreakPeriod break_period);
 };
 
 #endif

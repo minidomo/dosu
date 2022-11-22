@@ -7,12 +7,14 @@
 
 #include "common/common.h"
 #include "object/conductor.h"
+#include "ui/background.h"
 #include "ui/editor/tab.h"
 
 class MainEditor : public Control {
     GODOT_CLASS(MainEditor, Control);
 
    private:
+    Background *background;
     Conductor *conductor;
     vector<Tab *> tabs;
     vector<Control *> bodies;

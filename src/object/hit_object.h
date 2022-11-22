@@ -26,6 +26,8 @@ class HitObject {
 
     void parse_line(String line);
     String to_file_string();
+
+    void copy(HitObject hit_object);
 };
 
 #endif

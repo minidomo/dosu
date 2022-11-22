@@ -1,5 +1,7 @@
 #include "./main_editor.h"
 
+#include "singleton/map_manager.h"
+
 void MainEditor::_register_methods() {
     register_method("_ready", &MainEditor::_ready);
     register_method("on_tab_clicked", &MainEditor::on_tab_clicked);
@@ -8,12 +10,17 @@ void MainEditor::_register_methods() {
 void MainEditor::_init() { tab_index = -1; }
 
 void MainEditor::_ready() {
+    MapManager::get_singleton(this)->refresh_editor_beatmap();
+
+    background = get_node<Background>("Background");
     conductor = get_node<Conductor>("Conductor");
 
     init_bodies();
     init_tabs();
 
     on_tab_clicked(2);
+    Background::update_background(
+        background, MapManager::get_singleton(this)->get_editor_beatmap());
 }
 
 void MainEditor::init_bodies() {

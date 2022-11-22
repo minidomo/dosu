@@ -6,6 +6,7 @@
 #include <TextureRect.hpp>
 
 #include "common/common.h"
+#include "object/beatmap.h"
 
 class Background : public Control {
     GODOT_CLASS(Background, Control);
@@ -30,6 +31,8 @@ class Background : public Control {
 
     String get_background_path();
     float get_dim();
+
+    static void update_background(Background *background, Beatmap beatmap);
 };
 
 #endif

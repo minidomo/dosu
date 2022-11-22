@@ -14,6 +14,7 @@ class MapManager : public Node {
    private:
     RandomNumberGenerator* random;
 
+    Beatmap editor_beatmap;
     vector<Beatmap> all_beatmaps;
     int64_t selected_beatmap_index;
 
@@ -43,6 +44,10 @@ class MapManager : public Node {
     void randomize_selected_beatmap_index();
     void set_selected_beatmap_index(int64_t selected_beatmap_index);
     int64_t get_selected_beatmap_index();
+
+    Beatmap get_editor_beatmap();
+    void refresh_editor_beatmap();
+    void save_editor_beatmap();
 };
 
 #endif

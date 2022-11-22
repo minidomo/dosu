@@ -29,3 +29,8 @@ String BreakPeriod::to_file_string() {
     return "2," + String::num_int64(start_time) + "," +
            String::num_int64(end_time);
 }
+
+void BreakPeriod::copy(BreakPeriod break_period) {
+    start_time = break_period.start_time;
+    end_time = break_period.end_time;
+}

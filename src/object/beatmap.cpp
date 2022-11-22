@@ -355,3 +355,45 @@ bool Beatmap::has_query(String query) {
 
     return false;
 }
+
+void Beatmap::copy(Beatmap beatmap) {
+    audio_filename = beatmap.audio_filename;
+    preview_time = beatmap.preview_time;
+    beat_divisor = beatmap.beat_divisor;
+    timeline_zoom = beatmap.timeline_zoom;
+    title = beatmap.title;
+    title_unicode = beatmap.title_unicode;
+    artist = beatmap.artist;
+    artist_unicode = beatmap.artist_unicode;
+    creator = beatmap.creator;
+    version = beatmap.version;
+    source = beatmap.source;
+
+    tags = PoolStringArray();
+    tags.append_array(beatmap.tags);
+
+    beatmap_id = beatmap.beatmap_id;
+    beatmap_set_id = beatmap.beatmap_set_id;
+    background_filename = beatmap.background_filename;
+
+    break_periods.clear();
+    for (auto e : beatmap.break_periods) {
+        BreakPeriod bp;
+        bp.copy(e);
+        break_periods.push_back(bp);
+    }
+
+    timing_points.clear();
+    for (auto e : beatmap.timing_points) {
+        TimingPoint tp;
+        tp.copy(e);
+        timing_points.push_back(tp);
+    }
+
+    hit_objects.clear();
+    for (auto e : beatmap.hit_objects) {
+        HitObject ho;
+        ho.copy(e);
+        hit_objects.push_back(ho);
+    }
+}

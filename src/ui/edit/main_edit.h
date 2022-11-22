@@ -25,7 +25,6 @@ class MainEdit : public Node {
 
     void update_beatmaps(String filter);
     BeatmapListing *find_beatmap_listing(int64_t global_index);
-    void update_background(Beatmap beatmap);
 
    public:
     static void _register_methods();

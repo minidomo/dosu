@@ -50,3 +50,12 @@ String HitObject::to_file_string() {
 
     return ret;
 }
+
+void HitObject::copy(HitObject hit_object) {
+    hit_type = hit_object.hit_type;
+    start_x = hit_object.start_x;
+    start_y = hit_object.start_y;
+    start_time = hit_object.start_time;
+    new_combo = hit_object.new_combo;
+    end_time = hit_object.end_time;
+}

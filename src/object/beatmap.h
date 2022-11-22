@@ -104,6 +104,7 @@ class Beatmap {
     vector<HitObject> get_hit_objects();
 
     bool has_query(String query);
+    void copy(Beatmap beatmap);
 };
 
 #endif
