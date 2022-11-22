@@ -15,6 +15,9 @@ godot_gdnative_terminate(godot_gdnative_terminate_options *o) {
 extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
     Godot::nativescript_init(handle);
 
+    // object
+    register_class<Conductor>();
+
     // singleton
     register_class<Game>();
     register_class<MapManager>();

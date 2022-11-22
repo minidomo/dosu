@@ -3,6 +3,7 @@
 
 #include "./beatmap.h"
 #include "./break_period.h"
+#include "./conductor.h"
 #include "./hit_object.h"
 #include "./slider_data.h"
 #include "./slider_path.h"
