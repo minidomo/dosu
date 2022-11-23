@@ -1,6 +1,7 @@
 #ifndef dosu_file_main_editor
 #define dosu_file_main_editor
 
+#include <ColorRect.hpp>
 #include <Control.hpp>
 #include <Label.hpp>
 #include <vector>
@@ -9,6 +10,7 @@
 #include "object/conductor.h"
 #include "ui/background.h"
 #include "ui/editor/tab.h"
+#include "ui/editor/timeline.h"
 
 class MainEditor : public Control {
     GODOT_CLASS(MainEditor, Control);
@@ -22,6 +24,8 @@ class MainEditor : public Control {
 
     Label *time_label;
     Label *progress_label;
+
+    Timeline *timeline;
 
     int tab_index;
 
@@ -39,6 +43,7 @@ class MainEditor : public Control {
     void on_tab_clicked(int index);
     void on_icon_button_pressed(int index);
     void on_song_position_update(int64_t song_position);
+    void on_timeline_click(float percent);
 };
 
 #endif

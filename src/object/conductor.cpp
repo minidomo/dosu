@@ -42,6 +42,9 @@ void Conductor::_physics_process(real_t delta) {
         song_position = get_playback_position() +
                         AudioServer::get_singleton()->get_time_since_last_mix();
         song_position -= AudioServer::get_singleton()->get_output_latency();
+        song_position =
+            Math::clamp<float>(song_position, 0, get_total_duration_seconds());
+
         emit_signal("song_position_update",
                     Util::to_milliseconds(song_position));
 
@@ -121,7 +124,7 @@ float Conductor::get_bpm() { return bpm; }
 int64_t Conductor::get_measures() { return measures; }
 
 int64_t Conductor::get_total_duration() {
-    return Util::to_milliseconds(get_stream()->get_length());
+    return Util::to_milliseconds(get_total_duration_seconds());
 }
 
 int64_t Conductor::get_song_position() {
@@ -132,7 +135,12 @@ void Conductor::toggle_pause() {
     if (is_playing()) {
         set_stream_paused(!get_stream_paused());
     } else {
-        go_to(0, ConductorGoType::Play);
+        int64_t target = Util::to_milliseconds(song_position);
+        if (target == get_total_duration()) {
+            target = 0;
+        }
+
+        go_to(target, ConductorGoType::Play);
     }
 }
 
@@ -142,6 +150,7 @@ void Conductor::go_to(int64_t ms, ConductorGoType action) {
 
     switch (action) {
         case ConductorGoType::Play: {
+            set_stream_paused(false);
             play(song_position);
             break;
         }
@@ -161,4 +170,13 @@ void Conductor::go_to(int64_t ms, ConductorGoType action) {
             break;
         }
     }
+}
+
+void Conductor::go_to_percent(float percent, ConductorGoType action) {
+    int64_t ms = (int64_t)Math::round(percent * get_total_duration());
+    go_to(ms, action);
+}
+
+float Conductor::get_total_duration_seconds() {
+    return get_stream()->get_length();
 }

@@ -19,6 +19,7 @@ void MainEditor::_register_methods() {
                     &MainEditor::on_icon_button_pressed);
     register_method("on_song_position_update",
                     &MainEditor::on_song_position_update);
+    register_method("on_timeline_click", &MainEditor::on_timeline_click);
 }
 
 void MainEditor::_init() { tab_index = -1; }
@@ -30,7 +31,9 @@ void MainEditor::_ready() {
     conductor = get_node<Conductor>("Conductor");
     time_label = get_node<Label>("BottomBar/Time/Label");
     progress_label = get_node<Label>("BottomBar/Progress/Label");
+    timeline = get_node<Timeline>("BottomBar/Timeline");
 
+    timeline->connect("timeline_click", this, "on_timeline_click");
     conductor->connect("song_position_update", this, "on_song_position_update");
 
     init_conductor();
@@ -136,8 +139,13 @@ void MainEditor::init_conductor() {
 void MainEditor::on_song_position_update(int64_t song_position) {
     time_label->set_text(Util::to_timestamp(song_position));
 
-    float percent = 100.f * song_position / conductor->get_total_duration();
-    String progress = String::num_real(percent).pad_decimals(1) + "%";
+    float percent = (float)song_position / conductor->get_total_duration();
+    String progress = String::num_real(percent * 100.f).pad_decimals(1) + "%";
 
     progress_label->set_text(progress);
+    timeline->set_playhead_progress(percent);
+}
+
+void MainEditor::on_timeline_click(float percent) {
+    conductor->go_to_percent(percent, ConductorGoType::Maintain);
 }

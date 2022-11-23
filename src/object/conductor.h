@@ -30,6 +30,8 @@ class Conductor : public AudioStreamPlayer {
 
     Timer *start_timer;
 
+    float get_total_duration_seconds();
+
    public:
     static void _register_methods();
     void _init();
@@ -54,6 +56,7 @@ class Conductor : public AudioStreamPlayer {
 
     void toggle_pause();
     void go_to(int64_t ms, ConductorGoType action);
+    void go_to_percent(float percent, ConductorGoType action);
 };
 
 #endif

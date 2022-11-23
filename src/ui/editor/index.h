@@ -3,6 +3,7 @@
 
 #include "./main_editor.h"
 #include "./tab.h"
+#include "./timeline.h"
 #include "menu_bar/menu_file_button.h"
 
 #endif
