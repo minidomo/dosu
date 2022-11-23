@@ -192,7 +192,7 @@ void Beatmap::write_contents(File *file) {
     file->store_line("Countdown: 0");
     file->store_line("SampleSet: Soft");
     file->store_line("StackLeniency: 0.7");
-    file->store_line("Mode: 0");
+    file->store_line("Mode: 1");
     file->store_line("LetterboxInBreaks: 0");
     file->store_line("WidescreenStoryboard: 1");
     file->store_line("");
