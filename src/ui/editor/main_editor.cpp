@@ -10,6 +10,7 @@
 #include "common/util.h"
 #include "object/enum/conductor_go_type.h"
 #include "object/enum/icon_type.h"
+#include "object/enum/song_metadata_type.h"
 #include "singleton/game.h"
 #include "singleton/map_manager.h"
 
@@ -22,19 +23,22 @@ void MainEditor::_register_methods() {
                     &MainEditor::on_song_position_update);
     register_method("on_timeline_click", &MainEditor::on_timeline_click);
     register_method("on_files_dropped", &MainEditor::on_files_dropped);
+    register_method("on_song_metadata_update",
+                    &MainEditor::on_song_metadata_update);
 }
 
 void MainEditor::_init() { tab_index = -1; }
 
 void MainEditor::_ready() {
-    MapManager::get_singleton(this)->refresh_editor_beatmap();
-
     background = get_node<Background>("Background");
     conductor = get_node<Conductor>("Conductor");
     time_label = get_node<Label>("BottomBar/Time/Label");
     progress_label = get_node<Label>("BottomBar/Progress/Label");
     timeline = get_node<Timeline>("BottomBar/Timeline");
+    song_setup_body = get_node<SongSetupBody>("Body/SongSetupBody");
 
+    song_setup_body->connect("song_metadata_update", this,
+                             "on_song_metadata_update");
     timeline->connect("timeline_click", this, "on_timeline_click");
     conductor->connect("song_position_update", this, "on_song_position_update");
     get_tree()->connect("files_dropped", this, "on_files_dropped");
@@ -164,5 +168,52 @@ void MainEditor::on_files_dropped(PoolStringArray files, int screen) {
                                       map_manager->get_editor_beatmap());
     } else {
         // TODO display error?
+    }
+}
+
+void MainEditor::on_song_metadata_update(int index, String value) {
+    auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
+
+    switch (index) {
+        case +SongMetadataType::Artist: {
+            beatmap.set_artist(value);
+            break;
+        }
+        case +SongMetadataType::ArtistUnicode: {
+            beatmap.set_artist_unicode(value);
+            break;
+        }
+        case +SongMetadataType::Title: {
+            beatmap.set_title(value);
+            Godot::print("new title: " + beatmap.get_title() + " | " +
+                         MapManager::get_singleton(this)
+                             ->get_editor_beatmap()
+                             .get_title());
+            break;
+        }
+        case +SongMetadataType::TitleUnicode: {
+            beatmap.set_title_unicode(value);
+            break;
+        }
+        case +SongMetadataType::Creator: {
+            beatmap.set_creator(value);
+            break;
+        }
+        case +SongMetadataType::Difficulty: {
+            beatmap.set_version(value);
+            break;
+        }
+        case +SongMetadataType::Source: {
+            beatmap.set_source(value);
+            break;
+        }
+        case +SongMetadataType::Tags: {
+            beatmap.set_tags(value.split(" "));
+            break;
+        }
+        default: {
+            dev_assert(false);
+            break;
+        }
     }
 }

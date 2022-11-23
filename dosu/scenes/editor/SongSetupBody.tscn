@@ -1,0 +1,123 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/editor/EditableRow.tscn" type="PackedScene" id=1]
+[ext_resource path="res://bin/scripts/ui/editor/body/song_setup_body.gdns" type="Script" id=2]
+
+[node name="SongSetupBody" type="Control"]
+anchor_top = -0.000519647
+anchor_right = 1.0
+anchor_bottom = 0.805036
+margin_top = 0.561218
+margin_bottom = 0.561218
+rect_min_size = Vector2( 1920, 870 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_left = 0.265625
+anchor_top = 0.293104
+anchor_right = 0.734375
+anchor_bottom = 0.706896
+margin_top = -1.52588e-05
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="SongMetadata" type="Control" parent="ColorRect"]
+anchor_right = 0.5
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect/SongMetadata"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 16
+custom_constants/margin_top = 16
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 16
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/SongMetadata/MarginContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 434.0
+margin_bottom = 343.0
+custom_constants/separation = 8
+
+[node name="Artist" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 418.0
+margin_bottom = 30.0
+title = "Artist"
+
+[node name="ArtistUnicode" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 38.0
+margin_right = 418.0
+margin_bottom = 68.0
+title = "Romanized Artist"
+
+[node name="Title" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 76.0
+margin_right = 418.0
+margin_bottom = 106.0
+title = "Title"
+
+[node name="TitleUnicode" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 114.0
+margin_right = 418.0
+margin_bottom = 144.0
+title = "Romanized Title"
+
+[node name="Creator" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 152.0
+margin_right = 418.0
+margin_bottom = 182.0
+title = "Beatmap Creator"
+
+[node name="Difficulty" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 190.0
+margin_right = 418.0
+margin_bottom = 220.0
+title = "Difficulty"
+
+[node name="Source" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 228.0
+margin_right = 418.0
+margin_bottom = 258.0
+title = "Source"
+
+[node name="Tags" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 266.0
+margin_right = 418.0
+margin_bottom = 296.0
+title = "Tags"
+
+[node name="DifficultyMetadata" type="Control" parent="ColorRect"]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": true
+}

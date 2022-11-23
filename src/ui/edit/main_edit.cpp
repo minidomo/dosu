@@ -53,6 +53,7 @@ void MainEdit::_ready() {
 }
 
 void MainEdit::on_select_button_pressed() {
+    MapManager::get_singleton(this)->refresh_editor_beatmap();
     SceneManager::get_singleton(this)->to_editor_scene();
 }
 
