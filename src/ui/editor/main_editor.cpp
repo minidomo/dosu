@@ -185,10 +185,6 @@ void MainEditor::on_song_metadata_update(int index, String value) {
         }
         case +SongMetadataType::Title: {
             beatmap->set_title(value);
-            Godot::print("new title: " + beatmap->get_title() + " | " +
-                         MapManager::get_singleton(this)
-                             ->get_editor_beatmap()
-                             ->get_title());
             break;
         }
         case +SongMetadataType::TitleUnicode: {

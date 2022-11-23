@@ -458,6 +458,14 @@ void Beatmap::copy(Beatmap beatmap) {
 
     beatmap_id = beatmap.beatmap_id;
     beatmap_set_id = beatmap.beatmap_set_id;
+
+    hp_drain_rate = beatmap.hp_drain_rate;
+    circle_size = beatmap.circle_size;
+    overall_difficulty = beatmap.overall_difficulty;
+    approach_rate = beatmap.approach_rate;
+    slider_multiplier = beatmap.slider_multiplier;
+    slider_tick_rate = beatmap.slider_tick_rate;
+
     background_filename = beatmap.background_filename;
 
     break_periods.clear();

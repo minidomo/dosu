@@ -70,6 +70,7 @@ void MainEdit::on_files_dropped(PoolStringArray files, int screen) {
         map_manager->create_set(path);
         map_manager->set_selected_beatmap_index(
             map_manager->get_all_beatmaps().size() - 1);
+        MapManager::get_singleton(this)->refresh_editor_beatmap();
         SceneManager::get_singleton(this)->to_editor_scene();
     } else {
         // TODO display error message to user?
