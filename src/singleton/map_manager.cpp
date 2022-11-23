@@ -212,7 +212,7 @@ int64_t MapManager::get_selected_beatmap_index() {
     return selected_beatmap_index;
 }
 
-Beatmap MapManager::get_editor_beatmap() { return editor_beatmap; }
+Beatmap* MapManager::get_editor_beatmap() { return &editor_beatmap; }
 
 void MapManager::refresh_editor_beatmap() {
     editor_beatmap.copy(all_beatmaps[selected_beatmap_index]);

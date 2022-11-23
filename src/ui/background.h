@@ -18,7 +18,7 @@ class Background : public Control {
     TextureRect *background_image;
     ColorRect *dimmer;
 
-    void update_background();
+    void update_image();
 
    public:
     static void _register_methods();
@@ -32,7 +32,7 @@ class Background : public Control {
     String get_background_path();
     float get_dim();
 
-    static void update_background(Background *background, Beatmap beatmap);
+    static void update_background(Background *background, Beatmap *beatmap);
 };
 
 #endif

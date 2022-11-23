@@ -128,8 +128,8 @@ void MainEditor::init_conductor() {
 
     // get audio stream for conductor
     String path = Game::get_singleton(this)->get_songs_dir_path() + "/" +
-                  beatmap.get_beatmap_set_id() + "/" +
-                  beatmap.get_audio_filename();
+                  beatmap->get_beatmap_set_id() + "/" +
+                  beatmap->get_audio_filename();
 
     auto file = File::_new();
     dev_assert(file->open(path, File::READ) == Error::OK);
@@ -176,39 +176,39 @@ void MainEditor::on_song_metadata_update(int index, String value) {
 
     switch (index) {
         case +SongMetadataType::Artist: {
-            beatmap.set_artist(value);
+            beatmap->set_artist(value);
             break;
         }
         case +SongMetadataType::ArtistUnicode: {
-            beatmap.set_artist_unicode(value);
+            beatmap->set_artist_unicode(value);
             break;
         }
         case +SongMetadataType::Title: {
-            beatmap.set_title(value);
-            Godot::print("new title: " + beatmap.get_title() + " | " +
+            beatmap->set_title(value);
+            Godot::print("new title: " + beatmap->get_title() + " | " +
                          MapManager::get_singleton(this)
                              ->get_editor_beatmap()
-                             .get_title());
+                             ->get_title());
             break;
         }
         case +SongMetadataType::TitleUnicode: {
-            beatmap.set_title_unicode(value);
+            beatmap->set_title_unicode(value);
             break;
         }
         case +SongMetadataType::Creator: {
-            beatmap.set_creator(value);
+            beatmap->set_creator(value);
             break;
         }
         case +SongMetadataType::Difficulty: {
-            beatmap.set_version(value);
+            beatmap->set_version(value);
             break;
         }
         case +SongMetadataType::Source: {
-            beatmap.set_source(value);
+            beatmap->set_source(value);
             break;
         }
         case +SongMetadataType::Tags: {
-            beatmap.set_tags(value.split(" "));
+            beatmap->set_tags(value.split(" "));
             break;
         }
         default: {

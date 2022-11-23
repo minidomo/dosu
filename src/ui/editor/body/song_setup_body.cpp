@@ -32,17 +32,19 @@ void SongSetupBody::init_song_metadata() {
 
     auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
 
-    song_metadata[+SongMetadataType::Artist]->set_value(beatmap.get_artist());
+    song_metadata[+SongMetadataType::Artist]->set_value(beatmap->get_artist());
     song_metadata[+SongMetadataType::ArtistUnicode]->set_value(
-        beatmap.get_artist_unicode());
-    song_metadata[+SongMetadataType::Title]->set_value(beatmap.get_title());
+        beatmap->get_artist_unicode());
+    song_metadata[+SongMetadataType::Title]->set_value(beatmap->get_title());
     song_metadata[+SongMetadataType::TitleUnicode]->set_value(
-        beatmap.get_title_unicode());
-    song_metadata[+SongMetadataType::Creator]->set_value(beatmap.get_creator());
+        beatmap->get_title_unicode());
+    song_metadata[+SongMetadataType::Creator]->set_value(
+        beatmap->get_creator());
     song_metadata[+SongMetadataType::Difficulty]->set_value(
-        beatmap.get_version());
-    song_metadata[+SongMetadataType::Source]->set_value(beatmap.get_source());
-    song_metadata[+SongMetadataType::Tags]->set_value(beatmap.to_string_tags());
+        beatmap->get_version());
+    song_metadata[+SongMetadataType::Source]->set_value(beatmap->get_source());
+    song_metadata[+SongMetadataType::Tags]->set_value(
+        beatmap->to_string_tags());
 }
 
 void SongSetupBody::on_song_metadata_update(String new_text, int index) {

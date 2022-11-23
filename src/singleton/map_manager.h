@@ -47,7 +47,7 @@ class MapManager : public Node {
     void set_selected_beatmap_index(int64_t selected_beatmap_index);
     int64_t get_selected_beatmap_index();
 
-    Beatmap get_editor_beatmap();
+    Beatmap* get_editor_beatmap();
     void refresh_editor_beatmap();
     void save_editor_beatmap();
     void update_background_editor_beatmap(String image_path);

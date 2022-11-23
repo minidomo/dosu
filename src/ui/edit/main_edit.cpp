@@ -106,7 +106,7 @@ void MainEdit::update_beatmaps(String filter) {
             local_index++;
 
             if (listing->is_selected()) {
-                Background::update_background(background, bm);
+                Background::update_background(background, &bm);
             }
         }
     }
@@ -135,7 +135,7 @@ void MainEdit::on_beatmap_index_changed(int64_t old_index, int64_t new_index) {
         new_listing->update_view();
 
         auto beatmaps = MapManager::get_singleton(this)->get_all_beatmaps();
-        Background::update_background(background, beatmaps[new_index]);
+        Background::update_background(background, &beatmaps[new_index]);
     }
 }
 

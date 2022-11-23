@@ -22,14 +22,14 @@ void Background::_ready() {
     background_image = get_node<TextureRect>("Image");
     dimmer = get_node<ColorRect>("Dim");
 
-    update_background();
+    update_image();
     dimmer->set_frame_color(Color(0, 0, 0, dim));
 }
 
 void Background::set_background_path(String background_path) {
     if (background_path != this->background_path) {
         this->background_path = background_path;
-        update_background();
+        update_image();
     }
 }
 
@@ -44,7 +44,7 @@ String Background::get_background_path() { return background_path; }
 
 float Background::get_dim() { return dim; }
 
-void Background::update_background() {
+void Background::update_image() {
     File *file = File::_new();
     dev_assert(file->open(background_path, File::READ) == Error::OK);
 
@@ -62,8 +62,8 @@ void Background::update_background() {
     background_image->set_texture(ref_texture);
 }
 
-void Background::update_background(Background *background, Beatmap beatmap) {
-    String bg_filename = beatmap.get_background_filename();
+void Background::update_background(Background *background, Beatmap *beatmap) {
+    String bg_filename = beatmap->get_background_filename();
     String bg_path;
 
     if (bg_filename.empty()) {
@@ -71,7 +71,7 @@ void Background::update_background(Background *background, Beatmap beatmap) {
             Game::get_singleton(background)->get_default_background_path();
     } else {
         bg_path = Game::get_singleton(background)->get_songs_dir_path() + "/" +
-                  beatmap.get_beatmap_set_id() + "/" + bg_filename;
+                  beatmap->get_beatmap_set_id() + "/" + bg_filename;
     }
 
     background->set_background_path(bg_path);
