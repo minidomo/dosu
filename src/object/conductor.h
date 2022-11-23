@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "common/common.h"
+#include "object/enum/conductor_go_type.h"
 
 /**
  * https://github.com/LegionGames/Conductor-Example/blob/master/Scripts/Conductor.gd
@@ -47,6 +48,12 @@ class Conductor : public AudioStreamPlayer {
 
     float get_bpm();
     int64_t get_measures();
+
+    int64_t get_total_duration();
+    int64_t get_song_position();
+
+    void toggle_pause();
+    void go_to(int64_t ms, ConductorGoType action);
 };
 
 #endif

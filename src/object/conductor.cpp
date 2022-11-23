@@ -1,6 +1,10 @@
 #include "./conductor.h"
 
 #include <AudioServer.hpp>
+#include <AudioStream.hpp>
+#include <Ref.hpp>
+
+#include "common/util.h"
 
 void Conductor::_register_methods() {
     register_method("_ready", &Conductor::_ready);
@@ -9,6 +13,8 @@ void Conductor::_register_methods() {
 
     register_signal<Conductor>("beat", "beat", GODOT_VARIANT_TYPE_INT);
     register_signal<Conductor>("measure", "measure", GODOT_VARIANT_TYPE_INT);
+    register_signal<Conductor>("song_position_update", "song_position",
+                               GODOT_VARIANT_TYPE_INT);
 }
 
 void Conductor::_init() {
@@ -32,10 +38,13 @@ void Conductor::_ready() {
 }
 
 void Conductor::_physics_process(real_t delta) {
-    if (is_playing()) {
+    if (is_playing() && !get_stream_paused()) {
         song_position = get_playback_position() +
                         AudioServer::get_singleton()->get_time_since_last_mix();
         song_position -= AudioServer::get_singleton()->get_output_latency();
+        emit_signal("song_position_update",
+                    Util::to_milliseconds(song_position));
+
         song_position_in_beats =
             (int64_t)Math::floor(song_position / sec_per_beat) +
             beats_before_start;
@@ -110,3 +119,46 @@ void Conductor::set_measures(int64_t measures) { this->measures = measures; }
 float Conductor::get_bpm() { return bpm; }
 
 int64_t Conductor::get_measures() { return measures; }
+
+int64_t Conductor::get_total_duration() {
+    return Util::to_milliseconds(get_stream()->get_length());
+}
+
+int64_t Conductor::get_song_position() {
+    return Util::to_milliseconds(song_position);
+}
+
+void Conductor::toggle_pause() {
+    if (is_playing()) {
+        set_stream_paused(!get_stream_paused());
+    } else {
+        go_to(0, ConductorGoType::Play);
+    }
+}
+
+void Conductor::go_to(int64_t ms, ConductorGoType action) {
+    song_position = Util::to_seconds(ms);
+    emit_signal("song_position_update", ms);
+
+    switch (action) {
+        case ConductorGoType::Play: {
+            play(song_position);
+            break;
+        }
+        case ConductorGoType::Pause: {
+            if (is_playing()) {
+                set_stream_paused(true);
+                seek(song_position);
+            }
+            break;
+        }
+        case ConductorGoType::Maintain: {
+            seek(song_position);
+            break;
+        }
+        default: {
+            dev_assert(false);
+            break;
+        }
+    }
+}

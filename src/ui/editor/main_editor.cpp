@@ -1,10 +1,24 @@
 #include "./main_editor.h"
 
+#include <AudioStream.hpp>
+#include <AudioStreamMP3.hpp>
+#include <BaseButton.hpp>
+#include <File.hpp>
+#include <Ref.hpp>
+
+#include "common/util.h"
+#include "object/enum/conductor_go_type.h"
+#include "object/enum/icon_type.h"
+#include "singleton/game.h"
 #include "singleton/map_manager.h"
 
 void MainEditor::_register_methods() {
     register_method("_ready", &MainEditor::_ready);
     register_method("on_tab_clicked", &MainEditor::on_tab_clicked);
+    register_method("on_icon_button_pressed",
+                    &MainEditor::on_icon_button_pressed);
+    register_method("on_song_position_update",
+                    &MainEditor::on_song_position_update);
 }
 
 void MainEditor::_init() { tab_index = -1; }
@@ -14,9 +28,15 @@ void MainEditor::_ready() {
 
     background = get_node<Background>("Background");
     conductor = get_node<Conductor>("Conductor");
+    time_label = get_node<Label>("BottomBar/Time/Label");
+    progress_label = get_node<Label>("BottomBar/Progress/Label");
 
+    conductor->connect("song_position_update", this, "on_song_position_update");
+
+    init_conductor();
     init_bodies();
     init_tabs();
+    init_icon_buttons();
 
     on_tab_clicked(2);
     Background::update_background(
@@ -59,4 +79,65 @@ void MainEditor::on_tab_clicked(int index) {
             bodies[i]->set_visible(false);
         }
     }
+}
+
+void MainEditor::init_icon_buttons() {
+    Node *container = get_node("BottomBar/IconButtons");
+    Array children = container->get_children();
+
+    for (int i = 0; i < children.size(); i++) {
+        auto *button = Object::cast_to<BaseButton>(children[i]);
+        button->connect("pressed", this, "on_icon_button_pressed",
+                        Array::make(i));
+    }
+}
+
+void MainEditor::on_icon_button_pressed(int index) {
+    switch (index) {
+        case +IconType::SeekStartPlay: {
+            conductor->go_to(0, ConductorGoType::Play);
+            break;
+        }
+        case +IconType::TogglePause: {
+            conductor->toggle_pause();
+            break;
+        }
+        case +IconType::SeekStartPause: {
+            conductor->go_to(0, ConductorGoType::Pause);
+            break;
+        }
+        default: {
+            dev_assert(false);
+            break;
+        }
+    }
+}
+
+void MainEditor::init_conductor() {
+    auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
+
+    // get audio stream for conductor
+    String path = Game::get_singleton(this)->get_songs_dir_path() + "/" +
+                  beatmap.get_beatmap_set_id() + "/" +
+                  beatmap.get_audio_filename();
+
+    auto file = File::_new();
+    dev_assert(file->open(path, File::READ) == Error::OK);
+
+    auto bytes = file->get_buffer(file->get_len());
+
+    auto audio_stream = AudioStreamMP3::_new();
+    audio_stream->set_data(bytes);
+    Ref<AudioStream> ref_audio_stream(audio_stream);
+
+    conductor->set_stream(ref_audio_stream);
+}
+
+void MainEditor::on_song_position_update(int64_t song_position) {
+    time_label->set_text(Util::to_timestamp(song_position));
+
+    float percent = 100.f * song_position / conductor->get_total_duration();
+    String progress = String::num_real(percent).pad_decimals(1) + "%";
+
+    progress_label->set_text(progress);
 }

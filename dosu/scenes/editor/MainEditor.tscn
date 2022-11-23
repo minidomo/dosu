@@ -260,7 +260,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="WhiteLine" type="ColorRect" parent="BottomBar/Timeline"]
+[node name="MidLine" type="ColorRect" parent="BottomBar/Timeline"]
 anchor_top = 0.523
 anchor_right = 1.0
 anchor_bottom = 0.523
@@ -279,54 +279,36 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="SeekStartPlayButton" type="Control" parent="BottomBar/IconButtons"]
-anchor_right = 0.333333
-anchor_bottom = 1.0
+[node name="SeekStartPlayButton" type="TextureButton" parent="BottomBar/IconButtons"]
+anchor_right = 0.333334
+anchor_bottom = 0.999997
+texture_normal = ExtResource( 5 )
+expand = true
+stretch_mode = 3
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="TextureRect" type="TextureRect" parent="BottomBar/IconButtons/SeekStartPlayButton"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 5 )
-stretch_mode = 4
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TogglePauseButton" type="Control" parent="BottomBar/IconButtons"]
-anchor_left = 0.333333
+[node name="TogglePauseButton" type="TextureButton" parent="BottomBar/IconButtons"]
+anchor_left = 0.333334
 anchor_right = 0.666667
-anchor_bottom = 1.0
+anchor_bottom = 0.999997
+texture_normal = ExtResource( 6 )
+expand = true
+stretch_mode = 3
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="TextureRect" type="TextureRect" parent="BottomBar/IconButtons/TogglePauseButton"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 6 )
-stretch_mode = 4
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="SeekStartPauseButton" type="Control" parent="BottomBar/IconButtons"]
+[node name="SeekStartPauseButton" type="TextureButton" parent="BottomBar/IconButtons"]
 anchor_left = 0.666667
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.999997
+texture_normal = ExtResource( 7 )
+expand = true
+stretch_mode = 3
 __meta__ = {
 "_edit_use_anchors_": true
-}
-
-[node name="TextureRect" type="TextureRect" parent="BottomBar/IconButtons/SeekStartPauseButton"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 7 )
-stretch_mode = 4
-__meta__ = {
-"_edit_use_anchors_": false
 }
 
 [node name="PlaybackRate" type="Control" parent="BottomBar"]
