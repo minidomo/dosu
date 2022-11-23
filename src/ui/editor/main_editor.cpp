@@ -5,6 +5,7 @@
 #include <BaseButton.hpp>
 #include <File.hpp>
 #include <Ref.hpp>
+#include <SceneTree.hpp>
 
 #include "common/util.h"
 #include "object/enum/conductor_go_type.h"
@@ -20,6 +21,7 @@ void MainEditor::_register_methods() {
     register_method("on_song_position_update",
                     &MainEditor::on_song_position_update);
     register_method("on_timeline_click", &MainEditor::on_timeline_click);
+    register_method("on_files_dropped", &MainEditor::on_files_dropped);
 }
 
 void MainEditor::_init() { tab_index = -1; }
@@ -35,6 +37,7 @@ void MainEditor::_ready() {
 
     timeline->connect("timeline_click", this, "on_timeline_click");
     conductor->connect("song_position_update", this, "on_song_position_update");
+    get_tree()->connect("files_dropped", this, "on_files_dropped");
 
     init_conductor();
     init_bodies();
@@ -148,4 +151,18 @@ void MainEditor::on_song_position_update(int64_t song_position) {
 
 void MainEditor::on_timeline_click(float percent) {
     conductor->go_to_percent(percent, ConductorGoType::Maintain);
+}
+
+void MainEditor::on_files_dropped(PoolStringArray files, int screen) {
+    String path = files[0];
+
+    auto map_manager = MapManager::get_singleton(this);
+
+    if (map_manager->is_valid_image_extension(path)) {
+        map_manager->update_background_editor_beatmap(path);
+        Background::update_background(background,
+                                      map_manager->get_editor_beatmap());
+    } else {
+        // TODO display error?
+    }
 }

@@ -98,10 +98,37 @@ class Beatmap {
 
     String get_background_filename();
     vector<BreakPeriod> get_break_periods();
-
     vector<TimingPoint> get_timing_points();
-
     vector<HitObject> get_hit_objects();
+
+    void set_audio_filename(String audio_filename);
+    void set_preview_time(int64_t preview_time);
+
+    void set_beat_divisor(int64_t beat_divisor);
+    void set_timeline_zoom(float timeline_zoom);
+
+    void set_title(String title);
+    void set_title_unicode(String title_unicode);
+    void set_artist(String artist);
+    void set_artist_unicode(String artist_unicode);
+    void set_creator(String creator);
+    void set_version(String version);
+    void set_source(String source);
+    void set_tags(PoolStringArray tags);
+    void set_beatmap_id(String beatmap_id);
+    void set_beatmap_set_id(String beatmap_set_id);
+
+    void set_hp_drain_rate(float hp_drain_rate);
+    void set_circle_size(float circle_size);
+    void set_overall_difficulty(float overall_difficulty);
+    void set_approach_rate(float approach_rate);
+    void set_slider_multiplier(float slider_multiplier);
+    void set_slider_tick_rate(float slider_tick_rate);
+
+    void set_background_filename(String background_filename);
+    void set_break_periods(vector<BreakPeriod> break_periods);
+    void set_timing_points(vector<TimingPoint> timing_points);
+    void set_hit_objects(vector<HitObject> hit_objects);
 
     bool has_query(String query);
     void copy(Beatmap beatmap);

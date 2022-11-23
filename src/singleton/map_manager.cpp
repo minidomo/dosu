@@ -20,6 +20,7 @@ void MapManager::_register_methods() {
 
 void MapManager::_init() {
     audio_extensions.append(".mp3");
+    image_extensions.append(".jpg");
     map_extension = ".osu";
 }
 
@@ -127,6 +128,17 @@ bool MapManager::is_valid_audio_extension(String file_path) {
     return false;
 }
 
+bool MapManager::is_valid_image_extension(String file_path) {
+    for (int i = 0; i < image_extensions.size(); i++) {
+        String image_ext = image_extensions[i];
+        if (file_path.ends_with(image_ext)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 String MapManager::extract_audio_extension(String file_path) {
     for (int i = 0; i < audio_extensions.size(); i++) {
         String audio_ext = audio_extensions[i];
@@ -221,4 +233,17 @@ void MapManager::save_editor_beatmap() {
     file->close();
 
     Godot::print("saved editor beatmap");
+}
+
+void MapManager::update_background_editor_beatmap(String image_path) {
+    auto dir = Directory::_new();
+
+    String set_path = Game::get_singleton(this)->get_songs_dir_path() + "/" +
+                      editor_beatmap.get_beatmap_set_id();
+
+    String image_filename = image_path.get_file();
+    String new_image_path = set_path + "/" + image_filename;
+    dev_assert(dir->copy(image_path, new_image_path) == Error::OK);
+
+    editor_beatmap.set_background_filename(image_filename);
 }

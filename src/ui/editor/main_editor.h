@@ -44,6 +44,7 @@ class MainEditor : public Control {
     void on_icon_button_pressed(int index);
     void on_song_position_update(int64_t song_position);
     void on_timeline_click(float percent);
+    void on_files_dropped(PoolStringArray files, int screen);
 };
 
 #endif

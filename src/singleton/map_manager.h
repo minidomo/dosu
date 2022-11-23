@@ -19,6 +19,7 @@ class MapManager : public Node {
     int64_t selected_beatmap_index;
 
     Array audio_extensions;
+    Array image_extensions;
     String map_extension;
 
     String create_unique_set_id();
@@ -37,6 +38,7 @@ class MapManager : public Node {
     void create_set(String audio_path);
 
     bool is_valid_audio_extension(String file_path);
+    bool is_valid_image_extension(String file_path);
 
     void load_beatmaps();
     vector<Beatmap> get_all_beatmaps();
@@ -48,6 +50,7 @@ class MapManager : public Node {
     Beatmap get_editor_beatmap();
     void refresh_editor_beatmap();
     void save_editor_beatmap();
+    void update_background_editor_beatmap(String image_path);
 };
 
 #endif

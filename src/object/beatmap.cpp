@@ -336,6 +336,90 @@ vector<TimingPoint> Beatmap::get_timing_points() { return timing_points; }
 
 vector<HitObject> Beatmap::get_hit_objects() { return hit_objects; }
 
+void Beatmap::set_audio_filename(String audio_filename) {
+    this->audio_filename = audio_filename;
+}
+
+void Beatmap::set_preview_time(int64_t preview_time) {
+    this->preview_time = preview_time;
+}
+
+void Beatmap::set_beat_divisor(int64_t beat_divisor) {
+    this->beat_divisor = beat_divisor;
+}
+
+void Beatmap::set_timeline_zoom(float timeline_zoom) {
+    this->timeline_zoom = timeline_zoom;
+}
+
+void Beatmap::set_title(String title) { this->title = title; }
+
+void Beatmap::set_title_unicode(String title_unicode) {
+    this->title_unicode = title_unicode;
+}
+
+void Beatmap::set_artist(String artist) { this->artist = artist; }
+
+void Beatmap::set_artist_unicode(String artist_unicode) {
+    this->artist_unicode = artist_unicode;
+}
+
+void Beatmap::set_creator(String creator) { this->creator = creator; }
+
+void Beatmap::set_version(String version) { this->version = version; }
+
+void Beatmap::set_source(String source) { this->source = source; }
+
+void Beatmap::set_tags(PoolStringArray tags) { this->tags = tags; }
+
+void Beatmap::set_beatmap_id(String beatmap_id) {
+    this->beatmap_id = beatmap_id;
+}
+
+void Beatmap::set_beatmap_set_id(String beatmap_set_id) {
+    this->beatmap_set_id = beatmap_set_id;
+}
+
+void Beatmap::set_hp_drain_rate(float hp_drain_rate) {
+    this->hp_drain_rate = hp_drain_rate;
+}
+
+void Beatmap::set_circle_size(float circle_size) {
+    this->circle_size = circle_size;
+}
+
+void Beatmap::set_overall_difficulty(float overall_difficulty) {
+    this->overall_difficulty = overall_difficulty;
+}
+
+void Beatmap::set_approach_rate(float approach_rate) {
+    this->approach_rate = approach_rate;
+}
+
+void Beatmap::set_slider_multiplier(float slider_multiplier) {
+    this->slider_multiplier = slider_multiplier;
+}
+
+void Beatmap::set_slider_tick_rate(float slider_tick_rate) {
+    this->slider_tick_rate = slider_tick_rate;
+}
+
+void Beatmap::set_background_filename(String background_filename) {
+    this->background_filename = background_filename;
+}
+
+void Beatmap::set_break_periods(vector<BreakPeriod> break_periods) {
+    this->break_periods = break_periods;
+}
+
+void Beatmap::set_timing_points(vector<TimingPoint> timing_points) {
+    this->timing_points = timing_points;
+}
+
+void Beatmap::set_hit_objects(vector<HitObject> hit_objects) {
+    this->hit_objects = hit_objects;
+}
+
 bool Beatmap::has_query(String query) {
     if (query.empty()) return true;
 
