@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://assets/font/Torus Regular.otf" type="DynamicFontData" id=1]
-[ext_resource path="res://assets/font/Torus SemiBold.otf" type="DynamicFontData" id=2]
+[ext_resource path="res://assets/font/torus/Torus Regular.otf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/font/torus/Torus SemiBold.otf" type="DynamicFontData" id=2]
 [ext_resource path="res://bin/scripts/ui/beatmap_listing.gdns" type="Script" id=3]
 
 [sub_resource type="DynamicFont" id=1]

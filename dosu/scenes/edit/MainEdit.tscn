@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/Background.tscn" type="PackedScene" id=2]
-[ext_resource path="res://assets/font/Torus SemiBold.otf" type="DynamicFontData" id=3]
+[ext_resource path="res://assets/font/torus/Torus SemiBold.otf" type="DynamicFontData" id=3]
 [ext_resource path="res://bin/scripts/ui/edit/main_edit.gdns" type="Script" id=4]
 
 [sub_resource type="DynamicFont" id=1]
