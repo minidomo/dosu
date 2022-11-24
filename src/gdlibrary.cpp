@@ -25,6 +25,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 
     // ui
     register_class<SongSetupBody>();
+    register_class<SlidableRow>();
     register_class<EditableRow>();
     register_class<Timeline>();
     register_class<Tab>();

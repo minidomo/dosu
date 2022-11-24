@@ -45,3 +45,11 @@ String Util::pad_start(int64_t num, String value, int64_t len) {
 }
 
 float Util::to_seconds(int64_t milliseconds) { return milliseconds / 1000.f; }
+
+String Util::limit_decimal(float value, int max_digits) {
+    if (value == (int)value) {
+        return String::num_int64((int)value);
+    }
+
+    return String::num_real(value).pad_decimals(max_digits);
+}

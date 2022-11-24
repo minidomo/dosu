@@ -1,5 +1,7 @@
 #include "./beatmap.h"
 
+#include "common/util.h"
+
 Beatmap::Beatmap() {}
 
 Beatmap::~Beatmap() {}
@@ -202,7 +204,7 @@ void Beatmap::write_contents(File *file) {
     file->store_line("DistanceSpacing: 1");
     file->store_line("BeatDivisor: " + String::num_int64(beat_divisor));
     file->store_line("GridSize: 32");
-    file->store_line("TimelineZoom: " + String::num_real(timeline_zoom));
+    file->store_line("TimelineZoom: " + Util::limit_decimal(timeline_zoom, 1));
     file->store_line("");
 
     /* metadata */
@@ -221,13 +223,15 @@ void Beatmap::write_contents(File *file) {
 
     /* difficulty */
     file->store_line("[Difficulty]");
-    file->store_line("HPDrainRate:" + String::num_real(hp_drain_rate));
-    file->store_line("CircleSize:" + String::num_real(circle_size));
+    file->store_line("HPDrainRate:" + Util::limit_decimal(hp_drain_rate, 1));
+    file->store_line("CircleSize:" + Util::limit_decimal(circle_size, 1));
     file->store_line("OverallDifficulty:" +
-                     String::num_real(overall_difficulty));
-    file->store_line("ApproachRate:" + String::num_real(approach_rate));
-    file->store_line("SliderMultiplier:" + String::num_real(slider_multiplier));
-    file->store_line("SliderTickRate:" + String::num_real(slider_tick_rate));
+                     Util::limit_decimal(overall_difficulty, 1));
+    file->store_line("ApproachRate:" + Util::limit_decimal(approach_rate, 1));
+    file->store_line("SliderMultiplier:" +
+                     Util::limit_decimal(slider_multiplier, 1));
+    file->store_line("SliderTickRate:" +
+                     Util::limit_decimal(slider_tick_rate, 1));
     file->store_line("");
 
     /* events */

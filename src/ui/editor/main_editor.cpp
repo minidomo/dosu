@@ -10,6 +10,7 @@
 #include "common/util.h"
 #include "object/enum/conductor_go_type.h"
 #include "object/enum/icon_type.h"
+#include "object/enum/song_difficulty_type.h"
 #include "object/enum/song_metadata_type.h"
 #include "singleton/game.h"
 #include "singleton/map_manager.h"
@@ -25,6 +26,8 @@ void MainEditor::_register_methods() {
     register_method("on_files_dropped", &MainEditor::on_files_dropped);
     register_method("on_song_metadata_update",
                     &MainEditor::on_song_metadata_update);
+    register_method("on_song_difficulty_update",
+                    &MainEditor::on_song_difficulty_update);
 }
 
 void MainEditor::_init() { tab_index = -1; }
@@ -39,6 +42,8 @@ void MainEditor::_ready() {
 
     song_setup_body->connect("song_metadata_update", this,
                              "on_song_metadata_update");
+    song_setup_body->connect("song_difficulty_update", this,
+                             "on_song_difficulty_update");
     timeline->connect("timeline_click", this, "on_timeline_click");
     conductor->connect("song_position_update", this, "on_song_position_update");
     get_tree()->connect("files_dropped", this, "on_files_dropped");
@@ -205,6 +210,33 @@ void MainEditor::on_song_metadata_update(int index, String value) {
         }
         case +SongMetadataType::Tags: {
             beatmap->set_tags(value.split(" "));
+            break;
+        }
+        default: {
+            dev_assert(false);
+            break;
+        }
+    }
+}
+
+void MainEditor::on_song_difficulty_update(int index, float value) {
+    auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
+
+    switch (index) {
+        case +SongDifficultyType::HpDrainRate: {
+            beatmap->set_hp_drain_rate(value);
+            break;
+        }
+        case +SongDifficultyType::CircleSize: {
+            beatmap->set_circle_size(value);
+            break;
+        }
+        case +SongDifficultyType::ApproachRate: {
+            beatmap->set_approach_rate(value);
+            break;
+        }
+        case +SongDifficultyType::OverallDifficulty: {
+            beatmap->set_overall_difficulty(value);
             break;
         }
         default: {

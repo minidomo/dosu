@@ -13,6 +13,7 @@ class Util {
     static int64_t to_milliseconds(float seconds);
     static String to_timestamp(int64_t milliseconds);
     static String pad_start(int64_t num, String value, int64_t len);
+    static String limit_decimal(float value, int max_digits);
 };
 
 #endif

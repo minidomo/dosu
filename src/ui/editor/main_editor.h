@@ -49,6 +49,7 @@ class MainEditor : public Control {
     void on_timeline_click(float percent);
     void on_files_dropped(PoolStringArray files, int screen);
     void on_song_metadata_update(int index, String value);
+    void on_song_difficulty_update(int index, float value);
 };
 
 #endif

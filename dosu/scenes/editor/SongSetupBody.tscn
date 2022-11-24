@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/editor/EditableRow.tscn" type="PackedScene" id=1]
 [ext_resource path="res://bin/scripts/ui/editor/body/song_setup_body.gdns" type="Script" id=2]
+[ext_resource path="res://scenes/editor/SlidableRow.tscn" type="PackedScene" id=3]
 
 [node name="SongSetupBody" type="Control"]
 anchor_top = -0.000519647
@@ -15,12 +16,21 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="ColorRect2" type="ColorRect" parent="."]
+anchor_left = 0.265625
+anchor_top = 0.258621
+anchor_right = 0.734375
+anchor_bottom = 0.293103
+color = Color( 0.137255, 0.129412, 0.129412, 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_left = 0.265625
 anchor_top = 0.293104
 anchor_right = 0.734375
-anchor_bottom = 0.706896
-margin_top = -1.52588e-05
+anchor_bottom = 0.706897
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": true
@@ -48,7 +58,7 @@ __meta__ = {
 margin_left = 16.0
 margin_top = 16.0
 margin_right = 434.0
-margin_bottom = 343.0
+margin_bottom = 344.0
 custom_constants/separation = 8
 
 [node name="Artist" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
@@ -121,3 +131,56 @@ anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": true
 }
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect/DifficultyMetadata"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 16
+custom_constants/margin_top = 16
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 16
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/DifficultyMetadata/MarginContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 434.0
+margin_bottom = 344.0
+custom_constants/separation = 0
+
+[node name="HpDrainRate" parent="ColorRect/DifficultyMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 418.0
+margin_bottom = 80.0
+title = "HP Drain Rate"
+description = "The constant rate of health-bar drain throughout the song"
+
+[node name="CircleSize" parent="ColorRect/DifficultyMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 80.0
+margin_right = 418.0
+margin_bottom = 160.0
+title = "Circle Size"
+description = "The radial size of hit circles and sliders"
+
+[node name="ApproachRate" parent="ColorRect/DifficultyMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 160.0
+margin_right = 418.0
+margin_bottom = 240.0
+title = "Approach Rate"
+description = "The speed at which objects appear"
+
+[node name="OverallDifficulty" parent="ColorRect/DifficultyMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 240.0
+margin_right = 418.0
+margin_bottom = 320.0
+title = "Overall Difficulty"
+description = "The harshness of the hit window and the difficulty of spinners"
