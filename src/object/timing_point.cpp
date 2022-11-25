@@ -1,8 +1,8 @@
 #include "./timing_point.h"
 
-TimingPoint::TimingPoint() {}
+void TimingPoint::_register_methods() {}
 
-TimingPoint::~TimingPoint() {}
+void TimingPoint::_init() {}
 
 void TimingPoint::parse_line(String line) {
     // https://github.com/kionell/osu-parsers/blob/32fc96237dec238d278aa22c15a31a3bf5b7c8d2/src/core/Decoders/Handlers/Beatmaps/BeatmapTimingPointDecoder.ts
@@ -68,12 +68,12 @@ float TimingPoint::calculate_bpm(float beat_length) {
 
 float TimingPoint::calculate_beat_length(float bpm) { return 60000 / bpm; }
 
-void TimingPoint::copy(TimingPoint timing_point) {
-    time = timing_point.time;
-    beat_length = timing_point.beat_length;
-    meter = timing_point.meter;
-    uninherited = timing_point.uninherited;
-    bpm_multiplier = timing_point.bpm_multiplier;
-    slider_velocity = timing_point.slider_velocity;
-    bpm = timing_point.bpm;
+void TimingPoint::copy(TimingPoint *timing_point) {
+    time = timing_point->time;
+    beat_length = timing_point->beat_length;
+    meter = timing_point->meter;
+    uninherited = timing_point->uninherited;
+    bpm_multiplier = timing_point->bpm_multiplier;
+    slider_velocity = timing_point->slider_velocity;
+    bpm = timing_point->bpm;
 }

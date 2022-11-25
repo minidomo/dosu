@@ -2,9 +2,9 @@
 
 #include "enum/hit_type.h"
 
-HitObject::HitObject() {}
+void HitObject::_register_methods() {}
 
-HitObject::~HitObject() {}
+void HitObject::_init() {}
 
 void HitObject::parse_line(String line) {
     // https://github.com/kionell/osu-parsers/blob/32fc96237dec238d278aa22c15a31a3bf5b7c8d2/src/core/Decoders/Handlers/Beatmaps/BeatmapHitObjectDecoder.ts
@@ -51,11 +51,11 @@ String HitObject::to_file_string() {
     return ret;
 }
 
-void HitObject::copy(HitObject hit_object) {
-    hit_type = hit_object.hit_type;
-    start_x = hit_object.start_x;
-    start_y = hit_object.start_y;
-    start_time = hit_object.start_time;
-    new_combo = hit_object.new_combo;
-    end_time = hit_object.end_time;
+void HitObject::copy(HitObject *hit_object) {
+    hit_type = hit_object->hit_type;
+    start_x = hit_object->start_x;
+    start_y = hit_object->start_y;
+    start_time = hit_object->start_time;
+    new_combo = hit_object->new_combo;
+    end_time = hit_object->end_time;
 }

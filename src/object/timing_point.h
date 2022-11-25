@@ -1,9 +1,13 @@
 #ifndef dosu_file_timing_point
 #define dosu_file_timing_point
 
+#include <Node.hpp>
+
 #include "common/common.h"
 
-class TimingPoint {
+class TimingPoint : public Node {
+    GODOT_CLASS(TimingPoint, Node);
+
    private:
     int64_t time;
     float beat_length;
@@ -21,8 +25,8 @@ class TimingPoint {
     static float calculate_beat_length(float bpm);
 
    public:
-    TimingPoint();
-    ~TimingPoint();
+    static void _register_methods();
+    void _init();
 
     void parse_line(String line);
     String to_file_string();
@@ -35,7 +39,7 @@ class TimingPoint {
     void set_uninherited(bool uninherited);
     void set_bpm(float bpm);
 
-    void copy(TimingPoint timing_point);
+    void copy(TimingPoint *timing_point);
 };
 
 #endif

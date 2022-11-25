@@ -1,10 +1,13 @@
 #ifndef dosu_file_hit_object
 #define dosu_file_hit_object
 
-#include "./slider_data.h"
+#include <Node.hpp>
+
 #include "common/common.h"
 
-class HitObject {
+class HitObject : public Node {
+    GODOT_CLASS(HitObject, Node);
+
    private:
     int64_t hit_type;
     int64_t start_x;
@@ -17,17 +20,14 @@ class HitObject {
     /* spinner */
     int64_t end_time;
 
-    /* slider */
-    SliderData slider_data;
-
    public:
-    HitObject();
-    ~HitObject();
+    static void _register_methods();
+    void _init();
 
     void parse_line(String line);
     String to_file_string();
 
-    void copy(HitObject hit_object);
+    void copy(HitObject *hit_object);
 };
 
 #endif

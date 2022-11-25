@@ -4,7 +4,6 @@
 #include <File.hpp>
 
 #include "./game.h"
-#include "object/beatmap.h"
 
 MapManager* MapManager::get_singleton(Node* node) {
     return node->get_node<MapManager>("/root/MapManager");
@@ -25,6 +24,7 @@ void MapManager::_init() {
 }
 
 void MapManager::_ready() {
+    editor_beatmap = Beatmap::_new();
     random = RandomNumberGenerator::_new();
     random->randomize();
 
@@ -43,9 +43,9 @@ void MapManager::create_map(String set_id, String audio_filename) {
     File* file = File::_new();
     dev_assert(file->open(map_path, File::WRITE) == Error::OK);
 
-    Beatmap beatmap;
-    beatmap.init(set_id, map_id);
-    beatmap.write_contents(file);
+    Beatmap* beatmap = Beatmap::_new();
+    beatmap->initialize(set_id, map_id);
+    beatmap->write_contents(file);
 
     all_beatmaps.push_back(beatmap);
 
@@ -179,8 +179,8 @@ void MapManager::load_beatmaps() {
                     File* file = File::_new();
                     dev_assert(file->open(map_path, File::READ) == Error::OK);
 
-                    Beatmap beatmap;
-                    beatmap.parse_contents(file);
+                    Beatmap* beatmap = Beatmap::_new();
+                    beatmap->parse_contents(file);
                     all_beatmaps.push_back(beatmap);
 
                     file->close();
@@ -193,7 +193,7 @@ void MapManager::load_beatmaps() {
     Godot::print("loaded " + String::num_int64(beatmap_count) + " beatmaps");
 }
 
-vector<Beatmap> MapManager::get_all_beatmaps() { return all_beatmaps; }
+vector<Beatmap*> MapManager::get_all_beatmaps() { return all_beatmaps; }
 
 void MapManager::randomize_selected_beatmap_index() {
     set_selected_beatmap_index(random->randi_range(0, all_beatmaps.size() - 1));
@@ -212,23 +212,23 @@ int64_t MapManager::get_selected_beatmap_index() {
     return selected_beatmap_index;
 }
 
-Beatmap* MapManager::get_editor_beatmap() { return &editor_beatmap; }
+Beatmap* MapManager::get_editor_beatmap() { return editor_beatmap; }
 
 void MapManager::refresh_editor_beatmap() {
-    editor_beatmap.copy(all_beatmaps[selected_beatmap_index]);
+    editor_beatmap->copy(all_beatmaps[selected_beatmap_index]);
 }
 
 void MapManager::save_editor_beatmap() {
     String set_path = Game::get_singleton(this)->get_songs_dir_path() + "/" +
-                      editor_beatmap.get_beatmap_set_id();
-    String map_id = editor_beatmap.get_beatmap_id();
+                      editor_beatmap->get_beatmap_set_id();
+    String map_id = editor_beatmap->get_beatmap_id();
     String map_path = set_path + "/" + map_id + map_extension;
 
     File* file = File::_new();
     dev_assert(file->open(map_path, File::WRITE) == Error::OK);
 
-    editor_beatmap.write_contents(file);
-    all_beatmaps[selected_beatmap_index].copy(editor_beatmap);
+    editor_beatmap->write_contents(file);
+    all_beatmaps[selected_beatmap_index]->copy(editor_beatmap);
 
     file->close();
 
@@ -239,11 +239,11 @@ void MapManager::update_background_editor_beatmap(String image_path) {
     auto dir = Directory::_new();
 
     String set_path = Game::get_singleton(this)->get_songs_dir_path() + "/" +
-                      editor_beatmap.get_beatmap_set_id();
+                      editor_beatmap->get_beatmap_set_id();
 
     String image_filename = image_path.get_file();
     String new_image_path = set_path + "/" + image_filename;
     dev_assert(dir->copy(image_path, new_image_path) == Error::OK);
 
-    editor_beatmap.set_background_filename(image_filename);
+    editor_beatmap->set_background_filename(image_filename);
 }

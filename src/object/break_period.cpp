@@ -1,13 +1,8 @@
 #include "./break_period.h"
 
-BreakPeriod::BreakPeriod(int64_t start_time, int64_t end_time) {
-    this->start_time = start_time;
-    this->end_time = end_time;
-}
+void BreakPeriod::_register_methods() {}
 
-BreakPeriod::BreakPeriod() {}
-
-BreakPeriod::~BreakPeriod() {}
+void BreakPeriod::_init() {}
 
 int64_t BreakPeriod::get_start_time() { return start_time; }
 
@@ -30,7 +25,7 @@ String BreakPeriod::to_file_string() {
            String::num_int64(end_time);
 }
 
-void BreakPeriod::copy(BreakPeriod break_period) {
-    start_time = break_period.start_time;
-    end_time = break_period.end_time;
+void BreakPeriod::copy(BreakPeriod *break_period) {
+    start_time = break_period->start_time;
+    end_time = break_period->end_time;
 }

@@ -2,11 +2,11 @@
 
 #include "common/util.h"
 
-Beatmap::Beatmap() {}
+void Beatmap::_register_methods() {}
 
-Beatmap::~Beatmap() {}
+void Beatmap::_init() {}
 
-void Beatmap::init(String beatmap_set_id, String beatmap_id) {
+void Beatmap::initialize(String beatmap_set_id, String beatmap_id) {
     /* general */
     audio_filename = "audio.mp3";
     preview_time = 0;
@@ -40,8 +40,8 @@ void Beatmap::init(String beatmap_set_id, String beatmap_id) {
     break_periods;
 
     /* timing points */
-    TimingPoint first_tp;
-    first_tp.init_red_line();
+    auto first_tp = TimingPoint::_new();
+    first_tp->init_red_line();
     timing_points.push_back(first_tp);
 
     /* hit objects */
@@ -129,8 +129,8 @@ void Beatmap::parse_events_section(PoolStringArray lines) {
     }
 
     for (int i = bp_index + 1; i < sbbg_index; i++) {
-        BreakPeriod bp;
-        bp.parse_line(lines[i]);
+        auto bp = BreakPeriod::_new();
+        bp->parse_line(lines[i]);
         break_periods.push_back(bp);
     }
 }
@@ -140,8 +140,8 @@ void Beatmap::parse_timing_points(PoolStringArray lines) {
     dev_assert(origin >= 0);
 
     for (int i = origin + 1; lines[i] != "[HitObjects]"; i++) {
-        TimingPoint tp;
-        tp.parse_line(lines[i]);
+        auto tp = TimingPoint::_new();
+        tp->parse_line(lines[i]);
         timing_points.push_back(tp);
     }
 }
@@ -151,8 +151,8 @@ void Beatmap::parse_hit_objects_section(PoolStringArray lines) {
     dev_assert(origin >= 0);
 
     for (int i = origin + 1; i < lines.size(); i++) {
-        HitObject ho;
-        ho.parse_line(lines[i]);
+        auto ho = HitObject::_new();
+        ho->parse_line(lines[i]);
         hit_objects.push_back(ho);
     }
 }
@@ -244,7 +244,7 @@ void Beatmap::write_contents(File *file) {
 
     file->store_line("//Break Periods");
     for (auto bp : break_periods) {
-        file->store_line(bp.to_file_string());
+        file->store_line(bp->to_file_string());
     }
 
     file->store_line("//Storyboard Layer 0 (Background)");
@@ -258,7 +258,7 @@ void Beatmap::write_contents(File *file) {
     /* timing points */
     file->store_line("[TimingPoints]");
     for (auto tp : timing_points) {
-        file->store_line(tp.to_file_string());
+        file->store_line(tp->to_file_string());
     }
     file->store_line("");
 
@@ -269,7 +269,7 @@ void Beatmap::write_contents(File *file) {
     /* hit objects */
     file->store_line("[HitObjects]");
     for (auto ho : hit_objects) {
-        file->store_line(ho.to_file_string());
+        file->store_line(ho->to_file_string());
     }
     file->store_line("");
 }
@@ -334,11 +334,11 @@ float Beatmap::get_slider_tick_rate() { return slider_tick_rate; }
 
 String Beatmap::get_background_filename() { return background_filename; }
 
-vector<BreakPeriod> Beatmap::get_break_periods() { return break_periods; }
+vector<BreakPeriod *> Beatmap::get_break_periods() { return break_periods; }
 
-vector<TimingPoint> Beatmap::get_timing_points() { return timing_points; }
+vector<TimingPoint *> Beatmap::get_timing_points() { return timing_points; }
 
-vector<HitObject> Beatmap::get_hit_objects() { return hit_objects; }
+vector<HitObject *> Beatmap::get_hit_objects() { return hit_objects; }
 
 void Beatmap::set_audio_filename(String audio_filename) {
     this->audio_filename = audio_filename;
@@ -412,15 +412,15 @@ void Beatmap::set_background_filename(String background_filename) {
     this->background_filename = background_filename;
 }
 
-void Beatmap::set_break_periods(vector<BreakPeriod> break_periods) {
+void Beatmap::set_break_periods(vector<BreakPeriod *> break_periods) {
     this->break_periods = break_periods;
 }
 
-void Beatmap::set_timing_points(vector<TimingPoint> timing_points) {
+void Beatmap::set_timing_points(vector<TimingPoint *> timing_points) {
     this->timing_points = timing_points;
 }
 
-void Beatmap::set_hit_objects(vector<HitObject> hit_objects) {
+void Beatmap::set_hit_objects(vector<HitObject *> hit_objects) {
     this->hit_objects = hit_objects;
 }
 
@@ -444,52 +444,55 @@ bool Beatmap::has_query(String query) {
     return false;
 }
 
-void Beatmap::copy(Beatmap beatmap) {
-    audio_filename = beatmap.audio_filename;
-    preview_time = beatmap.preview_time;
-    beat_divisor = beatmap.beat_divisor;
-    timeline_zoom = beatmap.timeline_zoom;
-    title = beatmap.title;
-    title_unicode = beatmap.title_unicode;
-    artist = beatmap.artist;
-    artist_unicode = beatmap.artist_unicode;
-    creator = beatmap.creator;
-    version = beatmap.version;
-    source = beatmap.source;
+void Beatmap::copy(Beatmap *beatmap) {
+    audio_filename = beatmap->audio_filename;
+    preview_time = beatmap->preview_time;
+    beat_divisor = beatmap->beat_divisor;
+    timeline_zoom = beatmap->timeline_zoom;
+    title = beatmap->title;
+    title_unicode = beatmap->title_unicode;
+    artist = beatmap->artist;
+    artist_unicode = beatmap->artist_unicode;
+    creator = beatmap->creator;
+    version = beatmap->version;
+    source = beatmap->source;
 
     tags = PoolStringArray();
-    tags.append_array(beatmap.tags);
+    tags.append_array(beatmap->tags);
 
-    beatmap_id = beatmap.beatmap_id;
-    beatmap_set_id = beatmap.beatmap_set_id;
+    beatmap_id = beatmap->beatmap_id;
+    beatmap_set_id = beatmap->beatmap_set_id;
 
-    hp_drain_rate = beatmap.hp_drain_rate;
-    circle_size = beatmap.circle_size;
-    overall_difficulty = beatmap.overall_difficulty;
-    approach_rate = beatmap.approach_rate;
-    slider_multiplier = beatmap.slider_multiplier;
-    slider_tick_rate = beatmap.slider_tick_rate;
+    hp_drain_rate = beatmap->hp_drain_rate;
+    circle_size = beatmap->circle_size;
+    overall_difficulty = beatmap->overall_difficulty;
+    approach_rate = beatmap->approach_rate;
+    slider_multiplier = beatmap->slider_multiplier;
+    slider_tick_rate = beatmap->slider_tick_rate;
 
-    background_filename = beatmap.background_filename;
+    background_filename = beatmap->background_filename;
 
+    for (auto e : break_periods) e->queue_free();
     break_periods.clear();
-    for (auto e : beatmap.break_periods) {
-        BreakPeriod bp;
-        bp.copy(e);
+    for (auto e : beatmap->break_periods) {
+        auto bp = BreakPeriod::_new();
+        bp->copy(e);
         break_periods.push_back(bp);
     }
 
+    for (auto e : timing_points) e->queue_free();
     timing_points.clear();
-    for (auto e : beatmap.timing_points) {
-        TimingPoint tp;
-        tp.copy(e);
+    for (auto e : beatmap->timing_points) {
+        auto tp = TimingPoint::_new();
+        tp->copy(e);
         timing_points.push_back(tp);
     }
 
+    for (auto e : hit_objects) e->queue_free();
     hit_objects.clear();
-    for (auto e : beatmap.hit_objects) {
-        HitObject ho;
-        ho.copy(e);
+    for (auto e : beatmap->hit_objects) {
+        auto ho = HitObject::_new();
+        ho->copy(e);
         hit_objects.push_back(ho);
     }
 }

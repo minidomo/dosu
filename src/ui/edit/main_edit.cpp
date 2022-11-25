@@ -89,14 +89,14 @@ void MainEdit::update_beatmaps(String filter) {
     for (int i = 0; i < beatmaps.size(); i++) {
         auto bm = beatmaps[i];
 
-        if (bm.has_query(filter)) {
+        if (bm->has_query(filter)) {
             BeatmapListing *listing =
                 Object::cast_to<BeatmapListing>(scene->instance());
 
-            listing->set_title(bm.get_title());
-            listing->set_artist(bm.get_artist());
-            listing->set_mapper(bm.get_creator());
-            listing->set_difficulty_name(bm.get_version());
+            listing->set_title(bm->get_title());
+            listing->set_artist(bm->get_artist());
+            listing->set_mapper(bm->get_creator());
+            listing->set_difficulty_name(bm->get_version());
             listing->set_selected(
                 i ==
                 MapManager::get_singleton(this)->get_selected_beatmap_index());
@@ -107,7 +107,7 @@ void MainEdit::update_beatmaps(String filter) {
             local_index++;
 
             if (listing->is_selected()) {
-                Background::update_background(background, &bm);
+                Background::update_background(background, bm);
             }
         }
     }
@@ -136,7 +136,7 @@ void MainEdit::on_beatmap_index_changed(int64_t old_index, int64_t new_index) {
         new_listing->update_view();
 
         auto beatmaps = MapManager::get_singleton(this)->get_all_beatmaps();
-        Background::update_background(background, &beatmaps[new_index]);
+        Background::update_background(background, beatmaps[new_index]);
     }
 }
 

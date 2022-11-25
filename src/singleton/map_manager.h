@@ -14,8 +14,8 @@ class MapManager : public Node {
    private:
     RandomNumberGenerator* random;
 
-    Beatmap editor_beatmap;
-    vector<Beatmap> all_beatmaps;
+    Beatmap* editor_beatmap;
+    vector<Beatmap*> all_beatmaps;
     int64_t selected_beatmap_index;
 
     Array audio_extensions;
@@ -41,7 +41,7 @@ class MapManager : public Node {
     bool is_valid_image_extension(String file_path);
 
     void load_beatmaps();
-    vector<Beatmap> get_all_beatmaps();
+    vector<Beatmap*> get_all_beatmaps();
 
     void randomize_selected_beatmap_index();
     void set_selected_beatmap_index(int64_t selected_beatmap_index);

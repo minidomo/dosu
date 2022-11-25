@@ -16,6 +16,10 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
     Godot::nativescript_init(handle);
 
     // object
+    register_class<Beatmap>();
+    register_class<BreakPeriod>();
+    register_class<TimingPoint>();
+    register_class<HitObject>();
     register_class<Conductor>();
 
     // singleton

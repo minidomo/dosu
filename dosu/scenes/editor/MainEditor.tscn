@@ -189,6 +189,7 @@ margin_bottom = 372.712
 text = "timing"
 
 [node name="SongSetupBody" parent="Body" instance=ExtResource( 11 )]
+visible = false
 
 [node name="BottomBar" type="ColorRect" parent="."]
 anchor_top = 0.959

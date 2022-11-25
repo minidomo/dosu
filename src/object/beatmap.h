@@ -2,6 +2,7 @@
 #define dosu_file_beatmap
 
 #include <File.hpp>
+#include <Node.hpp>
 #include <vector>
 
 #include "./break_period.h"
@@ -9,7 +10,9 @@
 #include "./timing_point.h"
 #include "common/common.h"
 
-class Beatmap {
+class Beatmap : public Node {
+    GODOT_CLASS(Beatmap, Node);
+
    private:
     /* general */
     String audio_filename;
@@ -41,13 +44,13 @@ class Beatmap {
 
     /* events */
     String background_filename;
-    vector<BreakPeriod> break_periods;
+    vector<BreakPeriod *> break_periods;
 
     /* timing points */
-    vector<TimingPoint> timing_points;
+    vector<TimingPoint *> timing_points;
 
     /* hit objects */
-    vector<HitObject> hit_objects;
+    vector<HitObject *> hit_objects;
 
     void parse_general_section(PoolStringArray lines);
     void parse_editor_section(PoolStringArray lines);
@@ -62,10 +65,10 @@ class Beatmap {
     static int find_line_index(PoolStringArray lines, String section);
 
    public:
-    Beatmap();
-    ~Beatmap();
+    static void _register_methods();
+    void _init();
 
-    void init(String beatmap_set_id, String beatmap_id);
+    void initialize(String beatmap_set_id, String beatmap_id);
     void parse_contents(File *file);
     void write_contents(File *file);
 
@@ -97,9 +100,9 @@ class Beatmap {
     float get_slider_tick_rate();
 
     String get_background_filename();
-    vector<BreakPeriod> get_break_periods();
-    vector<TimingPoint> get_timing_points();
-    vector<HitObject> get_hit_objects();
+    vector<BreakPeriod *> get_break_periods();
+    vector<TimingPoint *> get_timing_points();
+    vector<HitObject *> get_hit_objects();
 
     void set_audio_filename(String audio_filename);
     void set_preview_time(int64_t preview_time);
@@ -126,12 +129,12 @@ class Beatmap {
     void set_slider_tick_rate(float slider_tick_rate);
 
     void set_background_filename(String background_filename);
-    void set_break_periods(vector<BreakPeriod> break_periods);
-    void set_timing_points(vector<TimingPoint> timing_points);
-    void set_hit_objects(vector<HitObject> hit_objects);
+    void set_break_periods(vector<BreakPeriod *> break_periods);
+    void set_timing_points(vector<TimingPoint *> timing_points);
+    void set_hit_objects(vector<HitObject *> hit_objects);
 
     bool has_query(String query);
-    void copy(Beatmap beatmap);
+    void copy(Beatmap *beatmap);
 };
 
 #endif
