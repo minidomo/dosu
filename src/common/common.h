@@ -12,6 +12,9 @@ using namespace godot;
                            __FILE__, __LINE__);                         \
     }
 
+#define dev_register_method(class_name, function_name) \
+    { register_method(#function_name, &class_name::function_name); }
+
 // https://www.learncpp.com/cpp-tutorial/scoped-enumerations-enum-classes/#operatorplus
 constexpr auto operator+(Error o) noexcept {
     return static_cast<std::underlying_type_t<Error>>(o);

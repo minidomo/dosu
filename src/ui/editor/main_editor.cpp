@@ -11,24 +11,16 @@
 #include "object/beatmap.h"
 #include "object/enum/conductor_go_type.h"
 #include "object/enum/icon_type.h"
-#include "object/enum/song_difficulty_type.h"
-#include "object/enum/song_metadata_type.h"
 #include "singleton/game.h"
 #include "singleton/map_manager.h"
 
 void MainEditor::_register_methods() {
-    register_method("_ready", &MainEditor::_ready);
-    register_method("on_tab_clicked", &MainEditor::on_tab_clicked);
-    register_method("on_icon_button_pressed",
-                    &MainEditor::on_icon_button_pressed);
-    register_method("on_song_position_update",
-                    &MainEditor::on_song_position_update);
-    register_method("on_timeline_click", &MainEditor::on_timeline_click);
-    register_method("on_files_dropped", &MainEditor::on_files_dropped);
-    register_method("on_song_metadata_update",
-                    &MainEditor::on_song_metadata_update);
-    register_method("on_song_difficulty_update",
-                    &MainEditor::on_song_difficulty_update);
+    dev_register_method(MainEditor, _ready);
+    dev_register_method(MainEditor, on_tab_clicked);
+    dev_register_method(MainEditor, on_icon_button_pressed);
+    dev_register_method(MainEditor, on_song_position_update);
+    dev_register_method(MainEditor, on_timeline_click);
+    dev_register_method(MainEditor, on_files_dropped);
 }
 
 void MainEditor::_init() { tab_index = -1; }
@@ -41,10 +33,6 @@ void MainEditor::_ready() {
     timeline = get_node<Timeline>("BottomBar/Timeline");
     song_setup_body = get_node<SongSetupBody>("Body/SongSetupBody");
 
-    song_setup_body->connect("song_metadata_update", this,
-                             "on_song_metadata_update");
-    song_setup_body->connect("song_difficulty_update", this,
-                             "on_song_difficulty_update");
     timeline->connect("timeline_click", this, "on_timeline_click");
     conductor->connect("song_position_update", this, "on_song_position_update");
     get_tree()->connect("files_dropped", this, "on_files_dropped");
@@ -174,75 +162,5 @@ void MainEditor::on_files_dropped(PoolStringArray files, int screen) {
             this, map_manager->get_editor_beatmap()));
     } else {
         // TODO display error?
-    }
-}
-
-void MainEditor::on_song_metadata_update(int index, String value) {
-    auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
-
-    switch (index) {
-        case +SongMetadataType::Artist: {
-            beatmap->set_artist(value);
-            break;
-        }
-        case +SongMetadataType::ArtistUnicode: {
-            beatmap->set_artist_unicode(value);
-            break;
-        }
-        case +SongMetadataType::Title: {
-            beatmap->set_title(value);
-            break;
-        }
-        case +SongMetadataType::TitleUnicode: {
-            beatmap->set_title_unicode(value);
-            break;
-        }
-        case +SongMetadataType::Creator: {
-            beatmap->set_creator(value);
-            break;
-        }
-        case +SongMetadataType::Difficulty: {
-            beatmap->set_version(value);
-            break;
-        }
-        case +SongMetadataType::Source: {
-            beatmap->set_source(value);
-            break;
-        }
-        case +SongMetadataType::Tags: {
-            beatmap->set_tags(value.split(" "));
-            break;
-        }
-        default: {
-            dev_assert(false);
-            break;
-        }
-    }
-}
-
-void MainEditor::on_song_difficulty_update(int index, float value) {
-    auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
-
-    switch (index) {
-        case +SongDifficultyType::HpDrainRate: {
-            beatmap->set_hp_drain_rate(value);
-            break;
-        }
-        case +SongDifficultyType::CircleSize: {
-            beatmap->set_circle_size(value);
-            break;
-        }
-        case +SongDifficultyType::ApproachRate: {
-            beatmap->set_approach_rate(value);
-            break;
-        }
-        case +SongDifficultyType::OverallDifficulty: {
-            beatmap->set_overall_difficulty(value);
-            break;
-        }
-        default: {
-            dev_assert(false);
-            break;
-        }
     }
 }
