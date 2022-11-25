@@ -117,6 +117,8 @@ String MapManager::create_unique_map_id(String set_id) {
     return String::num_int64(id);
 }
 
+String MapManager::get_map_extension() { return map_extension; }
+
 bool MapManager::is_valid_audio_extension(String file_path) {
     for (int i = 0; i < audio_extensions.size(); i++) {
         String audio_ext = audio_extensions[i];

@@ -61,18 +61,3 @@ void Background::update_image() {
 
     background_image->set_texture(ref_texture);
 }
-
-void Background::update_background(Background *background, Beatmap *beatmap) {
-    String bg_filename = beatmap->get_background_filename();
-    String bg_path;
-
-    if (bg_filename.empty()) {
-        bg_path =
-            Game::get_singleton(background)->get_default_background_path();
-    } else {
-        bg_path = Game::get_singleton(background)->get_songs_dir_path() + "/" +
-                  beatmap->get_beatmap_set_id() + "/" + bg_filename;
-    }
-
-    background->set_background_path(bg_path);
-}

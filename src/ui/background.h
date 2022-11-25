@@ -31,8 +31,6 @@ class Background : public Control {
 
     String get_background_path();
     float get_dim();
-
-    static void update_background(Background *background, Beatmap *beatmap);
 };
 
 #endif

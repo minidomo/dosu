@@ -8,6 +8,7 @@
 #include <SceneTree.hpp>
 
 #include "common/util.h"
+#include "object/beatmap.h"
 #include "object/enum/conductor_go_type.h"
 #include "object/enum/icon_type.h"
 #include "object/enum/song_difficulty_type.h"
@@ -54,8 +55,8 @@ void MainEditor::_ready() {
     init_icon_buttons();
 
     on_tab_clicked(2);
-    Background::update_background(
-        background, MapManager::get_singleton(this)->get_editor_beatmap());
+    background->set_background_path(Beatmap::get_background_file_path(
+        this, MapManager::get_singleton(this)->get_editor_beatmap()));
 }
 
 void MainEditor::init_bodies() {
@@ -169,8 +170,8 @@ void MainEditor::on_files_dropped(PoolStringArray files, int screen) {
 
     if (map_manager->is_valid_image_extension(path)) {
         map_manager->update_background_editor_beatmap(path);
-        Background::update_background(background,
-                                      map_manager->get_editor_beatmap());
+        background->set_background_path(Beatmap::get_background_file_path(
+            this, map_manager->get_editor_beatmap()));
     } else {
         // TODO display error?
     }

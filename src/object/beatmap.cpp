@@ -1,8 +1,39 @@
 #include "./beatmap.h"
 
 #include "common/util.h"
+#include "singleton/game.h"
+#include "singleton/map_manager.h"
 
-void Beatmap::_register_methods() {}
+void Beatmap::_register_methods() {
+    register_signal<Beatmap>("title_updated", "value",
+                             GODOT_VARIANT_TYPE_STRING);
+    register_signal<Beatmap>("title_unicode_updated", "value",
+                             GODOT_VARIANT_TYPE_STRING);
+    register_signal<Beatmap>("artist_updated", "value",
+                             GODOT_VARIANT_TYPE_STRING);
+    register_signal<Beatmap>("artist_unicode_updated", "value",
+                             GODOT_VARIANT_TYPE_STRING);
+    register_signal<Beatmap>("creator_updated", "value",
+                             GODOT_VARIANT_TYPE_STRING);
+    register_signal<Beatmap>("version_updated", "value",
+                             GODOT_VARIANT_TYPE_STRING);
+    register_signal<Beatmap>("source_updated", "value",
+                             GODOT_VARIANT_TYPE_STRING);
+    register_signal<Beatmap>("tags_updated", "value",
+                             GODOT_VARIANT_TYPE_POOL_STRING_ARRAY);
+
+    register_signal<Beatmap>("hp_drain_rate_updated", "value",
+                             GODOT_VARIANT_TYPE_INT);
+    register_signal<Beatmap>("circle_size_updated", "value",
+                             GODOT_VARIANT_TYPE_INT);
+    register_signal<Beatmap>("overall_difficulty_updated", "value",
+                             GODOT_VARIANT_TYPE_INT);
+    register_signal<Beatmap>("approach_rate_updated", "value",
+                             GODOT_VARIANT_TYPE_INT);
+
+    register_signal<Beatmap>("background_filename_updated", "value",
+                             GODOT_VARIANT_TYPE_STRING);
+}
 
 void Beatmap::_init() {}
 
@@ -356,25 +387,45 @@ void Beatmap::set_timeline_zoom(float timeline_zoom) {
     this->timeline_zoom = timeline_zoom;
 }
 
-void Beatmap::set_title(String title) { this->title = title; }
+void Beatmap::set_title(String title) {
+    this->title = title;
+    emit_signal("title_updated", title);
+}
 
 void Beatmap::set_title_unicode(String title_unicode) {
     this->title_unicode = title_unicode;
+    emit_signal("title_unicode_updated", title_unicode);
 }
 
-void Beatmap::set_artist(String artist) { this->artist = artist; }
+void Beatmap::set_artist(String artist) {
+    this->artist = artist;
+    emit_signal("artist_updated", artist);
+}
 
 void Beatmap::set_artist_unicode(String artist_unicode) {
     this->artist_unicode = artist_unicode;
+    emit_signal("artist_unicode_updated", artist_unicode);
 }
 
-void Beatmap::set_creator(String creator) { this->creator = creator; }
+void Beatmap::set_creator(String creator) {
+    this->creator = creator;
+    emit_signal("creator_updated", creator);
+}
 
-void Beatmap::set_version(String version) { this->version = version; }
+void Beatmap::set_version(String version) {
+    this->version = version;
+    emit_signal("version_updated", version);
+}
 
-void Beatmap::set_source(String source) { this->source = source; }
+void Beatmap::set_source(String source) {
+    this->source = source;
+    emit_signal("source_updated", source);
+}
 
-void Beatmap::set_tags(PoolStringArray tags) { this->tags = tags; }
+void Beatmap::set_tags(PoolStringArray tags) {
+    this->tags = tags;
+    emit_signal("tags_updated", tags);
+}
 
 void Beatmap::set_beatmap_id(String beatmap_id) {
     this->beatmap_id = beatmap_id;
@@ -386,18 +437,22 @@ void Beatmap::set_beatmap_set_id(String beatmap_set_id) {
 
 void Beatmap::set_hp_drain_rate(float hp_drain_rate) {
     this->hp_drain_rate = hp_drain_rate;
+    emit_signal("hp_drain_rate_updated", hp_drain_rate);
 }
 
 void Beatmap::set_circle_size(float circle_size) {
     this->circle_size = circle_size;
+    emit_signal("circle_size_updated", circle_size);
 }
 
 void Beatmap::set_overall_difficulty(float overall_difficulty) {
     this->overall_difficulty = overall_difficulty;
+    emit_signal("overall_difficulty_updated", overall_difficulty);
 }
 
 void Beatmap::set_approach_rate(float approach_rate) {
     this->approach_rate = approach_rate;
+    emit_signal("approach_rate_updated", approach_rate);
 }
 
 void Beatmap::set_slider_multiplier(float slider_multiplier) {
@@ -410,6 +465,7 @@ void Beatmap::set_slider_tick_rate(float slider_tick_rate) {
 
 void Beatmap::set_background_filename(String background_filename) {
     this->background_filename = background_filename;
+    emit_signal("background_filename_updated", background_filename);
 }
 
 void Beatmap::set_break_periods(vector<BreakPeriod *> break_periods) {
@@ -494,5 +550,24 @@ void Beatmap::copy(Beatmap *beatmap) {
         auto ho = HitObject::_new();
         ho->copy(e);
         hit_objects.push_back(ho);
+    }
+}
+
+String Beatmap::get_dir_path(Node *node, Beatmap *beatmap) {
+    return Game::get_singleton(node)->get_songs_dir_path() + "/" +
+           beatmap->get_beatmap_set_id();
+}
+
+String Beatmap::get_file_path(Node *node, Beatmap *beatmap) {
+    return get_dir_path(node, beatmap) + "/" + beatmap->get_beatmap_id() +
+           MapManager::get_singleton(node)->get_map_extension();
+}
+
+String Beatmap::get_background_file_path(Node *node, Beatmap *beatmap) {
+    String bg_filename = beatmap->get_background_filename();
+    if (bg_filename.empty()) {
+        return Game::get_singleton(node)->get_default_background_path();
+    } else {
+        return get_dir_path(node, beatmap) + "/" + bg_filename;
     }
 }

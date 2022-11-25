@@ -135,6 +135,10 @@ class Beatmap : public Node {
 
     bool has_query(String query);
     void copy(Beatmap *beatmap);
+
+    static String get_dir_path(Node *node, Beatmap *beatmap);
+    static String get_file_path(Node *node, Beatmap *beatmap);
+    static String get_background_file_path(Node *node, Beatmap *beatmap);
 };
 
 #endif

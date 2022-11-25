@@ -6,6 +6,7 @@
 #include <SceneTree.hpp>
 
 #include "common/util.h"
+#include "object/beatmap.h"
 #include "singleton/game.h"
 #include "singleton/map_manager.h"
 #include "singleton/scene_manager.h"
@@ -107,7 +108,8 @@ void MainEdit::update_beatmaps(String filter) {
             local_index++;
 
             if (listing->is_selected()) {
-                Background::update_background(background, bm);
+                background->set_background_path(
+                    Beatmap::get_background_file_path(this, bm));
             }
         }
     }
@@ -136,7 +138,8 @@ void MainEdit::on_beatmap_index_changed(int64_t old_index, int64_t new_index) {
         new_listing->update_view();
 
         auto beatmaps = MapManager::get_singleton(this)->get_all_beatmaps();
-        Background::update_background(background, beatmaps[new_index]);
+        background->set_background_path(
+            Beatmap::get_background_file_path(this, beatmaps[new_index]));
     }
 }
 

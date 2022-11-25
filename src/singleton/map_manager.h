@@ -37,6 +37,7 @@ class MapManager : public Node {
     void create_map(String set_id, String audio_filename);
     void create_set(String audio_path);
 
+    String get_map_extension();
     bool is_valid_audio_extension(String file_path);
     bool is_valid_image_extension(String file_path);
 
