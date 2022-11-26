@@ -18,7 +18,7 @@ float Util::ceil(float value) {
 }
 
 int64_t Util::to_milliseconds(float seconds) {
-    return (int64_t)Math::round(seconds * 1000);
+    return (int64_t)Math::floor(seconds * 1000);
 }
 
 String Util::to_timestamp(int64_t milliseconds) {

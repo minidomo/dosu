@@ -3,9 +3,11 @@
 
 #include "./editable_row.h"
 #include "./main_editor.h"
+#include "./object_timeline.h"
 #include "./slidable_row.h"
 #include "./tab.h"
 #include "./timeline.h"
+#include "./timeline_tick.h"
 #include "body/index.h"
 #include "menu_bar/index.h"
 

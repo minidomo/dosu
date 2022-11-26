@@ -10,6 +10,7 @@
 #include "object/conductor.h"
 #include "ui/background.h"
 #include "ui/editor/body/song_setup_body.h"
+#include "ui/editor/object_timeline.h"
 #include "ui/editor/tab.h"
 #include "ui/editor/timeline.h"
 
@@ -29,6 +30,7 @@ class MainEditor : public Control {
     Timeline *timeline;
 
     SongSetupBody *song_setup_body;
+    ObjectTimeline *object_timeline;
 
     int tab_index;
 
@@ -45,7 +47,7 @@ class MainEditor : public Control {
 
     void on_tab_clicked(int index);
     void on_icon_button_pressed(int index);
-    void on_song_position_update(int64_t song_position);
+    void on_song_position_updated(float song_position);
     void on_timeline_click(float percent);
     void on_files_dropped(PoolStringArray files, int screen);
 };

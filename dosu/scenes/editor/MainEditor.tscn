@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://bin/scripts/ui/editor/main_editor.gdns" type="Script" id=1]
 [ext_resource path="res://scenes/Background.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://scenes/object/Conductor.tscn" type="PackedScene" id=9]
 [ext_resource path="res://bin/scripts/ui/editor/timeline.gdns" type="Script" id=10]
 [ext_resource path="res://scenes/editor/SongSetupBody.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scenes/editor/ObjectTimeline.tscn" type="PackedScene" id=12]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -153,6 +154,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_bottom = -3.8147e-06
 title = "song setup"
+
+[node name="ObjectTimeline" parent="TopBar" instance=ExtResource( 12 )]
+anchor_left = 0.0260417
+anchor_top = 0.366197
+anchor_right = 0.776042
+anchor_bottom = 0.929578
 
 [node name="Body" type="Control" parent="."]
 anchor_top = 0.154

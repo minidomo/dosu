@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://bin/scripts/ui/editor/timeline_tick.gdns" type="Script" id=1]
+
+[node name="TimelineTick" type="Control"]
+anchor_right = 0.000520833
+anchor_bottom = 0.00555556
+rect_min_size = Vector2( 1, 6 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 1, 1, 1, 0.588235 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

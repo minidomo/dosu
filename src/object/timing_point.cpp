@@ -68,6 +68,16 @@ float TimingPoint::calculate_bpm(float beat_length) {
 
 float TimingPoint::calculate_beat_length(float bpm) { return 60000 / bpm; }
 
+int64_t TimingPoint::get_time() { return time; }
+
+float TimingPoint::get_beat_length() { return beat_length; }
+
+int64_t TimingPoint::get_meter() { return meter; }
+
+bool TimingPoint::is_uninherited() { return uninherited; }
+
+float TimingPoint::get_bpm() { return bpm; }
+
 void TimingPoint::copy(TimingPoint *timing_point) {
     time = timing_point->time;
     beat_length = timing_point->beat_length;

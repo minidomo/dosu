@@ -13,8 +13,8 @@ void Conductor::_register_methods() {
 
     register_signal<Conductor>("beat", "beat", GODOT_VARIANT_TYPE_INT);
     register_signal<Conductor>("measure", "measure", GODOT_VARIANT_TYPE_INT);
-    register_signal<Conductor>("song_position_update", "song_position",
-                               GODOT_VARIANT_TYPE_INT);
+    register_signal<Conductor>("song_position_updated", "song_position",
+                               GODOT_VARIANT_TYPE_REAL);
 }
 
 void Conductor::_init() {
@@ -23,7 +23,7 @@ void Conductor::_init() {
 
     song_position = 0;
     song_position_in_beats = 1;
-    sec_per_beat = 60.f / bpm;
+    seconds_per_beat = 60 / bpm;
     last_reported_beat = 0;
     beats_before_start = 0;
     measure = 0;
@@ -43,13 +43,12 @@ void Conductor::_physics_process(real_t delta) {
                         AudioServer::get_singleton()->get_time_since_last_mix();
         song_position -= AudioServer::get_singleton()->get_output_latency();
         song_position =
-            Math::clamp<float>(song_position, 0, get_total_duration_seconds());
+            Math::clamp<float>(song_position, 0, get_total_duration());
 
-        emit_signal("song_position_update",
-                    Util::to_milliseconds(song_position));
+        emit_signal("song_position_updated", song_position);
 
         song_position_in_beats =
-            (int64_t)Math::floor(song_position / sec_per_beat) +
+            (int64_t)Math::floor(song_position / seconds_per_beat) +
             beats_before_start;
         report_beat();
     }
@@ -69,15 +68,15 @@ void Conductor::report_beat() {
 
 void Conductor::play_with_beat_offset(int64_t beats) {
     beats_before_start = beats;
-    start_timer->set_wait_time(sec_per_beat);
+    start_timer->set_wait_time(seconds_per_beat);
     start_timer->start();
 }
 
 pair<int64_t, float> Conductor::closest_beat(float nth) {
     closest =
-        (int64_t)(Math::round((song_position / sec_per_beat) / nth) * nth);
+        (int64_t)(Math::round((song_position / seconds_per_beat) / nth) * nth);
 
-    time_off_beat = closest * sec_per_beat - song_position;
+    time_off_beat = closest * seconds_per_beat - song_position;
     if (time_off_beat < 0) {
         time_off_beat = -time_off_beat;
     }
@@ -87,7 +86,7 @@ pair<int64_t, float> Conductor::closest_beat(float nth) {
 
 void Conductor::play_from_beat(int64_t beat, int64_t offset) {
     play();
-    seek(beat * sec_per_beat);
+    seek(beat * seconds_per_beat);
     beats_before_start = offset;
     measure = beat % measures;
 }
@@ -114,7 +113,9 @@ void Conductor::on_timeout() {
 
 void Conductor::set_bpm(float bpm) {
     this->bpm = bpm;
-    sec_per_beat = 60.f / bpm;
+    seconds_per_beat = 60 / bpm;
+    Godot::print("bpm: " + String::num_real(bpm) +
+                 ", spb: " + String::num_real(seconds_per_beat));
 }
 
 void Conductor::set_measures(int64_t measures) { this->measures = measures; }
@@ -123,19 +124,39 @@ float Conductor::get_bpm() { return bpm; }
 
 int64_t Conductor::get_measures() { return measures; }
 
-int64_t Conductor::get_total_duration() {
-    return Util::to_milliseconds(get_total_duration_seconds());
+float Conductor::get_seconds_per_beat() { return seconds_per_beat; }
+
+float Conductor::get_total_duration() { return get_stream()->get_length(); }
+
+float Conductor::get_song_position() { return song_position; }
+
+float Conductor::get_next_beat_time(float position, float offset) {
+    float time = offset;
+
+    while (time < position) {
+        time += seconds_per_beat;
+    }
+
+    return time;
 }
 
-int64_t Conductor::get_song_position() {
-    return Util::to_milliseconds(song_position);
+int64_t Conductor::get_beat_number(float position, float offset) {
+    int64_t ret = 0;
+    float time = offset;
+
+    while (time < position) {
+        time += seconds_per_beat;
+        ret++;
+    }
+
+    return ret;
 }
 
 void Conductor::toggle_pause() {
     if (is_playing()) {
         set_stream_paused(!get_stream_paused());
     } else {
-        int64_t target = Util::to_milliseconds(song_position);
+        float target = song_position;
         if (target == get_total_duration()) {
             target = 0;
         }
@@ -144,9 +165,9 @@ void Conductor::toggle_pause() {
     }
 }
 
-void Conductor::go_to(int64_t ms, ConductorGoType action) {
-    song_position = Util::to_seconds(ms);
-    emit_signal("song_position_update", ms);
+void Conductor::go_to(float time, ConductorGoType action) {
+    song_position = time;
+    emit_signal("song_position_updated", song_position);
 
     switch (action) {
         case ConductorGoType::Play: {
@@ -173,10 +194,6 @@ void Conductor::go_to(int64_t ms, ConductorGoType action) {
 }
 
 void Conductor::go_to_percent(float percent, ConductorGoType action) {
-    int64_t ms = (int64_t)Math::round(percent * get_total_duration());
-    go_to(ms, action);
-}
-
-float Conductor::get_total_duration_seconds() {
-    return get_stream()->get_length();
+    float time = percent * get_total_duration();
+    go_to(time, action);
 }

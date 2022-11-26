@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://bin/scripts/ui/editor/object_timeline.gdns" type="Script" id=2]
+
+[node name="ObjectTimeline" type="Control"]
+anchor_right = 0.747396
+anchor_bottom = 0.0740741
+rect_min_size = Vector2( 1435, 80 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.52549, 0.247059, 0.247059, 0.231373 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BottomLine" type="ColorRect" parent="."]
+anchor_top = 0.9875
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Playhead" type="ColorRect" parent="."]
+anchor_left = 0.498955
+anchor_right = 0.501045
+anchor_bottom = 1.0
+color = Color( 1, 1, 1, 0.784314 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Ticks" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

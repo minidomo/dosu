@@ -39,6 +39,12 @@ class TimingPoint : public Node {
     void set_uninherited(bool uninherited);
     void set_bpm(float bpm);
 
+    int64_t get_time();
+    float get_beat_length();
+    int64_t get_meter();
+    bool is_uninherited();
+    float get_bpm();
+
     void copy(TimingPoint *timing_point);
 };
 

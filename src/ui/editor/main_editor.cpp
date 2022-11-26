@@ -18,7 +18,7 @@ void MainEditor::_register_methods() {
     dev_register_method(MainEditor, _ready);
     dev_register_method(MainEditor, on_tab_clicked);
     dev_register_method(MainEditor, on_icon_button_pressed);
-    dev_register_method(MainEditor, on_song_position_update);
+    dev_register_method(MainEditor, on_song_position_updated);
     dev_register_method(MainEditor, on_timeline_click);
     dev_register_method(MainEditor, on_files_dropped);
 }
@@ -32,9 +32,11 @@ void MainEditor::_ready() {
     progress_label = get_node<Label>("BottomBar/Progress/Label");
     timeline = get_node<Timeline>("BottomBar/Timeline");
     song_setup_body = get_node<SongSetupBody>("Body/SongSetupBody");
+    object_timeline = get_node<ObjectTimeline>("TopBar/ObjectTimeline");
 
     timeline->connect("timeline_click", this, "on_timeline_click");
-    conductor->connect("song_position_update", this, "on_song_position_update");
+    conductor->connect("song_position_updated", this,
+                       "on_song_position_updated");
     get_tree()->connect("files_dropped", this, "on_files_dropped");
 
     init_conductor();
@@ -45,6 +47,8 @@ void MainEditor::_ready() {
     on_tab_clicked(2);
     background->set_background_path(Beatmap::get_background_file_path(
         this, MapManager::get_singleton(this)->get_editor_beatmap()));
+    object_timeline->set_conductor(conductor);
+    object_timeline->on_song_position_updated(0);
 }
 
 void MainEditor::init_bodies() {
@@ -135,13 +139,15 @@ void MainEditor::init_conductor() {
     Ref<AudioStream> ref_audio_stream(audio_stream);
 
     conductor->set_stream(ref_audio_stream);
+    conductor->set_bpm(beatmap->get_timing_points()[0]->get_bpm());
 }
 
-void MainEditor::on_song_position_update(int64_t song_position) {
-    time_label->set_text(Util::to_timestamp(song_position));
+void MainEditor::on_song_position_updated(float song_position) {
+    time_label->set_text(
+        Util::to_timestamp(Util::to_milliseconds(song_position)));
 
-    float percent = (float)song_position / conductor->get_total_duration();
-    String progress = String::num_real(percent * 100.f).pad_decimals(1) + "%";
+    float percent = song_position / conductor->get_total_duration();
+    String progress = String::num_real(percent * 100).pad_decimals(1) + "%";
 
     progress_label->set_text(progress);
     timeline->set_playhead_progress(percent);
