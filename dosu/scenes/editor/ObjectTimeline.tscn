@@ -11,10 +11,17 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="temp" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0.52549, 0.247059, 0.247059, 0.231373 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Ticks" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -34,11 +41,4 @@ anchor_bottom = 1.0
 color = Color( 1, 1, 1, 0.784314 )
 __meta__ = {
 "_edit_use_anchors_": true
-}
-
-[node name="Ticks" type="Control" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
 }

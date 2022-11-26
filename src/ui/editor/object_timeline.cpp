@@ -92,8 +92,9 @@ void ObjectTimeline::on_song_position_updated(float song_position) {
     auto timing_point = beatmap->get_timing_points()[0];
 
     float offset = Util::to_seconds(timing_point->get_time());
-    float next_time = conductor->get_next_beat_time(song_position, offset);
-    int64_t beat_number = conductor->get_beat_number(next_time, offset);
+    Dictionary beat_info = conductor->get_beat(song_position, offset, 1, 1);
+    float next_time = beat_info["time"];
+    int64_t beat_number = beat_info["index"];
 
     float diff = next_time - song_position;
     float percent_missing = diff / conductor->get_seconds_per_beat();

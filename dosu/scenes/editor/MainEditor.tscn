@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://bin/scripts/ui/editor/main_editor.gdns" type="Script" id=1]
 [ext_resource path="res://scenes/Background.tscn" type="PackedScene" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://bin/scripts/ui/editor/timeline.gdns" type="Script" id=10]
 [ext_resource path="res://scenes/editor/SongSetupBody.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/editor/ObjectTimeline.tscn" type="PackedScene" id=12]
+[ext_resource path="res://assets/font/noto_sans_mono/NotoSansMono-Regular.ttf" type="DynamicFontData" id=13]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -20,10 +21,10 @@ font_data = ExtResource( 3 )
 
 [sub_resource type="DynamicFont" id=3]
 size = 24
-font_data = ExtResource( 3 )
+font_data = ExtResource( 13 )
 
 [sub_resource type="DynamicFont" id=4]
-font_data = ExtResource( 3 )
+font_data = ExtResource( 13 )
 
 [sub_resource type="DynamicFont" id=5]
 size = 20

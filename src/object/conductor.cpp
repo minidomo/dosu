@@ -130,24 +130,101 @@ float Conductor::get_total_duration() { return get_stream()->get_length(); }
 
 float Conductor::get_song_position() { return song_position; }
 
-float Conductor::get_next_beat_time(float position, float offset) {
-    float time = offset;
+/**
+ * @return a Dictionary containing info about the requested beat
+ *
+ * time: float - the time of the beat
+ * - index: int64_t - the beat number relative to the offset. the beat at the
+ * offset starts at 0
+ * - accessible_time: float - the time that is closest to the beat and within
+ * the song duration
+ * - accessible: bool - whether the beat is accessible. true if time ==
+ * accessible_time, false otherwise
+ */
+Dictionary Conductor::get_beat(float position, float song_offset,
+                               int64_t beat_offset, int64_t beat_divisor) {
+    dev_assert(beat_offset != 0);
 
-    while (time < position) {
-        time += seconds_per_beat;
+    float time = song_offset;
+    float step = seconds_per_beat / beat_divisor;
+    int64_t index = 0;
+
+    if (song_offset <= position) {
+        bool on_beat = false;
+
+        // time will be on the beat after the position
+        while (time < position) {
+            on_beat = time == position;
+            time += step;
+            index++;
+        }
+
+        if (beat_offset > 0) {
+            // get a beat ahead the current position
+
+            for (int64_t beat = 1; beat < beat_offset; beat++) {
+                time += step;
+                index++;
+            }
+        } else {
+            // get a beat behind the current position
+
+            /*
+            the while loop above always gets the next beat from the position.
+
+            if the given position is in between beats, i.e. not on a beat
+            itself, then we can get the next beat and go backwards one to get
+            the previous beat.
+
+            if the given position is on a beat, then we have to
+            go backwards two to get the previous beat.
+            */
+
+            for (int64_t beat = on_beat; beat > beat_offset; beat--) {
+                time -= step;
+                index--;
+            }
+        }
+
+    } else {
+        // the song offset can be ahead of the posiion in cases where the song
+        // starts later and the user is at the beginning of song
+
+        bool on_beat = false;
+
+        // time will be on the beat before the position
+        while (time > position) {
+            on_beat = time == position;
+            time -= step;
+            index--;
+        }
+
+        if (beat_offset > 0) {
+            // get a beat ahead the current position
+
+            for (int64_t beat = -1 * (int64_t)on_beat; beat < beat_offset;
+                 beat++) {
+                time += step;
+                index++;
+            }
+        } else {
+            // get a beat behind the current position
+
+            for (int64_t beat = -1; beat > beat_offset; beat--) {
+                time -= step;
+                index--;
+            }
+        }
     }
 
-    return time;
-}
+    float accessible_time = Math::clamp<float>(time, 0, get_total_duration());
+    bool accessible = accessible_time == time;
 
-int64_t Conductor::get_beat_number(float position, float offset) {
-    int64_t ret = 0;
-    float time = offset;
-
-    while (time < position) {
-        time += seconds_per_beat;
-        ret++;
-    }
+    Dictionary ret;
+    ret["time"] = time;
+    ret["index"] = index;
+    ret["accessible_time"] = accessible_time;
+    ret["accessible"] = accessible;
 
     return ret;
 }

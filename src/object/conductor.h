@@ -52,8 +52,8 @@ class Conductor : public AudioStreamPlayer {
     float get_seconds_per_beat();
     float get_total_duration();
     float get_song_position();
-    float get_next_beat_time(float position, float offset);
-    int64_t get_beat_number(float position, float offset);
+    Dictionary get_beat(float position, float song_offset, int64_t beat_offset,
+                        int64_t beat_divisor);
 
     void toggle_pause();
     void go_to(float time, ConductorGoType action);
