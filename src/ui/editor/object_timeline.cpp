@@ -7,11 +7,10 @@
 
 void ObjectTimeline::_register_methods() {
     dev_register_method(ObjectTimeline, _ready);
-    dev_register_method(ObjectTimeline, set_tick_position);
     dev_register_method(ObjectTimeline, on_song_position_updated);
 }
 
-void ObjectTimeline::_init() {}
+void ObjectTimeline::_init() { init_tick_color_schemes(); }
 
 void ObjectTimeline::_ready() {
     tick_container = get_node<Control>("Ticks");
@@ -22,48 +21,12 @@ void ObjectTimeline::_ready() {
 
 void ObjectTimeline::draw_ticks(float percent_missing, int64_t beat_number,
                                 TimingPoint *control_point) {
-    // Util::delete_children(tick_container);
-
     auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
 
-    // float center_x = get_size().x / 2;
     float snap_length = control_point->get_beat_length() /
                         control_point->get_meter() /
                         beatmap->get_beat_divisor();
     float offset = snap_length * percent_missing;
-
-    // float start = center_x + offset;
-    // float prev = start - snap_length;
-    // int64_t index;
-
-    // int64_t ticks_per_measure =
-    //     control_point->get_meter() * beatmap->get_beat_divisor();
-
-    // index = (beat_number - 1 + ticks_per_measure) % ticks_per_measure;
-    // for (float pos_x = prev; pos_x >= 0; pos_x -= snap_length) {
-    //     auto tick = Object::cast_to<TimelineTick>(tick_object->instance());
-    //     tick_container->add_child(tick);
-
-    //     if (index == 0) {
-    //         tick->set_height(30);
-    //     }
-
-    //     set_tick_position(tick, pos_x);
-    //     index = (index - 1 + ticks_per_measure) % ticks_per_measure;
-    // }
-
-    // index = beat_number % ticks_per_measure;
-    // for (float pos_x = start; pos_x < get_size().x; pos_x += snap_length) {
-    //     auto tick = Object::cast_to<TimelineTick>(tick_object->instance());
-    //     tick_container->add_child(tick);
-
-    //     if (index == 0) {
-    //         tick->set_height(30);
-    //     }
-
-    //     set_tick_position(tick, pos_x);
-    //     index = (index + 1) % ticks_per_measure;
-    // }
 
     auto tick_data = determine_ticks(offset, snap_length, beat_number);
     int64_t diff = tick_data.size() - tick_container->get_child_count();
@@ -89,13 +52,6 @@ void ObjectTimeline::draw_ticks(float percent_missing, int64_t beat_number,
         setup_tick(tick, tick_data[i], control_point->get_meter(),
                    beatmap->get_beat_divisor());
     }
-}
-
-void ObjectTimeline::set_tick_position(TimelineTick *tick, float x) {
-    Vector2 pos;
-    pos.x = x;
-    pos.y = get_size().y - tick->get_height();
-    tick->set_position(pos);
 }
 
 void ObjectTimeline::set_conductor(Conductor *conductor) {
@@ -164,18 +120,57 @@ void ObjectTimeline::setup_tick(TimelineTick *tick,
 
     int64_t index = std::get<1>(tick_data);
     if (index % ticks_per_measure == 0) {
-        tick->set_height(30);
-        tick->set_color(Color::hex(0xffffffff));
+        tick->set_height(32);
     } else if (index % beat_divisor == 0) {
-        tick->set_height(14);
-        tick->set_color(Color::hex(0xffffffff));
+        tick->set_height(16);
     } else {
-        tick->set_height(6);
-        tick->set_color(Color::hex(0xEF1017ff));
+        tick->set_height(8);
     }
+
+    tick->set_color(
+        get_tick_color(beat_divisor, Util::mod(index, beat_divisor)));
 
     Vector2 pos;
     pos.x = std::get<0>(tick_data);
     pos.y = get_size().y - tick->get_height();
     tick->set_position(pos);
+}
+
+void ObjectTimeline::init_tick_color_schemes() {
+    Color white = Color::hex(0xFFFFFFFF);
+    Color red = Color::hex(0xF5130AFF);
+    Color light_purple = Color::hex(0xC513BBFF);
+    Color dark_purple = Color::hex(0x944C89FF);
+    Color blue = Color::hex(0x4184EBFF);
+    Color yellow = Color::hex(0xF5F40AFF);
+    Color gray = Color::hex(0xA2A098FF);
+
+    tick_color_schemes["1"] = Array::make(white);
+    tick_color_schemes["2"] = Array::make(white, red);
+    tick_color_schemes["3"] = Array::make(white, light_purple, dark_purple);
+    tick_color_schemes["4"] = Array::make(white, blue, red, blue);
+    tick_color_schemes["5"] =
+        Array::make(white, yellow, yellow, yellow, yellow);
+    tick_color_schemes["6"] = Array::make(white, dark_purple, light_purple, red,
+                                          dark_purple, light_purple);
+    tick_color_schemes["7"] =
+        Array::make(white, yellow, yellow, yellow, yellow, yellow, yellow);
+    tick_color_schemes["8"] =
+        Array::make(white, yellow, blue, yellow, red, yellow, blue, yellow);
+    tick_color_schemes["9"] =
+        Array::make(white, yellow, yellow, light_purple, yellow, yellow,
+                    light_purple, yellow, yellow);
+    tick_color_schemes["12"] =
+        Array::make(white, gray, dark_purple, blue, light_purple, gray, red,
+                    gray, light_purple, blue, dark_purple, gray);
+    tick_color_schemes["16"] =
+        Array::make(white, gray, yellow, gray, blue, gray, yellow, gray, red,
+                    gray, yellow, gray, blue, gray, yellow, gray);
+}
+
+Color ObjectTimeline::get_tick_color(int64_t beat_divisor, int64_t index) {
+    String key = String::num_int64(beat_divisor);
+    Array colors = tick_color_schemes[key];
+    Color color = colors[(int)index];
+    return color;
 }

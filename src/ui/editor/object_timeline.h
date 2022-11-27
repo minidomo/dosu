@@ -16,6 +16,8 @@ class ObjectTimeline : public Control {
     GODOT_CLASS(ObjectTimeline, Control);
 
    private:
+    Dictionary tick_color_schemes;
+
     Conductor *conductor;
     Control *tick_container;
 
@@ -26,15 +28,16 @@ class ObjectTimeline : public Control {
                                                   int64_t beat_number);
     void setup_tick(TimelineTick *tick, tuple<float, int64_t> tick_data,
                     int64_t meter, int64_t beat_divisor);
+    void draw_ticks(float percent_missing, int64_t beat_number,
+                    TimingPoint *control_point);
+
+    Color get_tick_color(int64_t beat_divisor, int64_t index);
+    void init_tick_color_schemes();
 
    public:
     static void _register_methods();
     void _init();
     void _ready();
-
-    void draw_ticks(float percent_missing, int64_t beat_number,
-                    TimingPoint *control_point);
-    void set_tick_position(TimelineTick *tick, float x);
 
     void set_conductor(Conductor *conductor);
     Conductor *get_conductor();

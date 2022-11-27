@@ -7,7 +7,7 @@ void TimelineTick::_register_methods() {
 void TimelineTick::_init() {
     alpha = .5f;
     color = Color(255, 255, 255, alpha);
-    height = 6;
+    height = 8;
 }
 
 void TimelineTick::_ready() {

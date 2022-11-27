@@ -16,6 +16,7 @@ class Util {
     static String limit_decimal(float value, int max_digits);
     static bool float_gte(float a, float b);
     static bool float_lte(float a, float b);
+    static int64_t mod(int64_t value, int64_t mod);
 };
 
 #endif

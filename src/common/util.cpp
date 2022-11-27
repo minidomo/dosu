@@ -61,3 +61,7 @@ bool Util::float_gte(float a, float b) {
 bool Util::float_lte(float a, float b) {
     return a < b || Math::is_equal_approx(a, b);
 }
+
+int64_t Util::mod(int64_t value, int64_t mod) {
+    return (value % mod + mod) % mod;
+}
