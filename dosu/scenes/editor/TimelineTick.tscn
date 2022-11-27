@@ -6,6 +6,7 @@
 anchor_right = 0.000520833
 anchor_bottom = 0.00555556
 rect_min_size = Vector2( 1, 6 )
+mouse_filter = 1
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": true
@@ -14,6 +15,7 @@ __meta__ = {
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 1
 color = Color( 1, 1, 1, 0.588235 )
 __meta__ = {
 "_edit_use_anchors_": false

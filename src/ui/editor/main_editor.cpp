@@ -4,7 +4,7 @@
 #include <AudioStreamMP3.hpp>
 #include <BaseButton.hpp>
 #include <File.hpp>
-#include <InputEventMouseButton.hpp>
+#include <Input.hpp>
 #include <SceneTree.hpp>
 
 #include "common/util.h"
@@ -16,12 +16,13 @@
 
 void MainEditor::_register_methods() {
     dev_register_method(MainEditor, _ready);
-    dev_register_method(MainEditor, _input);
+    dev_register_method(MainEditor, _process);
     dev_register_method(MainEditor, on_tab_clicked);
     dev_register_method(MainEditor, on_icon_button_pressed);
     dev_register_method(MainEditor, on_song_position_updated);
     dev_register_method(MainEditor, on_timeline_click);
     dev_register_method(MainEditor, on_files_dropped);
+    dev_register_method(MainEditor, on_timeline_zoom_button_pressed);
 }
 
 void MainEditor::_init() { tab_index = -1; }
@@ -44,6 +45,7 @@ void MainEditor::_ready() {
     init_bodies();
     init_tabs();
     init_icon_buttons();
+    init_timeline_zoom_buttons();
 
     on_tab_clicked(2);
     background->set_background_path(Beatmap::get_background_file_path(
@@ -172,24 +174,52 @@ void MainEditor::on_files_dropped(PoolStringArray files, int screen) {
     }
 }
 
-void MainEditor::_input(Ref<InputEvent> event) {
-    if (event->is_action_released("scroll_up") ||
-        event->is_action_released("scroll_down")) {
-        bool scroll_up = event->is_action_released("scroll_up");
+void MainEditor::_process(float delta) {
+    auto input = Input::get_singleton();
 
-        float song_position = conductor->get_song_position();
-        auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
-        auto control_point = beatmap->get_control_point_for_time(
-            Util::to_milliseconds(song_position));
+    if (input->is_action_just_released("scroll_up") ||
+        input->is_action_just_released("scroll_down")) {
+        bool scroll_up = input->is_action_just_released("scroll_up");
 
-        float song_offset = Util::to_seconds(control_point->get_time());
-        int64_t beat_offset = scroll_up ? -1 : 1;
+        if (input->is_action_pressed("alt")) {
+            if (object_timeline->is_hovering()) {
+                float value = scroll_up ? .1f : -.1f;
+                on_timeline_zoom_button_pressed(value);
+            }
+        } else {
+            float song_position = conductor->get_song_position();
+            auto beatmap =
+                MapManager::get_singleton(this)->get_editor_beatmap();
+            auto control_point = beatmap->get_control_point_for_time(
+                Util::to_milliseconds(song_position));
 
-        Dictionary beat_info =
-            conductor->get_beat(song_position, song_offset, beat_offset,
-                                beatmap->get_beat_divisor());
+            float song_offset = Util::to_seconds(control_point->get_time());
+            int64_t beat_offset = scroll_up ? -1 : 1;
 
-        float accessible_time = beat_info["accessible_time"];
-        conductor->go_to(accessible_time, ConductorGoType::Maintain);
+            Dictionary beat_info =
+                conductor->get_beat(song_position, song_offset, beat_offset,
+                                    beatmap->get_beat_divisor());
+
+            float accessible_time = beat_info["accessible_time"];
+            conductor->go_to(accessible_time, ConductorGoType::Maintain);
+        }
     }
+}
+
+void MainEditor::init_timeline_zoom_buttons() {
+    Node *container = get_node("TopBar/TimelineZoomButtons");
+    auto increase_button =
+        container->get_node<BaseButton>("TimelineZoomIncrease");
+    auto decrease_button =
+        container->get_node<BaseButton>("TimelineZoomDecrease");
+
+    increase_button->connect("pressed", this, "on_timeline_zoom_button_pressed",
+                             Array::make(.1f));
+    decrease_button->connect("pressed", this, "on_timeline_zoom_button_pressed",
+                             Array::make(-.1f));
+}
+
+void MainEditor::on_timeline_zoom_button_pressed(float value) {
+    auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
+    beatmap->set_timeline_zoom(beatmap->get_timeline_zoom() + value);
 }

@@ -5,6 +5,9 @@
 #include "singleton/map_manager.h"
 
 void Beatmap::_register_methods() {
+    register_signal<Beatmap>("timeline_zoom_updated", "value",
+                             GODOT_VARIANT_TYPE_REAL);
+
     register_signal<Beatmap>("title_updated", "value",
                              GODOT_VARIANT_TYPE_STRING);
     register_signal<Beatmap>("title_unicode_updated", "value",
@@ -385,6 +388,7 @@ void Beatmap::set_beat_divisor(int64_t beat_divisor) {
 
 void Beatmap::set_timeline_zoom(float timeline_zoom) {
     this->timeline_zoom = timeline_zoom;
+    emit_signal("timeline_zoom_updated", timeline_zoom);
 }
 
 void Beatmap::set_title(String title) {

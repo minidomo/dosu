@@ -40,19 +40,21 @@ class MainEditor : public Control {
     void init_bodies();
     void init_icon_buttons();
     void init_conductor();
+    void init_timeline_zoom_buttons();
 
    public:
     static void _register_methods();
     void _init();
 
     void _ready();
-    void _input(Ref<InputEvent> event);
+    void _process(float delta);
 
     void on_tab_clicked(int index);
     void on_icon_button_pressed(int index);
     void on_song_position_updated(float song_position);
     void on_timeline_click(float percent);
     void on_files_dropped(PoolStringArray files, int screen);
+    void on_timeline_zoom_button_pressed(float value);
 };
 
 #endif

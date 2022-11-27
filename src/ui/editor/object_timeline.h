@@ -23,6 +23,12 @@ class ObjectTimeline : public Control {
 
     Ref<PackedScene> tick_object;
 
+    bool hovering;
+
+    float prev_percent_missing;
+    int64_t prev_beat_number;
+    TimingPoint *prev_control_point;
+
     vector<tuple<float, int64_t>> determine_ticks(float offset,
                                                   float snap_length,
                                                   int64_t beat_number);
@@ -42,7 +48,13 @@ class ObjectTimeline : public Control {
     void set_conductor(Conductor *conductor);
     Conductor *get_conductor();
 
+    void set_hovering(bool hovering);
+    bool is_hovering();
+
     void on_song_position_updated(float song_position);
+    void on_timeline_zoom_updated(float timeline_zoom);
+    void on_mouse_entered();
+    void on_mouse_exited();
 };
 
 #endif

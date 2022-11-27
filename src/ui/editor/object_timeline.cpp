@@ -8,6 +8,9 @@
 void ObjectTimeline::_register_methods() {
     dev_register_method(ObjectTimeline, _ready);
     dev_register_method(ObjectTimeline, on_song_position_updated);
+    dev_register_method(ObjectTimeline, on_timeline_zoom_updated);
+    dev_register_method(ObjectTimeline, on_mouse_entered);
+    dev_register_method(ObjectTimeline, on_mouse_exited);
 }
 
 void ObjectTimeline::_init() { init_tick_color_schemes(); }
@@ -17,15 +20,25 @@ void ObjectTimeline::_ready() {
 
     tick_object = ResourceLoader::get_singleton()->load(
         "res://scenes/editor/TimelineTick.tscn");
+
+    auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
+    beatmap->connect("timeline_zoom_updated", this, "on_timeline_zoom_updated");
+
+    connect("mouse_entered", this, "on_mouse_entered");
+    connect("mouse_exited", this, "on_mouse_exited");
 }
 
 void ObjectTimeline::draw_ticks(float percent_missing, int64_t beat_number,
                                 TimingPoint *control_point) {
+    prev_percent_missing = percent_missing;
+    prev_beat_number = beat_number;
+    prev_control_point = control_point;
+
     auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
 
-    float snap_length = control_point->get_beat_length() /
-                        control_point->get_meter() /
-                        beatmap->get_beat_divisor();
+    float snap_length =
+        control_point->get_beat_length() / control_point->get_meter() /
+        beatmap->get_beat_divisor() * beatmap->get_timeline_zoom();
     float offset = snap_length * percent_missing;
 
     auto tick_data = determine_ticks(offset, snap_length, beat_number);
@@ -174,3 +187,15 @@ Color ObjectTimeline::get_tick_color(int64_t beat_divisor, int64_t index) {
     Color color = colors[(int)index];
     return color;
 }
+
+void ObjectTimeline::on_timeline_zoom_updated(float timeline_zoom) {
+    draw_ticks(prev_percent_missing, prev_beat_number, prev_control_point);
+}
+
+void ObjectTimeline::set_hovering(bool hovering) { this->hovering = hovering; }
+
+bool ObjectTimeline::is_hovering() { return hovering; }
+
+void ObjectTimeline::on_mouse_entered() { hovering = true; }
+
+void ObjectTimeline::on_mouse_exited() { hovering = false; }
