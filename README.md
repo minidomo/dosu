@@ -38,13 +38,7 @@ make plugin
 
 5. Running the project
 
-Launch Godot and open both `dosu/project.godot`. Run the project!
-
-**Note:** When opening the project in Godot, files will sometimes get modified unintentionally and may cause unintended behavior when running the project. Ensure that files are unmodified prior to running. If changes are made, restore the original files and reload changes in Godot:
-
-```
-git restore .
-```
+Launch Godot and open `dosu/project.godot`. Run the project!
 
 ## Other
 
