@@ -53,3 +53,11 @@ String Util::limit_decimal(float value, int max_digits) {
 
     return String::num_real(value).pad_decimals(max_digits);
 }
+
+bool Util::float_gte(float a, float b) {
+    return a > b || Math::is_equal_approx(a, b);
+}
+
+bool Util::float_lte(float a, float b) {
+    return a < b || Math::is_equal_approx(a, b);
+}

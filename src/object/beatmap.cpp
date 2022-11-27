@@ -571,3 +571,19 @@ String Beatmap::get_background_file_path(Node *node, Beatmap *beatmap) {
         return get_dir_path(node, beatmap) + "/" + bg_filename;
     }
 }
+
+TimingPoint *Beatmap::get_control_point_for_time(int64_t ms) {
+    TimingPoint *ret = nullptr;
+
+    for (auto tp : timing_points) {
+        if (tp->is_uninherited()) {
+            if (ret == nullptr) {
+                ret = tp;
+            } else if (tp->get_time() <= ms) {
+                ret = tp;
+            }
+        }
+    }
+
+    return ret;
+}

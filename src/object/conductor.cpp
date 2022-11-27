@@ -140,6 +140,8 @@ float Conductor::get_song_position() { return song_position; }
  * the song duration
  * - accessible: bool - whether the beat is accessible. true if time ==
  * accessible_time, false otherwise
+ * - step: float - the time between beats which is seconds_per_beat /
+ * beat_divisor
  */
 Dictionary Conductor::get_beat(float position, float song_offset,
                                int64_t beat_offset, int64_t beat_divisor) {
@@ -149,12 +151,12 @@ Dictionary Conductor::get_beat(float position, float song_offset,
     float step = seconds_per_beat / beat_divisor;
     int64_t index = 0;
 
-    if (song_offset <= position) {
+    if (Util::float_gte(position, song_offset)) {
         bool on_beat = false;
 
         // time will be on the beat after the position
-        while (time < position) {
-            on_beat = time == position;
+        while (Util::float_lte(time, position)) {
+            on_beat = Math::is_equal_approx(time, position);
             time += step;
             index++;
         }
@@ -193,8 +195,8 @@ Dictionary Conductor::get_beat(float position, float song_offset,
         bool on_beat = false;
 
         // time will be on the beat before the position
-        while (time > position) {
-            on_beat = time == position;
+        while (Util::float_gte(time, position)) {
+            on_beat = Math::is_equal_approx(time, position);
             time -= step;
             index--;
         }
@@ -218,13 +220,14 @@ Dictionary Conductor::get_beat(float position, float song_offset,
     }
 
     float accessible_time = Math::clamp<float>(time, 0, get_total_duration());
-    bool accessible = accessible_time == time;
+    bool accessible = Math::is_equal_approx(accessible_time, time);
 
     Dictionary ret;
     ret["time"] = time;
     ret["index"] = index;
     ret["accessible_time"] = accessible_time;
     ret["accessible"] = accessible;
+    ret["step"] = step;
 
     return ret;
 }
@@ -234,7 +237,7 @@ void Conductor::toggle_pause() {
         set_stream_paused(!get_stream_paused());
     } else {
         float target = song_position;
-        if (target == get_total_duration()) {
+        if (Math::is_equal_approx(target, get_total_duration())) {
             target = 0;
         }
 

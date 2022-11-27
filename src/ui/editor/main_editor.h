@@ -3,7 +3,9 @@
 
 #include <ColorRect.hpp>
 #include <Control.hpp>
+#include <InputEvent.hpp>
 #include <Label.hpp>
+#include <Ref.hpp>
 #include <vector>
 
 #include "common/common.h"
@@ -44,6 +46,7 @@ class MainEditor : public Control {
     void _init();
 
     void _ready();
+    void _input(Ref<InputEvent> event);
 
     void on_tab_clicked(int index);
     void on_icon_button_pressed(int index);
