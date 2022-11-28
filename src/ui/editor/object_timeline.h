@@ -4,7 +4,6 @@
 #include <Control.hpp>
 #include <PackedScene.hpp>
 #include <Ref.hpp>
-#include <tuple>
 #include <vector>
 
 #include "common/common.h"
@@ -29,11 +28,10 @@ class ObjectTimeline : public Control {
     int64_t prev_beat_number;
     TimingPoint *prev_control_point;
 
-    vector<tuple<float, int64_t>> determine_ticks(float offset,
-                                                  float snap_length,
-                                                  int64_t beat_number);
-    void setup_tick(TimelineTick *tick, tuple<float, int64_t> tick_data,
-                    int64_t meter, int64_t beat_divisor);
+    vector<Dictionary> determine_ticks(float offset, float snap_length,
+                                       int64_t beat_number);
+    void setup_tick(TimelineTick *tick, Dictionary tick_data, int64_t meter,
+                    int64_t beat_divisor);
     void draw_ticks(float percent_missing, int64_t beat_number,
                     TimingPoint *control_point);
 

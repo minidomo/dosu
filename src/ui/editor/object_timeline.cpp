@@ -102,9 +102,15 @@ void ObjectTimeline::on_song_position_updated(float song_position) {
     draw_ticks(percent_missing, beat_number, control_point);
 }
 
-vector<tuple<float, int64_t>> ObjectTimeline::determine_ticks(
-    float offset, float snap_length, int64_t beat_number) {
-    vector<tuple<float, int64_t>> ret;
+/**
+ * @return a vector of Dictionaries containing data on each tick.
+ * - x: float - the x position of the tick
+ * - index: int64_t - the index of the beat this tick is on (can be negative)
+ */
+vector<Dictionary> ObjectTimeline::determine_ticks(float offset,
+                                                   float snap_length,
+                                                   int64_t beat_number) {
+    vector<Dictionary> ret;
 
     float center_x = get_size().x / 2;
     float start = center_x + offset;
@@ -113,25 +119,24 @@ vector<tuple<float, int64_t>> ObjectTimeline::determine_ticks(
 
     index = beat_number - 1;
     for (float pos_x = prev; pos_x >= 0; pos_x -= snap_length) {
-        ret.push_back(make_tuple(pos_x, index));
+        ret.push_back(Dictionary::make("x", pos_x, "index", index));
         index--;
     }
 
     index = beat_number;
     for (float pos_x = start; pos_x < get_size().x; pos_x += snap_length) {
-        ret.push_back(make_tuple(pos_x, index));
+        ret.push_back(Dictionary::make("x", pos_x, "index", index));
         index++;
     }
 
     return ret;
 }
 
-void ObjectTimeline::setup_tick(TimelineTick *tick,
-                                tuple<float, int64_t> tick_data, int64_t meter,
-                                int64_t beat_divisor) {
+void ObjectTimeline::setup_tick(TimelineTick *tick, Dictionary tick_data,
+                                int64_t meter, int64_t beat_divisor) {
     int64_t ticks_per_measure = meter * beat_divisor;
 
-    int64_t index = std::get<1>(tick_data);
+    int64_t index = tick_data["index"];
     if (index % ticks_per_measure == 0) {
         tick->set_height(32);
     } else if (index % beat_divisor == 0) {
@@ -144,7 +149,7 @@ void ObjectTimeline::setup_tick(TimelineTick *tick,
         get_tick_color(beat_divisor, Util::mod(index, beat_divisor)));
 
     Vector2 pos;
-    pos.x = std::get<0>(tick_data);
+    pos.x = tick_data["x"];
     pos.y = get_size().y - tick->get_height();
     tick->set_position(pos);
 }

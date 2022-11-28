@@ -34,6 +34,7 @@ void MainEditor::_ready() {
     progress_label = get_node<Label>("BottomBar/Progress/Label");
     timeline = get_node<Timeline>("BottomBar/Timeline");
     song_setup_body = get_node<SongSetupBody>("Body/SongSetupBody");
+    compose_body = get_node<ComposeBody>("Body/ComposeBody");
     object_timeline = get_node<ObjectTimeline>("TopBar/ObjectTimeline");
 
     timeline->connect("timeline_click", this, "on_timeline_click");
