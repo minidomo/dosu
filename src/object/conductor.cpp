@@ -7,9 +7,9 @@
 #include "common/util.h"
 
 void Conductor::_register_methods() {
-    register_method("_ready", &Conductor::_ready);
-    register_method("_physics_process", &Conductor::_physics_process);
-    register_method("on_timeout", &Conductor::on_timeout);
+    dev_register_method(Conductor, _ready);
+    dev_register_method(Conductor, _process);
+    dev_register_method(Conductor, on_timeout);
 
     register_signal<Conductor>("beat", "beat", GODOT_VARIANT_TYPE_INT);
     register_signal<Conductor>("measure", "measure", GODOT_VARIANT_TYPE_INT);
@@ -37,14 +37,13 @@ void Conductor::_ready() {
     start_timer->connect("timeout", this, "on_timeout");
 }
 
-void Conductor::_physics_process(real_t delta) {
-    if (is_playing() && !get_stream_paused()) {
-        song_position = get_playback_position() +
-                        AudioServer::get_singleton()->get_time_since_last_mix();
-        song_position -= AudioServer::get_singleton()->get_output_latency();
-        song_position =
-            Math::clamp<float>(song_position, 0, get_total_duration());
+void Conductor::_process(float delta) {
+    if (!is_actually_playing()) return;
 
+    float time = calculate_song_position();
+
+    if (time > song_position) {
+        song_position = time;
         emit_signal("song_position_updated", song_position);
 
         song_position_in_beats =
@@ -52,6 +51,14 @@ void Conductor::_physics_process(real_t delta) {
             beats_before_start;
         report_beat();
     }
+}
+
+float Conductor::calculate_song_position() {
+    float time = get_playback_position() +
+                 AudioServer::get_singleton()->get_time_since_last_mix();
+    time -= AudioServer::get_singleton()->get_output_latency();
+    time = Math::clamp<float>(time, 0, get_total_duration());
+    return time;
 }
 
 void Conductor::report_beat() {
@@ -276,4 +283,8 @@ void Conductor::go_to(float time, ConductorGoType action) {
 void Conductor::go_to_percent(float percent, ConductorGoType action) {
     float time = percent * get_total_duration();
     go_to(time, action);
+}
+
+bool Conductor::is_actually_playing() {
+    return is_playing() && !get_stream_paused();
 }

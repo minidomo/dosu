@@ -189,20 +189,30 @@ void MainEditor::_process(float delta) {
             }
         } else {
             float song_position = conductor->get_song_position();
-            auto beatmap =
-                MapManager::get_singleton(this)->get_editor_beatmap();
-            auto control_point = beatmap->get_control_point_for_time(
-                Util::to_milliseconds(song_position));
+            float target_time = 0;
 
-            float song_offset = Util::to_seconds(control_point->get_time());
-            int64_t beat_offset = scroll_up ? -1 : 1;
+            if (conductor->is_actually_playing()) {
+                float sign = scroll_up ? -1.f : 1.f;
+                float step = .5f * sign;
+                target_time = Math::clamp<float>(
+                    song_position + step, 0, conductor->get_total_duration());
+            } else {
+                auto beatmap =
+                    MapManager::get_singleton(this)->get_editor_beatmap();
+                auto control_point = beatmap->get_control_point_for_time(
+                    Util::to_milliseconds(song_position));
 
-            Dictionary beat_info =
-                conductor->get_beat(song_position, song_offset, beat_offset,
-                                    beatmap->get_beat_divisor());
+                float song_offset = Util::to_seconds(control_point->get_time());
+                int64_t beat_offset = scroll_up ? -1 : 1;
 
-            float accessible_time = beat_info["accessible_time"];
-            conductor->go_to(accessible_time, ConductorGoType::Maintain);
+                Dictionary beat_info =
+                    conductor->get_beat(song_position, song_offset, beat_offset,
+                                        beatmap->get_beat_divisor());
+
+                target_time = beat_info["accessible_time"];
+            }
+
+            conductor->go_to(target_time, ConductorGoType::Maintain);
         }
     }
 }

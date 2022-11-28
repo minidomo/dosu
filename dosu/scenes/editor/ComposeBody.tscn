@@ -27,6 +27,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="CircleButton" type="Button" parent="LeftBar"]
+anchor_top = 0.431034
+anchor_right = 1.0
+anchor_bottom = 0.568965
+margin_bottom = 3.05176e-05
+text = "Circle"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
 [node name="PlayArea" parent="." instance=ExtResource( 2 )]
 anchor_left = 0.20625
 anchor_top = 0.0137934

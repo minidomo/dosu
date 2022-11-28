@@ -30,12 +30,14 @@ class Conductor : public AudioStreamPlayer {
 
     Timer *start_timer;
 
+    float calculate_song_position();
+
    public:
     static void _register_methods();
     void _init();
 
     void _ready();
-    void _physics_process(real_t delta);
+    void _process(float delta);
 
     void report_beat();
     void play_with_beat_offset(int64_t beats);
@@ -58,6 +60,7 @@ class Conductor : public AudioStreamPlayer {
     void toggle_pause();
     void go_to(float time, ConductorGoType action);
     void go_to_percent(float percent, ConductorGoType action);
+    bool is_actually_playing();
 };
 
 #endif
