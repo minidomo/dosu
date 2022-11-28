@@ -12,6 +12,11 @@ class MapManager : public Node {
     GODOT_CLASS(MapManager, Node);
 
    private:
+    int64_t min_placeable_x_coordinate;
+    int64_t min_placeable_y_coordinate;
+    int64_t max_placeable_x_coordinate;
+    int64_t max_placeable_y_coordinate;
+
     RandomNumberGenerator* random;
 
     Beatmap* editor_beatmap;
@@ -52,6 +57,11 @@ class MapManager : public Node {
     void refresh_editor_beatmap();
     void save_editor_beatmap();
     void update_background_editor_beatmap(String image_path);
+
+    int64_t get_min_placeable_x_coordinate();
+    int64_t get_min_placeable_y_coordinate();
+    int64_t get_max_placeable_x_coordinate();
+    int64_t get_max_placeable_y_coordinate();
 };
 
 #endif

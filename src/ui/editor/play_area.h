@@ -14,6 +14,9 @@ class PlayArea : public Control {
     void _init();
 
     void _ready();
+
+    Vector2 convert_to_internal(Vector2 external_coordinate);
+    Vector2 convert_to_external(Vector2 internal_coordinate);
 };
 
 #endif

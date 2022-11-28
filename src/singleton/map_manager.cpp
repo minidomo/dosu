@@ -21,6 +21,10 @@ void MapManager::_init() {
     audio_extensions.append(".mp3");
     image_extensions.append(".jpg");
     map_extension = ".osu";
+    min_placeable_x_coordinate = 0;
+    min_placeable_y_coordinate = 0;
+    max_placeable_x_coordinate = 512;
+    max_placeable_y_coordinate = 384;
 }
 
 void MapManager::_ready() {
@@ -248,4 +252,20 @@ void MapManager::update_background_editor_beatmap(String image_path) {
     dev_assert(dir->copy(image_path, new_image_path) == Error::OK);
 
     editor_beatmap->set_background_filename(image_filename);
+}
+
+int64_t MapManager::get_min_placeable_x_coordinate() {
+    return min_placeable_x_coordinate;
+}
+
+int64_t MapManager::get_min_placeable_y_coordinate() {
+    return min_placeable_y_coordinate;
+}
+
+int64_t MapManager::get_max_placeable_x_coordinate() {
+    return max_placeable_x_coordinate;
+}
+
+int64_t MapManager::get_max_placeable_y_coordinate() {
+    return max_placeable_y_coordinate;
 }

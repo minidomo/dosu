@@ -23,7 +23,7 @@ void Background::_ready() {
     dimmer = get_node<ColorRect>("Dim");
 
     update_image();
-    dimmer->set_frame_color(Color(0, 0, 0, dim));
+    set_dim(dim);
 }
 
 void Background::set_background_path(String background_path) {
@@ -34,10 +34,8 @@ void Background::set_background_path(String background_path) {
 }
 
 void Background::set_dim(float dim) {
-    if (dim != this->dim) {
-        this->dim = dim;
-        dimmer->set_frame_color(Color(0, 0, 0, dim));
-    }
+    this->dim = dim;
+    dimmer->set_frame_color(Color(0, 0, 0, dim));
 }
 
 String Background::get_background_path() { return background_path; }

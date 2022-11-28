@@ -7,5 +7,6 @@
 #include "./hit_object.h"
 #include "./timing_point.h"
 #include "enum/index.h"
+#include "game/index.h"
 
 #endif
