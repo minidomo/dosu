@@ -25,6 +25,7 @@ void HitObject::parse_line(String line) {
     start_y = data[1].to_int();
     start_time = data[2].to_int();
     new_combo = !!(hit_type & +HitType::NewCombo);
+    hit_sound = data[4].to_int();
 
     if (hit_type & +HitType::Spinner) {
         end_time = extras[0].to_int();
@@ -59,3 +60,35 @@ void HitObject::copy(HitObject *hit_object) {
     new_combo = hit_object->new_combo;
     end_time = hit_object->end_time;
 }
+
+void HitObject::set_hit_type(int64_t hit_type) { this->hit_type = hit_type; }
+
+void HitObject::set_start_x(int64_t start_x) { this->start_x = start_x; }
+
+void HitObject::set_start_y(int64_t start_y) { this->start_y = start_y; }
+
+void HitObject::set_start_time(int64_t start_time) {
+    this->start_time = start_time;
+}
+
+void HitObject::set_hit_sound(int64_t hit_sound) {
+    this->hit_sound = hit_sound;
+}
+
+void HitObject::set_new_combo(bool new_combo) { this->new_combo = new_combo; }
+
+void HitObject::set_end_time(int64_t end_time) { this->end_time = end_time; }
+
+int64_t HitObject::get_hit_type() { return hit_type; }
+
+int64_t HitObject::get_start_x() { return start_x; }
+
+int64_t HitObject::get_start_y() { return start_y; }
+
+int64_t HitObject::get_start_time() { return start_time; }
+
+int64_t HitObject::get_hit_sound() { return hit_sound; }
+
+bool HitObject::is_new_combo() { return new_combo; }
+
+int64_t HitObject::get_end_time() { return end_time; }
