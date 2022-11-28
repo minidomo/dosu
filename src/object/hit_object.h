@@ -45,6 +45,10 @@ class HitObject : public Node {
     int64_t get_hit_sound();
     bool is_new_combo();
     int64_t get_end_time();
+
+    bool is_normal();
+    bool is_spinner();
+    bool is_slider();
 };
 
 #endif

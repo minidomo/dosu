@@ -591,3 +591,17 @@ TimingPoint *Beatmap::get_control_point_for_time(int64_t ms) {
 
     return ret;
 }
+
+vector<HitObject *> Beatmap::find_hit_objects(int64_t start_time,
+                                              int64_t end_time) {
+    vector<HitObject *> ret;
+
+    for (auto ho : hit_objects) {
+        auto time = ho->get_start_time();
+        if (start_time <= time && time <= end_time) {
+            ret.push_back(ho);
+        }
+    }
+
+    return ret;
+}

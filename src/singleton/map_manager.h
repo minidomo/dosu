@@ -62,6 +62,7 @@ class MapManager : public Node {
     int64_t get_min_placeable_y_coordinate();
     int64_t get_max_placeable_x_coordinate();
     int64_t get_max_placeable_y_coordinate();
+    int64_t approach_rate_to_ms(float approach_rate);
 };
 
 #endif

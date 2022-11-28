@@ -9,6 +9,7 @@ void ComposeBody::_init() {}
 
 void ComposeBody::_ready() {
     circle_button = get_node<BaseButton>("LeftBar/CircleButton");
+    play_area = get_node<PlayArea>("PlayArea");
 
     circle_button->connect("pressed", this, "on_circle_button_pressed");
 }
@@ -19,3 +20,5 @@ void ComposeBody::on_circle_button_pressed() {
     // update timeline
     // update play area
 }
+
+PlayArea* ComposeBody::get_play_area() { return play_area; }

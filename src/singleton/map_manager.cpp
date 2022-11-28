@@ -269,3 +269,30 @@ int64_t MapManager::get_max_placeable_x_coordinate() {
 int64_t MapManager::get_max_placeable_y_coordinate() {
     return max_placeable_y_coordinate;
 }
+
+int64_t MapManager::approach_rate_to_ms(float approach_rate) {
+    /*
+    AR formula
+    0 <= AR <= 5; 1800 - 120(AR)
+    5 <= AR <= 10; 1200 - 150(AR - 5)
+    */
+
+    // we'll convert AR to an int to prevent floating point errors
+    int64_t ar = (int64_t)Math::round(approach_rate * 10);
+
+    int64_t slope;
+    int64_t start_ms;
+    int64_t offset;
+
+    if (ar < 50) {
+        slope = 12;
+        start_ms = 1800;
+        offset = 0;
+    } else {
+        slope = 15;
+        start_ms = 1200;
+        offset = 50;
+    }
+
+    return start_ms - slope * (ar - offset);
+}

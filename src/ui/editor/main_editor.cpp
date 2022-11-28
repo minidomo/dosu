@@ -28,6 +28,7 @@ void MainEditor::_register_methods() {
 void MainEditor::_init() { tab_index = -1; }
 
 void MainEditor::_ready() {
+    /* obtaining initial nodes */
     background = get_node<Background>("Background");
     conductor = get_node<Conductor>("Conductor");
     time_label = get_node<Label>("BottomBar/Time/Label");
@@ -36,11 +37,16 @@ void MainEditor::_ready() {
     song_setup_body = get_node<SongSetupBody>("Body/SongSetupBody");
     compose_body = get_node<ComposeBody>("Body/ComposeBody");
     object_timeline = get_node<ObjectTimeline>("TopBar/ObjectTimeline");
+    play_area = compose_body->get_play_area();
+
+    /* connects */
 
     timeline->connect("timeline_click", this, "on_timeline_click");
     conductor->connect("song_position_updated", this,
                        "on_song_position_updated");
     get_tree()->connect("files_dropped", this, "on_files_dropped");
+
+    /* init stuff */
 
     init_conductor();
     init_bodies();
@@ -48,11 +54,18 @@ void MainEditor::_ready() {
     init_icon_buttons();
     init_timeline_zoom_buttons();
 
+    /* final things */
+
     on_tab_clicked(2);
+
     background->set_background_path(Beatmap::get_background_file_path(
         this, MapManager::get_singleton(this)->get_editor_beatmap()));
+
     object_timeline->set_conductor(conductor);
     object_timeline->on_song_position_updated(0);
+
+    play_area->set_conductor(conductor);
+    play_area->on_song_position_updated(0);
 }
 
 void MainEditor::init_bodies() {

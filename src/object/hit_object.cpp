@@ -27,11 +27,11 @@ void HitObject::parse_line(String line) {
     new_combo = !!(hit_type & +HitType::NewCombo);
     hit_sound = data[4].to_int();
 
-    if (hit_type & +HitType::Spinner) {
+    if (is_spinner()) {
         end_time = extras[0].to_int();
     }
 
-    if (hit_type & +HitType::Slider) {
+    if (is_slider()) {
     }
 }
 
@@ -41,9 +41,9 @@ String HitObject::to_file_string() {
     ret += "," + String::num_int64(start_time);
     ret += "," + String::num_int64(hit_type);
 
-    if (hit_type & +HitType::Spinner) {
+    if (is_spinner()) {
         ret += "," + String::num_int64(end_time);
-    } else if (hit_type & +HitType::Slider) {
+    } else if (is_slider()) {
         // TODO
     }
 
@@ -92,3 +92,9 @@ int64_t HitObject::get_hit_sound() { return hit_sound; }
 bool HitObject::is_new_combo() { return new_combo; }
 
 int64_t HitObject::get_end_time() { return end_time; }
+
+bool HitObject::is_normal() { return !!(hit_type & +HitType::Normal); }
+
+bool HitObject::is_spinner() { return !!(hit_type & +HitType::Spinner); }
+
+bool HitObject::is_slider() { return !!(hit_type & +HitType::Slider); }
