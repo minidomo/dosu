@@ -18,6 +18,7 @@ class Circle : public Node2D {
     AudioStreamPlayer *hit_sound;
 
     HitObject *hit_object;
+    float base_size;
     Color color;
     float opacity;
 
@@ -32,6 +33,8 @@ class Circle : public Node2D {
     void play_hit_sound();
     void set_hit_object(HitObject *hit_object);
     HitObject *get_hit_object();
+    void set_circle_size(float circle_size);
+    void set_approach_circle_visible(bool visible);
 };
 
 #endif

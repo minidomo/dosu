@@ -2,6 +2,8 @@
 #define dosu_file_play_area
 
 #include <Control.hpp>
+#include <PackedScene.hpp>
+#include <Ref.hpp>
 #include <vector>
 
 #include "common/common.h"
@@ -14,6 +16,12 @@ class PlayArea : public Control {
    private:
     Conductor *conductor;
     Control *circle_container;
+
+    Ref<PackedScene> circle_object;
+
+    void setup_circle(Circle *circle, HitObject *circle_data);
+    void draw_hit_objects(vector<HitObject *> hit_objects);
+    void draw_circle_objects(vector<HitObject *> hit_objects);
 
    public:
     static void _register_methods();
@@ -28,8 +36,6 @@ class PlayArea : public Control {
     Conductor *get_conductor();
 
     void on_song_position_updated(float song_position);
-    void draw_hit_objects(vector<HitObject *> hit_objects);
-    void draw_circle_objects(vector<HitObject *> hit_objects);
 };
 
 #endif

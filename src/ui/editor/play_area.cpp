@@ -1,6 +1,9 @@
 #include "./play_area.h"
 
+#include <ResourceLoader.hpp>
+
 #include "common/util.h"
+#include "object/game/circle.h"
 #include "singleton/map_manager.h"
 
 void PlayArea::_register_methods() {
@@ -12,6 +15,9 @@ void PlayArea::_init() {}
 
 void PlayArea::_ready() {
     circle_container = get_node<Control>("HitObjects/Circles");
+
+    circle_object = ResourceLoader::get_singleton()->load(
+        "res://scenes/hit_object/Circle.tscn");
 }
 
 Vector2 PlayArea::convert_to_internal(Vector2 external_coordinate) {
@@ -88,4 +94,73 @@ void PlayArea::draw_hit_objects(vector<HitObject *> hit_objects) {
     draw_circle_objects(circle_objects);
 }
 
-void PlayArea::draw_circle_objects(vector<HitObject *> hit_objects) {}
+void PlayArea::draw_circle_objects(vector<HitObject *> hit_objects) {
+    /*
+    objects in the play area
+    - objects at or after the song position
+        - changing approach circle
+        - if at song position
+            - play hit sound
+    - objects before the song position
+        - are fading
+    */
+    int64_t diff = hit_objects.size() - circle_container->get_child_count();
+
+    if (diff < 0) {
+        // remove circles
+        for (int i = 0; i < -diff; i++) {
+            Node *child = circle_container->get_child(0);
+            circle_container->remove_child(child);
+            child->queue_free();
+        }
+    } else if (diff > 0) {
+        // add circles
+        for (int i = 0; i < diff; i++) {
+            auto circle = Object::cast_to<Circle>(circle_object->instance());
+            circle_container->add_child(circle);
+        }
+    }
+
+    Array children = circle_container->get_children();
+    for (int i = 0; i < children.size(); i++) {
+        auto circle = Object::cast_to<Circle>(children[i]);
+        setup_circle(circle, hit_objects[i]);
+    }
+}
+
+void PlayArea::setup_circle(Circle *circle, HitObject *circle_data) {
+    // adjust scale for cs
+    // adjust scale for approach circle
+    // - based on hit object position to song position
+    // adjust modulate for fading out
+    // - based on hit object position to song position
+    auto map_manager = MapManager::get_singleton(this);
+
+    int64_t song_position =
+        Util::to_milliseconds(conductor->get_song_position());
+    int64_t object_time = circle_data->get_start_time();
+
+    auto beatmap = map_manager->get_editor_beatmap();
+    int64_t fade_out_time = map_manager->get_fade_out_time();
+    int64_t fade_in_time =
+        map_manager->approach_rate_to_ms(beatmap->get_approach_rate());
+
+    circle->set_approach_circle_visible(true);
+    circle->set_circle_size(beatmap->get_circle_size());
+
+    if (object_time < song_position) {
+        // fading out, approach circle not touching but borders circle
+        int64_t diff = std::abs(object_time - song_position);
+        float percent = (float)diff / (float)fade_out_time;
+        circle->set_opacity(percent);
+    } else if (object_time > song_position) {
+        // fade in, adjust approach circle
+        int64_t diff = std::abs(object_time - song_position);
+        float percent = 1.f - (float)diff / (float)fade_in_time;
+        circle->set_opacity(percent);
+    } else {
+        // play hit sound (make sure this gets played only once), approach
+        // circle touching border
+        circle->set_opacity(1);
+    }
+}

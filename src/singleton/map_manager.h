@@ -12,6 +12,8 @@ class MapManager : public Node {
     GODOT_CLASS(MapManager, Node);
 
    private:
+    int64_t fade_out_time;
+
     int64_t min_placeable_x_coordinate;
     int64_t min_placeable_y_coordinate;
     int64_t max_placeable_x_coordinate;
@@ -31,6 +33,8 @@ class MapManager : public Node {
     String create_unique_map_id(String set_id);
 
     String extract_audio_extension(String file_path);
+
+    float circle_size_to_pixel_for_1080(float circle_size);
 
    public:
     static MapManager* get_singleton(Node* node);
@@ -63,6 +67,8 @@ class MapManager : public Node {
     int64_t get_max_placeable_x_coordinate();
     int64_t get_max_placeable_y_coordinate();
     int64_t approach_rate_to_ms(float approach_rate);
+    int64_t get_fade_out_time();
+    float circle_size_to_pixel(float circle_size);
 };
 
 #endif

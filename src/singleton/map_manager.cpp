@@ -2,6 +2,7 @@
 
 #include <Directory.hpp>
 #include <File.hpp>
+#include <OS.hpp>
 
 #include "./game.h"
 
@@ -25,6 +26,7 @@ void MapManager::_init() {
     min_placeable_y_coordinate = 0;
     max_placeable_x_coordinate = 512;
     max_placeable_y_coordinate = 384;
+    fade_out_time = 750;
 }
 
 void MapManager::_ready() {
@@ -295,4 +297,18 @@ int64_t MapManager::approach_rate_to_ms(float approach_rate) {
     }
 
     return start_ms - slope * (ar - offset);
+}
+
+int64_t MapManager::get_fade_out_time() { return fade_out_time; }
+
+float MapManager::circle_size_to_pixel_for_1080(float circle_size) {
+    // TODO
+    return 0;
+}
+
+float MapManager::circle_size_to_pixel(float circle_size) {
+    auto height = OS::get_singleton()->get_window_size().height;
+    float base_px = circle_size_to_pixel_for_1080(circle_size);
+    float base_height = 1080;
+    return base_px / base_height * height;
 }
