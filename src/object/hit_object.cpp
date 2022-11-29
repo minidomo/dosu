@@ -24,6 +24,7 @@ void HitObject::parse_line(String line) {
     start_x = data[0].to_int();
     start_y = data[1].to_int();
     start_time = data[2].to_int();
+    hit_type = data[3].to_int();
     new_combo = !!(hit_type & +HitType::NewCombo);
     hit_sound = data[4].to_int();
 

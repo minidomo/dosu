@@ -49,11 +49,42 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": true
 }
 
 [node name="Background" parent="." instance=ExtResource( 2 )]
 dim = 0.4
+
+[node name="Body" type="Control" parent="."]
+anchor_top = 0.154
+anchor_right = 1.0
+anchor_bottom = 0.959259
+margin_top = -0.320053
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ComposeBody" parent="Body" instance=ExtResource( 16 )]
+anchor_bottom = 1.0
+
+[node name="TimingBody" type="Control" parent="Body"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Label" type="Label" parent="Body/TimingBody"]
+margin_left = 453.997
+margin_top = 212.712
+margin_right = 696.997
+margin_bottom = 372.712
+text = "timing"
+
+[node name="SongSetupBody" parent="Body" instance=ExtResource( 11 )]
+visible = false
+anchor_top = 0.0
+anchor_bottom = 1.0
+margin_top = 0.0
+margin_bottom = 0.0
 
 [node name="MenuBar" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -139,10 +170,10 @@ __meta__ = {
 }
 
 [node name="ComposeTab" parent="TopBar/Tabs" instance=ExtResource( 4 )]
-anchor_right = 0.333333
+anchor_right = 0.333
 anchor_bottom = 1.0
-margin_right = -144.375
-margin_bottom = -40.3667
+margin_right = 0.220001
+margin_bottom = 7.62939e-06
 title = "compose"
 
 [node name="TimingTab" parent="TopBar/Tabs" instance=ExtResource( 4 )]
@@ -194,34 +225,6 @@ stretch_mode = 3
 __meta__ = {
 "_edit_use_anchors_": true
 }
-
-[node name="Body" type="Control" parent="."]
-anchor_top = 0.154
-anchor_right = 1.0
-anchor_bottom = 0.959
-margin_top = -0.320023
-margin_bottom = 0.279907
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ComposeBody" parent="Body" instance=ExtResource( 16 )]
-margin_bottom = 0.00012207
-
-[node name="TimingBody" type="Control" parent="Body"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="Label" type="Label" parent="Body/TimingBody"]
-margin_left = 453.997
-margin_top = 212.712
-margin_right = 696.997
-margin_bottom = 372.712
-text = "timing"
-
-[node name="SongSetupBody" parent="Body" instance=ExtResource( 11 )]
-visible = false
 
 [node name="BottomBar" type="ColorRect" parent="."]
 anchor_top = 0.959

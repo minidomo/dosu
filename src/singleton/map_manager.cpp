@@ -279,7 +279,7 @@ int64_t MapManager::approach_rate_to_ms(float approach_rate) {
     5 <= AR <= 10; 1200 - 150(AR - 5)
     */
 
-    // we'll convert AR to an int to prevent floating point errors
+    // convert AR to an int to prevent floating point errors
     int64_t ar = (int64_t)Math::round(approach_rate * 10);
 
     int64_t slope;
@@ -301,14 +301,23 @@ int64_t MapManager::approach_rate_to_ms(float approach_rate) {
 
 int64_t MapManager::get_fade_out_time() { return fade_out_time; }
 
-float MapManager::circle_size_to_pixel_for_1080(float circle_size) {
-    // TODO
-    return 0;
+int64_t MapManager::circle_size_to_pixel_for_1080(float circle_size) {
+    /*
+    CS to px formula
+    floor(220 - 18(CS))
+    */
+
+    // convert to int to prevent floating point errors
+    int64_t factor = 10;
+    int64_t cs = (int64_t)Math::round(circle_size * factor);
+    int64_t slope = 18;
+    int64_t start_px = 220 * factor;
+    return (start_px - slope * cs) / factor;
 }
 
-float MapManager::circle_size_to_pixel(float circle_size) {
+int64_t MapManager::circle_size_to_pixel(float circle_size) {
     auto height = OS::get_singleton()->get_window_size().height;
-    float base_px = circle_size_to_pixel_for_1080(circle_size);
+    int64_t base_px = circle_size_to_pixel_for_1080(circle_size);
     float base_height = 1080;
-    return base_px / base_height * height;
+    return (int64_t)(base_px / base_height * height);
 }

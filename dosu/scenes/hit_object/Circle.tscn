@@ -15,10 +15,8 @@ volume_db = -15.0
 [node name="Body" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 
-[node name="Border" type="Sprite" parent="."]
+[node name="ApproachCircle" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 
-[node name="ApproachCircle" type="Sprite" parent="."]
-visible = false
-scale = Vector2( 1.2, 1.2 )
+[node name="Border" type="Sprite" parent="."]
 texture = ExtResource( 2 )

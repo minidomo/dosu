@@ -40,6 +40,16 @@ void SongSetupBody::init_song_metadata() {
     source_row = container->get_node<EditableRow>("Source");
     tags_row = container->get_node<EditableRow>("Tags");
 
+    auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
+    artist_row->set_value(beatmap->get_artist());
+    artist_unicode_row->set_value(beatmap->get_artist_unicode());
+    title_row->set_value(beatmap->get_title());
+    title_unicode_row->set_value(beatmap->get_title_unicode());
+    creator_row->set_value(beatmap->get_creator());
+    difficulty_row->set_value(beatmap->get_version());
+    source_row->set_value(beatmap->get_source());
+    tags_row->set_value(beatmap->to_string_tags());
+
     artist_row->get_line_edit()->connect("text_changed", this,
                                          "on_artist_row_updated");
     artist_unicode_row->get_line_edit()->connect(
@@ -56,17 +66,6 @@ void SongSetupBody::init_song_metadata() {
                                          "on_source_row_updated");
     tags_row->get_line_edit()->connect("text_changed", this,
                                        "on_tags_row_updated");
-
-    auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
-
-    artist_row->set_value(beatmap->get_artist());
-    artist_unicode_row->set_value(beatmap->get_artist_unicode());
-    title_row->set_value(beatmap->get_title());
-    title_unicode_row->set_value(beatmap->get_title_unicode());
-    creator_row->set_value(beatmap->get_creator());
-    difficulty_row->set_value(beatmap->get_version());
-    source_row->set_value(beatmap->get_source());
-    tags_row->set_value(beatmap->to_string_tags());
 }
 
 void SongSetupBody::init_song_difficulty() {
@@ -79,6 +78,12 @@ void SongSetupBody::init_song_difficulty() {
     overall_difficulty_row =
         container->get_node<SlidableRow>("OverallDifficulty");
 
+    auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
+    hp_drain_rate_row->set_value(beatmap->get_hp_drain_rate());
+    circle_size_row->set_value(beatmap->get_circle_size());
+    approach_rate_row->set_value(beatmap->get_approach_rate());
+    overall_difficulty_row->set_value(beatmap->get_overall_difficulty());
+
     hp_drain_rate_row->get_slider()->connect("value_changed", this,
                                              "on_hp_drain_rate_row_updated");
     circle_size_row->get_slider()->connect("value_changed", this,
@@ -87,13 +92,6 @@ void SongSetupBody::init_song_difficulty() {
                                              "on_approach_rate_row_updated");
     overall_difficulty_row->get_slider()->connect(
         "value_changed", this, "on_overall_difficulty_row_updated");
-
-    auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
-
-    hp_drain_rate_row->set_value(beatmap->get_hp_drain_rate());
-    circle_size_row->set_value(beatmap->get_circle_size());
-    approach_rate_row->set_value(beatmap->get_approach_rate());
-    overall_difficulty_row->set_value(beatmap->get_overall_difficulty());
 }
 
 void SongSetupBody::on_song_difficulty_update(float value, int index) {

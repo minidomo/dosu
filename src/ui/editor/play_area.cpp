@@ -3,12 +3,13 @@
 #include <ResourceLoader.hpp>
 
 #include "common/util.h"
-#include "object/game/circle.h"
 #include "singleton/map_manager.h"
 
 void PlayArea::_register_methods() {
     dev_register_method(PlayArea, _ready);
     dev_register_method(PlayArea, on_song_position_updated);
+    dev_register_method(PlayArea, on_approach_rate_updated);
+    dev_register_method(PlayArea, on_circle_size_updated);
 }
 
 void PlayArea::_init() {}
@@ -18,6 +19,10 @@ void PlayArea::_ready() {
 
     circle_object = ResourceLoader::get_singleton()->load(
         "res://scenes/hit_object/Circle.tscn");
+
+    auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
+    beatmap->connect("approach_rate_updated", this, "on_approach_rate_updated");
+    beatmap->connect("circle_size_updated", this, "on_circle_size_updated");
 }
 
 Vector2 PlayArea::convert_to_internal(Vector2 external_coordinate) {
@@ -68,15 +73,13 @@ void PlayArea::set_conductor(Conductor *conductor) {
 Conductor *PlayArea::get_conductor() { return conductor; }
 
 void PlayArea::on_song_position_updated(float song_position) {
-    Godot::print("play area got song position: " +
-                 String::num_int64(Util::to_milliseconds(song_position)));
-
     auto map_manager = MapManager::get_singleton(this);
     auto beatmap = map_manager->get_editor_beatmap();
 
-    int64_t start_time = Util::to_milliseconds(song_position);
-    int64_t end_time = start_time + map_manager->approach_rate_to_ms(
-                                        beatmap->get_approach_rate());
+    int64_t mid_point = Util::to_milliseconds(song_position);
+    int64_t start_time = mid_point - map_manager->get_fade_out_time();
+    int64_t end_time = mid_point + map_manager->approach_rate_to_ms(
+                                       beatmap->get_approach_rate());
 
     auto hit_objects = beatmap->find_hit_objects(start_time, end_time);
     draw_hit_objects(hit_objects);
@@ -135,32 +138,57 @@ void PlayArea::setup_circle(Circle *circle, HitObject *circle_data) {
     // adjust modulate for fading out
     // - based on hit object position to song position
     auto map_manager = MapManager::get_singleton(this);
-
-    int64_t song_position =
-        Util::to_milliseconds(conductor->get_song_position());
-    int64_t object_time = circle_data->get_start_time();
-
     auto beatmap = map_manager->get_editor_beatmap();
-    int64_t fade_out_time = map_manager->get_fade_out_time();
-    int64_t fade_in_time =
-        map_manager->approach_rate_to_ms(beatmap->get_approach_rate());
 
     circle->set_approach_circle_visible(true);
     circle->set_circle_size(beatmap->get_circle_size());
 
-    if (object_time < song_position) {
+    Vector2 pos;
+    pos.x = (float)circle_data->get_start_x();
+    pos.y = (float)circle_data->get_start_y();
+    circle->set_position(convert_to_external(pos));
+
+    int64_t song_position =
+        Util::to_milliseconds(conductor->get_song_position());
+    int64_t start_time = circle_data->get_start_time();
+
+    int64_t fade_out_time = map_manager->get_fade_out_time();
+    int64_t fade_in_time =
+        map_manager->approach_rate_to_ms(beatmap->get_approach_rate());
+
+    int64_t diff = start_time - song_position;
+    int64_t abs_diff = std::abs(diff);
+
+    if (abs_diff < 10) {
+        Godot::print(Util::to_timestamp(start_time) + " " +
+                     String::num_int64(diff));
+    }
+
+    if (start_time < song_position) {
         // fading out, approach circle not touching but borders circle
-        int64_t diff = std::abs(object_time - song_position);
-        float percent = (float)diff / (float)fade_out_time;
+        float percent = 1.f - (float)abs_diff / fade_out_time;
         circle->set_opacity(percent);
-    } else if (object_time > song_position) {
+        circle->approach_circle_standard_position();
+    } else if (start_time > song_position) {
         // fade in, adjust approach circle
-        int64_t diff = std::abs(object_time - song_position);
-        float percent = 1.f - (float)diff / (float)fade_in_time;
+        float percent = 1.f - (float)abs_diff / fade_in_time;
         circle->set_opacity(percent);
+        circle->set_approach_circle_progress(percent);
     } else {
+        // TODO figure out better way to play hit sound
         // play hit sound (make sure this gets played only once), approach
         // circle touching border
         circle->set_opacity(1);
+        circle->set_approach_circle_progress(1);
+        circle->play_hit_sound();
+        // Godot::print("same time: " + Util::to_timestamp(song_position));
     }
+}
+
+void PlayArea::on_approach_rate_updated() {
+    on_song_position_updated(conductor->get_song_position());
+}
+
+void PlayArea::on_circle_size_updated() {
+    on_song_position_updated(conductor->get_song_position());
 }

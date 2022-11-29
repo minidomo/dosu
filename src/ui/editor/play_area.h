@@ -8,6 +8,7 @@
 
 #include "common/common.h"
 #include "object/conductor.h"
+#include "object/game/circle.h"
 #include "object/hit_object.h"
 
 class PlayArea : public Control {
@@ -36,6 +37,8 @@ class PlayArea : public Control {
     Conductor *get_conductor();
 
     void on_song_position_updated(float song_position);
+    void on_approach_rate_updated();
+    void on_circle_size_updated();
 };
 
 #endif
