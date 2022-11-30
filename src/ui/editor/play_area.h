@@ -15,6 +15,8 @@ class PlayArea : public Control {
     GODOT_CLASS(PlayArea, Control);
 
    private:
+    Dictionary played_hit_sounds;
+
     Conductor *conductor;
     Control *circle_container;
 
@@ -23,6 +25,10 @@ class PlayArea : public Control {
     void setup_circle(Circle *circle, HitObject *circle_data);
     void draw_hit_objects(vector<HitObject *> hit_objects);
     void draw_circle_objects(vector<HitObject *> hit_objects);
+
+    bool can_play_hit_sound(int64_t hit_sound_time, int64_t song_time);
+    void play_hit_sound(Circle *circle, int64_t hit_sound_time);
+    void update_played_hit_sounds(int64_t song_time);
 
    public:
     static void _register_methods();

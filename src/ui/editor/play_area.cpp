@@ -81,6 +81,8 @@ void PlayArea::on_song_position_updated(float song_position) {
     int64_t end_time = mid_point + map_manager->approach_rate_to_ms(
                                        beatmap->get_approach_rate());
 
+    update_played_hit_sounds(mid_point);
+
     auto hit_objects = beatmap->find_hit_objects(start_time, end_time);
     draw_hit_objects(hit_objects);
 }
@@ -159,7 +161,8 @@ void PlayArea::setup_circle(Circle *circle, HitObject *circle_data) {
     int64_t diff = start_time - song_position;
     int64_t abs_diff = std::abs(diff);
 
-    if (abs_diff < 10) {
+    if (can_play_hit_sound(start_time, song_position)) {
+        play_hit_sound(circle, start_time);
         Godot::print(Util::to_timestamp(start_time) + " " +
                      String::num_int64(diff));
     }
@@ -175,13 +178,8 @@ void PlayArea::setup_circle(Circle *circle, HitObject *circle_data) {
         circle->set_opacity(percent);
         circle->set_approach_circle_progress(percent);
     } else {
-        // TODO figure out better way to play hit sound
-        // play hit sound (make sure this gets played only once), approach
-        // circle touching border
         circle->set_opacity(1);
         circle->set_approach_circle_progress(1);
-        circle->play_hit_sound();
-        // Godot::print("same time: " + Util::to_timestamp(song_position));
     }
 }
 
@@ -191,4 +189,37 @@ void PlayArea::on_approach_rate_updated() {
 
 void PlayArea::on_circle_size_updated() {
     on_song_position_updated(conductor->get_song_position());
+}
+
+bool PlayArea::can_play_hit_sound(int64_t hit_sound_time, int64_t song_time) {
+    if (!is_visible_in_tree()) return false;
+    if (!conductor->is_actually_playing()) return false;
+
+    int64_t diff = hit_sound_time - song_time;
+
+    if (-5 <= diff && diff <= 5) {
+        String key = String::num_int64(hit_sound_time);
+        return !played_hit_sounds.has(key);
+    }
+
+    return false;
+}
+
+void PlayArea::play_hit_sound(Circle *circle, int64_t hit_sound_time) {
+    String key = String::num_int64(hit_sound_time);
+    played_hit_sounds[key] = true;
+    circle->play_hit_sound();
+}
+
+void PlayArea::update_played_hit_sounds(int64_t song_time) {
+    Array keys = played_hit_sounds.keys();
+
+    for (int i = 0; i < keys.size(); i++) {
+        String key = keys[i];
+        int64_t time = key.to_int();
+
+        if (time >= song_time) {
+            played_hit_sounds.erase(key);
+        }
+    }
 }
