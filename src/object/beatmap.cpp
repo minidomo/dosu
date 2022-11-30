@@ -187,7 +187,10 @@ void Beatmap::parse_hit_objects_section(PoolStringArray lines) {
     for (int i = origin + 1; i < lines.size(); i++) {
         auto ho = HitObject::_new();
         ho->parse_line(lines[i]);
-        hit_objects.push_back(ho);
+
+        if (!ho->is_slider()) {
+            hit_objects.push_back(ho);
+        }
     }
 }
 

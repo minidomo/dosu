@@ -45,7 +45,6 @@ String HitObject::to_file_string() {
     if (is_spinner()) {
         ret += "," + String::num_int64(end_time);
     } else if (is_slider()) {
-        // TODO
     }
 
     ret += ",0:0:0:0:";
