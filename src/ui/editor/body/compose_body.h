@@ -14,6 +14,12 @@ class ComposeBody : public Control {
     BaseButton *select_button;
     BaseButton *circle_button;
     BaseButton *delete_button;
+
+    BaseButton *none_button;
+    BaseButton *whistle_button;
+    BaseButton *finish_button;
+    BaseButton *clap_button;
+
     PlayArea *play_area;
 
    public:
@@ -21,10 +27,16 @@ class ComposeBody : public Control {
     void _init();
 
     void _ready();
+    PlayArea *get_play_area();
+
     void on_circle_button_pressed();
     void on_select_button_pressed();
     void on_delete_button_pressed();
-    PlayArea *get_play_area();
+
+    void on_none_button_pressed();
+    void on_whistle_button_pressed();
+    void on_finish_button_pressed();
+    void on_clap_button_pressed();
 };
 
 #endif

@@ -147,6 +147,10 @@ void PlayArea::setup_circle(Circle *circle, HitObject *circle_data) {
     circle->set_approach_circle_visible(true);
     circle->set_circle_size(beatmap->get_circle_size());
 
+    Color color =
+        circle_colors[String::num_int64(circle_data->get_start_time())];
+    circle->set_color(color);
+
     Vector2 pos;
     pos.x = (float)circle_data->get_start_x();
     pos.y = (float)circle_data->get_start_y();
@@ -165,8 +169,6 @@ void PlayArea::setup_circle(Circle *circle, HitObject *circle_data) {
 
     if (can_play_hit_sound(start_time, song_position)) {
         play_hit_sound(circle, start_time);
-        Godot::print(Util::to_timestamp(start_time) + " " +
-                     String::num_int64(diff));
     }
 
     if (start_time < song_position) {
@@ -227,5 +229,37 @@ void PlayArea::update_played_hit_sounds(int64_t song_time) {
 }
 
 void PlayArea::on_hit_objects_updated() {
+    update_circle_colors();
+    on_song_position_updated(conductor->get_song_position());
+}
+
+void PlayArea::update_circle_colors() {
+    circle_colors.clear();
+
+    auto map_manager = MapManager::get_singleton(this);
+    auto colors = map_manager->get_taiko_colors();
+    auto beatmap = map_manager->get_editor_beatmap();
+    auto hit_objects = beatmap->get_hit_objects();
+
+    int64_t color_index = 1;
+    int64_t prev_hit_sound = -1;
+    for (int i = 0; i < hit_objects.size(); i++) {
+        auto hit_object = hit_objects[i];
+
+        if (prev_hit_sound != hit_object->get_hit_sound()) {
+            prev_hit_sound = hit_object->get_hit_sound();
+            color_index = (color_index + 1) % colors.size();
+        }
+
+        String color_key = String::num_int64(color_index);
+        Color color = colors[color_key];
+
+        String key = String::num_int64(hit_object->get_start_time());
+        circle_colors[key] = color;
+    }
+}
+
+void PlayArea::initialize() {
+    update_circle_colors();
     on_song_position_updated(conductor->get_song_position());
 }

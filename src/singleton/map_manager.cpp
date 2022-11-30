@@ -27,6 +27,9 @@ void MapManager::_init() {
     max_placeable_x_coordinate = 512;
     max_placeable_y_coordinate = 384;
     fade_out_time = 750;
+
+    taiko_colors["0"] = Color::hex(0xE34C36FF);
+    taiko_colors["1"] = Color::hex(0x4C8EA9FF);
 }
 
 void MapManager::_ready() {
@@ -321,3 +324,5 @@ int64_t MapManager::circle_size_to_pixel(float circle_size) {
     float base_height = 1080;
     return (int64_t)(base_px / base_height * height);
 }
+
+Dictionary MapManager::get_taiko_colors() { return taiko_colors; }

@@ -12,6 +12,8 @@ class MapManager : public Node {
     GODOT_CLASS(MapManager, Node);
 
    private:
+    Dictionary taiko_colors;
+
     int64_t fade_out_time;
 
     int64_t min_placeable_x_coordinate;
@@ -69,6 +71,7 @@ class MapManager : public Node {
     int64_t approach_rate_to_ms(float approach_rate);
     int64_t get_fade_out_time();
     int64_t circle_size_to_pixel(float circle_size);
+    Dictionary get_taiko_colors();
 };
 
 #endif

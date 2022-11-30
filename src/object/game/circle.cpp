@@ -14,7 +14,7 @@ void Circle::_ready() {
 
     base_size = (int64_t)body->get_rect().get_size().x;
 
-    color = Color::hex(0x7eff8cff);
+    color = Color::hex(0xE34C36FF);
     set_color(color);
     set_opacity(opacity);
 }
@@ -62,7 +62,7 @@ void Circle::approach_circle_standard_position() {
 
 void Circle::set_approach_circle_progress(float percent) {
     float max_scale = 4;
-    float min_scale = 1.05;
+    float min_scale = 1.05f;
     float diff = max_scale - min_scale;
     float scale = min_scale + diff * (1 - percent);
     approach_circle->set_scale(Vector2(scale, scale));

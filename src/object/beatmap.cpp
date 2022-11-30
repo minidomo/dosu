@@ -617,11 +617,11 @@ void Beatmap::add_hit_object(HitObject *hit_object) {
     int64_t index = find_hit_object_index(hit_object->get_start_time());
     int64_t offset = 0;
 
-    if (index != -1) {
+    if (index == -1) {
+        offset = find_hit_object_index_for_time(hit_object->get_start_time());
+    } else {
         remove_hit_object_index(index);
         offset = index;
-    } else {
-        offset = hit_objects.size();
     }
 
     hit_objects.insert(hit_objects.begin() + offset, hit_object);
@@ -649,4 +649,21 @@ int64_t Beatmap::find_hit_object_index(int64_t time) {
     }
 
     return -1;
+}
+
+HitObject *Beatmap::find_hit_object(int64_t time) {
+    int64_t index = find_hit_object_index(time);
+    if (index == -1) return nullptr;
+    return hit_objects[index];
+}
+
+int64_t Beatmap::find_hit_object_index_for_time(int64_t time) {
+    int64_t index = 0;
+
+    while (index < (int64_t)hit_objects.size() &&
+           time > hit_objects[index]->get_start_time()) {
+        index++;
+    }
+
+    return index;
 }

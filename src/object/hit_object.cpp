@@ -62,6 +62,7 @@ String HitObject::to_file_string() {
 }
 
 void HitObject::copy(HitObject *hit_object) {
+    hit_sound = hit_object->hit_sound;
     hit_type = hit_object->hit_type;
     start_x = hit_object->start_x;
     start_y = hit_object->start_y;

@@ -65,7 +65,7 @@ void MainEditor::_ready() {
     object_timeline->on_song_position_updated(0);
 
     play_area->set_conductor(conductor);
-    play_area->on_song_position_updated(0);
+    play_area->initialize();
 }
 
 void MainEditor::init_bodies() {

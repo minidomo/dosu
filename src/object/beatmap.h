@@ -64,6 +64,8 @@ class Beatmap : public Node {
     static PoolStringArray get_lines(File *file);
     static int find_line_index(PoolStringArray lines, String section);
 
+    int64_t find_hit_object_index_for_time(int64_t time);
+
    public:
     static void _register_methods();
     void _init();
@@ -147,6 +149,7 @@ class Beatmap : public Node {
     void remove_hit_object(int64_t time);
     void remove_hit_object_index(int64_t index);
     int64_t find_hit_object_index(int64_t time);
+    HitObject *find_hit_object(int64_t time);
 };
 
 #endif
