@@ -29,7 +29,6 @@ class PlayArea : public Control {
     bool can_play_hit_sound(int64_t hit_sound_time, int64_t song_time);
     void play_hit_sound(Circle *circle, int64_t hit_sound_time);
     void update_played_hit_sounds(int64_t song_time);
-    void update_circle_colors();
 
    public:
     static void _register_methods();

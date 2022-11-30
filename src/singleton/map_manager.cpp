@@ -28,8 +28,8 @@ void MapManager::_init() {
     max_placeable_y_coordinate = 384;
     fade_out_time = 750;
 
-    taiko_colors["0"] = Color::hex(0xE34C36FF);
-    taiko_colors["1"] = Color::hex(0x4C8EA9FF);
+    taiko_colors["red"] = Color::hex(0xE34C36FF);
+    taiko_colors["blue"] = Color::hex(0x4C8EA9FF);
 }
 
 void MapManager::_ready() {
