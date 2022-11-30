@@ -4,7 +4,15 @@
 
 void HitObject::_register_methods() {}
 
-void HitObject::_init() {}
+void HitObject::_init() {
+    start_x = 0;
+    start_y = 0;
+    start_time = 0;
+    hit_type = 0;
+    hit_sound = 0;
+    new_combo = false;
+    end_time = 0;
+}
 
 void HitObject::parse_line(String line) {
     // https://github.com/kionell/osu-parsers/blob/32fc96237dec238d278aa22c15a31a3bf5b7c8d2/src/core/Decoders/Handlers/Beatmaps/BeatmapHitObjectDecoder.ts
@@ -41,6 +49,7 @@ String HitObject::to_file_string() {
     ret += "," + String::num_int64(start_y);
     ret += "," + String::num_int64(start_time);
     ret += "," + String::num_int64(hit_type);
+    ret += "," + String::num_int64(hit_sound);
 
     if (is_spinner()) {
         ret += "," + String::num_int64(end_time);

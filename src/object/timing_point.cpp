@@ -2,7 +2,15 @@
 
 void TimingPoint::_register_methods() {}
 
-void TimingPoint::_init() {}
+void TimingPoint::_init() {
+    time = 0;
+    beat_length = 0;
+    meter = 0;
+    uninherited = 0;
+    bpm_multiplier = 0;
+    slider_velocity = 0;
+    bpm = 0;
+}
 
 void TimingPoint::parse_line(String line) {
     // https://github.com/kionell/osu-parsers/blob/32fc96237dec238d278aa22c15a31a3bf5b7c8d2/src/core/Decoders/Handlers/Beatmaps/BeatmapTimingPointDecoder.ts

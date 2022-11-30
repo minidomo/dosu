@@ -47,6 +47,16 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="DeleteButton" type="Button" parent="LeftBar"]
+anchor_top = 0.568966
+anchor_right = 1.0
+anchor_bottom = 0.706897
+margin_top = 3.05176e-05
+text = "Delete"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
 [node name="PlayArea" parent="." instance=ExtResource( 2 )]
 anchor_left = 0.20625
 anchor_top = 0.0137934

@@ -26,16 +26,18 @@ void Beatmap::_register_methods() {
                              GODOT_VARIANT_TYPE_POOL_STRING_ARRAY);
 
     register_signal<Beatmap>("hp_drain_rate_updated", "value",
-                             GODOT_VARIANT_TYPE_INT);
+                             GODOT_VARIANT_TYPE_REAL);
     register_signal<Beatmap>("circle_size_updated", "value",
-                             GODOT_VARIANT_TYPE_INT);
+                             GODOT_VARIANT_TYPE_REAL);
     register_signal<Beatmap>("overall_difficulty_updated", "value",
-                             GODOT_VARIANT_TYPE_INT);
+                             GODOT_VARIANT_TYPE_REAL);
     register_signal<Beatmap>("approach_rate_updated", "value",
-                             GODOT_VARIANT_TYPE_INT);
+                             GODOT_VARIANT_TYPE_REAL);
 
     register_signal<Beatmap>("background_filename_updated", "value",
                              GODOT_VARIANT_TYPE_STRING);
+
+    register_signal<Beatmap>("hit_objects_updated", Dictionary());
 }
 
 void Beatmap::_init() {}
@@ -607,4 +609,44 @@ vector<HitObject *> Beatmap::find_hit_objects(int64_t start_time,
     }
 
     return ret;
+}
+
+void Beatmap::add_hit_object(HitObject *hit_object) {
+    dev_assert(hit_object != nullptr);
+
+    int64_t index = find_hit_object_index(hit_object->get_start_time());
+    int64_t offset = 0;
+
+    if (index != -1) {
+        remove_hit_object_index(index);
+        offset = index;
+    } else {
+        offset = hit_objects.size();
+    }
+
+    hit_objects.insert(hit_objects.begin() + offset, hit_object);
+    emit_signal("hit_objects_updated");
+}
+
+void Beatmap::remove_hit_object(int64_t time) {
+    int64_t index = find_hit_object_index(time);
+    if (index != -1) {
+        remove_hit_object_index(index);
+    }
+}
+
+void Beatmap::remove_hit_object_index(int64_t index) {
+    hit_objects.erase(hit_objects.begin() + index);
+    emit_signal("hit_objects_updated");
+}
+
+int64_t Beatmap::find_hit_object_index(int64_t time) {
+    for (int i = 0; i < hit_objects.size(); i++) {
+        auto ho = hit_objects[i];
+        if (ho->get_start_time() == time) {
+            return i;
+        }
+    }
+
+    return -1;
 }

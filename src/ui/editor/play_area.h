@@ -43,8 +43,9 @@ class PlayArea : public Control {
     Conductor *get_conductor();
 
     void on_song_position_updated(float song_position);
-    void on_approach_rate_updated();
-    void on_circle_size_updated();
+    void on_approach_rate_updated(float approach_rate);
+    void on_circle_size_updated(float circle_size);
+    void on_hit_objects_updated();
 };
 
 #endif

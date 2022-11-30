@@ -2,7 +2,10 @@
 
 void BreakPeriod::_register_methods() {}
 
-void BreakPeriod::_init() {}
+void BreakPeriod::_init() {
+    start_time = 0;
+    end_time = 0;
+}
 
 int64_t BreakPeriod::get_start_time() { return start_time; }
 

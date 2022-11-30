@@ -10,6 +10,7 @@ void PlayArea::_register_methods() {
     dev_register_method(PlayArea, on_song_position_updated);
     dev_register_method(PlayArea, on_approach_rate_updated);
     dev_register_method(PlayArea, on_circle_size_updated);
+    dev_register_method(PlayArea, on_hit_objects_updated);
 }
 
 void PlayArea::_init() {}
@@ -23,6 +24,7 @@ void PlayArea::_ready() {
     auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
     beatmap->connect("approach_rate_updated", this, "on_approach_rate_updated");
     beatmap->connect("circle_size_updated", this, "on_circle_size_updated");
+    beatmap->connect("hit_objects_updated", this, "on_hit_objects_updated");
 }
 
 Vector2 PlayArea::convert_to_internal(Vector2 external_coordinate) {
@@ -183,11 +185,11 @@ void PlayArea::setup_circle(Circle *circle, HitObject *circle_data) {
     }
 }
 
-void PlayArea::on_approach_rate_updated() {
+void PlayArea::on_approach_rate_updated(float approach_rate) {
     on_song_position_updated(conductor->get_song_position());
 }
 
-void PlayArea::on_circle_size_updated() {
+void PlayArea::on_circle_size_updated(float circle_size) {
     on_song_position_updated(conductor->get_song_position());
 }
 
@@ -222,4 +224,8 @@ void PlayArea::update_played_hit_sounds(int64_t song_time) {
             played_hit_sounds.erase(key);
         }
     }
+}
+
+void PlayArea::on_hit_objects_updated() {
+    on_song_position_updated(conductor->get_song_position());
 }
