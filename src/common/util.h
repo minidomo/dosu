@@ -17,6 +17,10 @@ class Util {
     static bool float_gte(float a, float b);
     static bool float_lte(float a, float b);
     static int64_t mod(int64_t value, int64_t mod);
+    static float scale_value(float base_value, float base_reference,
+                             float target_reference);
+    static float scale_value_by_resolution(float base_value,
+                                           float base_resolution);
 };
 
 #endif

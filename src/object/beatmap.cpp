@@ -38,6 +38,7 @@ void Beatmap::_register_methods() {
                              GODOT_VARIANT_TYPE_STRING);
 
     register_signal<Beatmap>("hit_objects_updated", Dictionary());
+    register_signal<Beatmap>("timing_points_updated", Dictionary());
 }
 
 void Beatmap::_init() {}

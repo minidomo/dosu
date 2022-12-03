@@ -9,6 +9,7 @@ void ObjectTimeline::_register_methods() {
     dev_register_method(ObjectTimeline, _ready);
     dev_register_method(ObjectTimeline, on_song_position_updated);
     dev_register_method(ObjectTimeline, on_timeline_zoom_updated);
+    dev_register_method(ObjectTimeline, on_timing_points_updated);
     dev_register_method(ObjectTimeline, on_mouse_entered);
     dev_register_method(ObjectTimeline, on_mouse_exited);
 }
@@ -18,11 +19,12 @@ void ObjectTimeline::_init() { init_tick_color_schemes(); }
 void ObjectTimeline::_ready() {
     tick_container = get_node<Control>("Ticks");
 
-    tick_object = ResourceLoader::get_singleton()->load(
-        "res://scenes/editor/TimelineTick.tscn");
+    tick_object =
+        ResourceLoader::get_singleton()->load("res://scenes/editor/Tick.tscn");
 
     auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
     beatmap->connect("timeline_zoom_updated", this, "on_timeline_zoom_updated");
+    beatmap->connect("timing_points_updated", this, "on_timing_points_updated");
 
     connect("mouse_entered", this, "on_mouse_entered");
     connect("mouse_exited", this, "on_mouse_exited");
@@ -54,14 +56,14 @@ void ObjectTimeline::draw_ticks(float percent_missing, int64_t beat_number,
     } else if (diff > 0) {
         // add ticks
         for (int i = 0; i < diff; i++) {
-            auto tick = Object::cast_to<TimelineTick>(tick_object->instance());
+            auto tick = Object::cast_to<Tick>(tick_object->instance());
             tick_container->add_child(tick);
         }
     }
 
     Array children = tick_container->get_children();
     for (int i = 0; i < children.size(); i++) {
-        auto tick = Object::cast_to<TimelineTick>(children[i]);
+        auto tick = Object::cast_to<Tick>(children[i]);
         setup_tick(tick, tick_data[i], control_point->get_meter(),
                    beatmap->get_beat_divisor());
     }
@@ -132,8 +134,8 @@ vector<Dictionary> ObjectTimeline::determine_ticks(float offset,
     return ret;
 }
 
-void ObjectTimeline::setup_tick(TimelineTick *tick, Dictionary tick_data,
-                                int64_t meter, int64_t beat_divisor) {
+void ObjectTimeline::setup_tick(Tick *tick, Dictionary tick_data, int64_t meter,
+                                int64_t beat_divisor) {
     int64_t ticks_per_measure = meter * beat_divisor;
 
     int64_t index = tick_data["index"];
@@ -145,6 +147,7 @@ void ObjectTimeline::setup_tick(TimelineTick *tick, Dictionary tick_data,
         tick->set_height(8);
     }
 
+    tick->set_opacity(.5f);
     tick->set_color(
         get_tick_color(beat_divisor, Util::mod(index, beat_divisor)));
 
@@ -204,3 +207,11 @@ bool ObjectTimeline::is_hovering() { return hovering; }
 void ObjectTimeline::on_mouse_entered() { hovering = true; }
 
 void ObjectTimeline::on_mouse_exited() { hovering = false; }
+
+void ObjectTimeline::on_timing_points_updated() {}
+
+vector<Dictionary> ObjectTimeline::determine_timing_point_data() {
+    vector<Dictionary> ret;
+
+    return ret;
+}

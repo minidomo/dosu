@@ -1,5 +1,7 @@
 #include "./util.h"
 
+#include <OS.hpp>
+
 void Util::delete_children(Node *node) {
     Array children = node->get_children();
     for (int i = 0; i < children.size(); i++) {
@@ -64,4 +66,14 @@ bool Util::float_lte(float a, float b) {
 
 int64_t Util::mod(int64_t value, int64_t mod) {
     return (value % mod + mod) % mod;
+}
+
+float Util::scale_value(float base_value, float base_reference,
+                        float target_reference) {
+    return base_value / base_reference * target_reference;
+}
+
+float Util::scale_value_by_resolution(float base_value, float base_resolution) {
+    return scale_value(base_value, base_resolution,
+                       OS::get_singleton()->get_window_size().height);
 }

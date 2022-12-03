@@ -95,3 +95,13 @@ void TimingPoint::copy(TimingPoint *timing_point) {
     slider_velocity = timing_point->slider_velocity;
     bpm = timing_point->bpm;
 }
+
+Color TimingPoint::get_color() {
+    if (uninherited) {
+        // red
+        return Color::hex(0xE52929FF);
+    } else {
+        // green
+        return Color::hex(0x97E510FF);
+    }
+}

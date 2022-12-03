@@ -44,6 +44,7 @@ class TimingPoint : public Node {
     int64_t get_meter();
     bool is_uninherited();
     float get_bpm();
+    Color get_color();
 
     void copy(TimingPoint *timing_point);
 };

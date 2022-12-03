@@ -7,8 +7,8 @@
 #include "./play_area.h"
 #include "./slidable_row.h"
 #include "./tab.h"
+#include "./tick.h"
 #include "./timeline.h"
-#include "./timeline_tick.h"
 #include "body/index.h"
 #include "menu_bar/index.h"
 

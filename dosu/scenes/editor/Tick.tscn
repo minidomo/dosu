@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://bin/scripts/ui/editor/timeline_tick.gdns" type="Script" id=1]
+[ext_resource path="res://bin/scripts/ui/editor/tick.gdns" type="Script" id=1]
 
-[node name="TimelineTick" type="Control"]
+[node name="Tick" type="Control"]
 anchor_right = 0.000520833
 anchor_bottom = 0.00555556
 rect_min_size = Vector2( 1, 6 )

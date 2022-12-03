@@ -6,8 +6,8 @@
 
 #include "common/common.h"
 
-class TimelineTick : public Control {
-    GODOT_CLASS(TimelineTick, Control);
+class Tick : public Control {
+    GODOT_CLASS(Tick, Control);
 
    private:
     ColorRect *background;
@@ -15,7 +15,7 @@ class TimelineTick : public Control {
     Color color;
     int height;
 
-    float alpha;
+    float opacity;
 
    public:
     static void _register_methods();
@@ -28,6 +28,9 @@ class TimelineTick : public Control {
 
     int get_height();
     void set_height(int height);
+
+    void set_opacity(float opacity);
+    float get_opacity();
 };
 
 #endif

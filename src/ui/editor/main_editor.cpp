@@ -66,6 +66,9 @@ void MainEditor::_ready() {
 
     play_area->set_conductor(conductor);
     play_area->initialize();
+
+    timeline->set_conductor(conductor);
+    timeline->initialize();
 }
 
 void MainEditor::init_bodies() {
@@ -167,7 +170,6 @@ void MainEditor::on_song_position_updated(float song_position) {
     String progress = String::num_real(percent * 100).pad_decimals(1) + "%";
 
     progress_label->set_text(progress);
-    timeline->set_playhead_progress(percent);
 }
 
 void MainEditor::on_timeline_click(float percent) {

@@ -9,7 +9,7 @@
 #include "common/common.h"
 #include "object/conductor.h"
 #include "object/timing_point.h"
-#include "ui/editor/timeline_tick.h"
+#include "ui/editor/tick.h"
 
 class ObjectTimeline : public Control {
     GODOT_CLASS(ObjectTimeline, Control);
@@ -30,13 +30,15 @@ class ObjectTimeline : public Control {
 
     vector<Dictionary> determine_ticks(float offset, float snap_length,
                                        int64_t beat_number);
-    void setup_tick(TimelineTick *tick, Dictionary tick_data, int64_t meter,
+    void setup_tick(Tick *tick, Dictionary tick_data, int64_t meter,
                     int64_t beat_divisor);
     void draw_ticks(float percent_missing, int64_t beat_number,
                     TimingPoint *control_point);
 
     Color get_tick_color(int64_t beat_divisor, int64_t index);
     void init_tick_color_schemes();
+
+    vector<Dictionary> determine_timing_point_data();
 
    public:
     static void _register_methods();
@@ -51,6 +53,7 @@ class ObjectTimeline : public Control {
 
     void on_song_position_updated(float song_position);
     void on_timeline_zoom_updated(float timeline_zoom);
+    void on_timing_points_updated();
     void on_mouse_entered();
     void on_mouse_exited();
 };
