@@ -140,11 +140,11 @@ void ObjectTimeline::setup_tick(Tick *tick, Dictionary tick_data, int64_t meter,
 
     int64_t index = tick_data["index"];
     if (index % ticks_per_measure == 0) {
-        tick->set_height(32);
+        tick->set_height((int)Util::scale_value_by_resolution(32, 1080));
     } else if (index % beat_divisor == 0) {
-        tick->set_height(16);
+        tick->set_height((int)Util::scale_value_by_resolution(16, 1080));
     } else {
-        tick->set_height(8);
+        tick->set_height((int)Util::scale_value_by_resolution(8, 1080));
     }
 
     tick->set_opacity(.5f);
