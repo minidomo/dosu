@@ -39,6 +39,9 @@ class ObjectTimeline : public Control {
     void init_tick_color_schemes();
 
     vector<Dictionary> determine_timing_point_data();
+    Dictionary determine_visibile_range(float song_position, float beat_length,
+                                        int64_t beat_divisor,
+                                        float timeline_zoom);
 
    public:
     static void _register_methods();

@@ -101,6 +101,11 @@ void ObjectTimeline::on_song_position_updated(float song_position) {
     float diff = next_time - song_position;
     float percent_missing = diff / step;
 
+    auto bounds = determine_visibile_range(
+        song_position, control_point->get_beat_length(),
+        beatmap->get_beat_divisor(), beatmap->get_timeline_zoom());
+    Godot::print(bounds.to_json());
+
     draw_ticks(percent_missing, beat_number, control_point);
 }
 
@@ -213,5 +218,30 @@ void ObjectTimeline::on_timing_points_updated() {}
 vector<Dictionary> ObjectTimeline::determine_timing_point_data() {
     vector<Dictionary> ret;
 
+    return ret;
+}
+
+/**
+ * @return dictionary with the start and end times
+ * start: int64_t
+ * end: int64_t
+ */
+Dictionary ObjectTimeline::determine_visibile_range(float song_position,
+                                                    float beat_length,
+                                                    int64_t beat_divisor,
+                                                    float timeline_zoom) {
+    // get number of (beat length / beat_divisor * timeline zoom) there can be
+    // in the rect and use song position to get bounds
+    float total_beat_length = beat_length / beat_divisor * timeline_zoom;
+    float beats = get_size().width / total_beat_length;
+    float duration = beats * conductor->get_seconds_per_beat();
+
+    Godot::print("range: " + String::num_real(song_position) + ", " +
+                 String::num_real(beat_length) + ", " +
+                 String::num_real(timeline_zoom));
+
+    Dictionary ret;
+    ret["start"] = Util::to_milliseconds(song_position - duration / 2);
+    ret["end"] = Util::to_milliseconds(song_position + duration / 2);
     return ret;
 }
