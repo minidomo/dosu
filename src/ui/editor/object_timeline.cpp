@@ -90,6 +90,21 @@ void ObjectTimeline::on_song_position_updated(float song_position) {
     auto control_point = beatmap->get_control_point_for_time(
         Util::to_milliseconds(song_position));
 
+    auto visible_range = determine_visibile_range(
+        song_position, control_point->get_beat_length(),
+        beatmap->get_beat_divisor(), beatmap->get_timeline_zoom());
+
+    /*
+    draw the ticks
+    get tick data
+        - get next tick
+        - get all ticks by getting times and snap = spb / control.meter /
+        beatmap.beat_divisor
+    draw ticks
+    */
+
+    auto tick_data = determine_tick_data(beatmap, control_point, visible_range);
+
     float offset = Util::to_seconds(control_point->get_time());
     Dictionary beat_info = conductor->get_beat(song_position, offset, 1,
                                                beatmap->get_beat_divisor());
@@ -100,11 +115,6 @@ void ObjectTimeline::on_song_position_updated(float song_position) {
 
     float diff = next_time - song_position;
     float percent_missing = diff / step;
-
-    auto bounds = determine_visibile_range(
-        song_position, control_point->get_beat_length(),
-        beatmap->get_beat_divisor(), beatmap->get_timeline_zoom());
-    Godot::print(bounds.to_json());
 
     draw_ticks(percent_missing, beat_number, control_point);
 }
@@ -243,5 +253,31 @@ Dictionary ObjectTimeline::determine_visibile_range(float song_position,
     Dictionary ret;
     ret["start"] = Util::to_milliseconds(song_position - duration / 2);
     ret["end"] = Util::to_milliseconds(song_position + duration / 2);
+    return ret;
+}
+
+float ObjectTimeline::determine_x_position(int64_t time, Dictionary range) {
+    int64_t start = range["start"];
+    int64_t end = range["end"];
+
+    dev_assert(start <= time && time <= end);
+
+    int64_t total = end - start + 1;
+    float percent = (float)(time - start) / total;
+
+    return get_size().width * percent;
+}
+
+vector<Dictionary> ObjectTimeline::determine_tick_data(
+    Beatmap *beatmap, TimingPoint *control_point, Dictionary visible_range) {
+    float offset = Util::to_seconds(control_point->get_time());
+    Dictionary beat_info = conductor->get_beat(
+        conductor->get_song_position(), offset, 1, beatmap->get_beat_divisor());
+
+    float next_time = beat_info["time"];
+    int64_t beat_number = beat_info["index"];
+
+    vector<Dictionary> ret;
+
     return ret;
 }

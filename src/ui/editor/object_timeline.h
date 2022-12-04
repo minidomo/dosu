@@ -43,6 +43,11 @@ class ObjectTimeline : public Control {
                                         int64_t beat_divisor,
                                         float timeline_zoom);
 
+    float determine_x_position(int64_t time, Dictionary range);
+    vector<Dictionary> determine_tick_data(Beatmap *beatmap,
+                                           TimingPoint *control_point,
+                                           Dictionary range);
+
    public:
     static void _register_methods();
     void _init();
