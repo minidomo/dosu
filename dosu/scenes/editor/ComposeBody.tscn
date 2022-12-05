@@ -57,9 +57,9 @@ __meta__ = {
 }
 
 [node name="CircleButton" type="Button" parent="LeftBar/VBoxContainer"]
-margin_top = 370.0
+margin_top = 369.0
 margin_right = 200.0
-margin_bottom = 430.0
+margin_bottom = 429.0
 rect_min_size = Vector2( 200, 60 )
 custom_fonts/font = SubResource( 1 )
 text = "Circle"
@@ -68,9 +68,9 @@ __meta__ = {
 }
 
 [node name="DeleteButton" type="Button" parent="LeftBar/VBoxContainer"]
-margin_top = 440.0
+margin_top = 439.0
 margin_right = 200.0
-margin_bottom = 500.0
+margin_bottom = 499.0
 rect_min_size = Vector2( 200, 60 )
 custom_fonts/font = SubResource( 1 )
 text = "Delete"
@@ -113,9 +113,9 @@ __meta__ = {
 }
 
 [node name="NoneButton" type="Button" parent="RightBar/VBoxContainer"]
-margin_top = 300.0
+margin_top = 299.0
 margin_right = 200.0
-margin_bottom = 360.0
+margin_bottom = 359.0
 rect_min_size = Vector2( 200, 60 )
 custom_fonts/font = SubResource( 1 )
 text = "None"
@@ -124,9 +124,9 @@ __meta__ = {
 }
 
 [node name="WhistleButton" type="Button" parent="RightBar/VBoxContainer"]
-margin_top = 370.0
+margin_top = 369.0
 margin_right = 200.0
-margin_bottom = 430.0
+margin_bottom = 429.0
 rect_min_size = Vector2( 200, 60 )
 custom_fonts/font = SubResource( 1 )
 text = "Whistle"
@@ -135,9 +135,9 @@ __meta__ = {
 }
 
 [node name="FinishButton" type="Button" parent="RightBar/VBoxContainer"]
-margin_top = 440.0
+margin_top = 439.0
 margin_right = 200.0
-margin_bottom = 500.0
+margin_bottom = 499.0
 rect_min_size = Vector2( 200, 60 )
 custom_fonts/font = SubResource( 1 )
 text = "Finish"
@@ -146,9 +146,9 @@ __meta__ = {
 }
 
 [node name="ClapButton" type="Button" parent="RightBar/VBoxContainer"]
-margin_top = 510.0
+margin_top = 509.0
 margin_right = 200.0
-margin_bottom = 570.0
+margin_bottom = 569.0
 rect_min_size = Vector2( 200, 60 )
 custom_fonts/font = SubResource( 1 )
 text = "Clap"

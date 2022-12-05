@@ -29,6 +29,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
     register_class<SceneManager>();
 
     // ui
+    register_class<TimelineCircle>();
     register_class<PlayArea>();
     register_class<ComposeBody>();
     register_class<ObjectTimeline>();

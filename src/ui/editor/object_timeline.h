@@ -11,6 +11,7 @@
 #include "object/conductor.h"
 #include "object/timing_point.h"
 #include "ui/editor/tick.h"
+#include "ui/editor/timeline_circle.h"
 
 class ObjectTimeline : public Control {
     GODOT_CLASS(ObjectTimeline, Control);
@@ -20,7 +21,9 @@ class ObjectTimeline : public Control {
     Conductor *conductor;
     Control *tick_container;
     Control *timing_point_container;
+    Control *circle_container;
     Ref<PackedScene> tick_object;
+    Ref<PackedScene> timeline_circle_object;
     bool hovering;
 
     Color get_tick_color(int64_t beat_divisor, int64_t index);
@@ -44,7 +47,12 @@ class ObjectTimeline : public Control {
     vector<Dictionary> determine_timing_point_data(Beatmap *beatmap,
                                                    Dictionary visible_range);
     void draw_timing_points(vector<Dictionary> data);
-    void setup_timing_point(Tick *tick, Dictionary timing_point_data);
+    void setup_timing_point(Tick *tick, Dictionary data);
+
+    vector<Dictionary> determine_circle_data(Beatmap *beatmap,
+                                             Dictionary visible_range);
+    void draw_circles(vector<Dictionary> data);
+    void setup_circle(TimelineCircle *timeline_circle, Dictionary data);
 
    public:
     static void _register_methods();

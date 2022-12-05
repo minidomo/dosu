@@ -170,10 +170,9 @@ __meta__ = {
 }
 
 [node name="ComposeTab" parent="TopBar/Tabs" instance=ExtResource( 4 )]
-anchor_right = 0.333
+anchor_right = 0.333333
 anchor_bottom = 1.0
-margin_right = 0.220001
-margin_bottom = 7.62939e-06
+margin_bottom = -3.8147e-06
 title = "compose"
 
 [node name="TimingTab" parent="TopBar/Tabs" instance=ExtResource( 4 )]

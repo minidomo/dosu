@@ -9,6 +9,7 @@
 #include "./tab.h"
 #include "./tick.h"
 #include "./timeline.h"
+#include "./timeline_circle.h"
 #include "body/index.h"
 #include "menu_bar/index.h"
 

@@ -3,6 +3,7 @@
 #include <ResourceLoader.hpp>
 
 #include "common/util.h"
+#include "object/enum/hit_sound.h"
 #include "singleton/map_manager.h"
 
 void ObjectTimeline::_register_methods() {
@@ -19,9 +20,12 @@ void ObjectTimeline::_init() { init_tick_color_schemes(); }
 void ObjectTimeline::_ready() {
     tick_container = get_node<Control>("Ticks");
     timing_point_container = get_node<Control>("TimingPoints");
+    circle_container = get_node<Control>("Circles");
 
     tick_object =
         ResourceLoader::get_singleton()->load("res://scenes/editor/Tick.tscn");
+    timeline_circle_object = ResourceLoader::get_singleton()->load(
+        "res://scenes/editor/TimelineCircle.tscn");
 
     auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
     beatmap->connect("timeline_zoom_updated", this, "on_timeline_zoom_updated");
@@ -63,6 +67,9 @@ void ObjectTimeline::on_song_position_updated(float song_position) {
     auto timing_point_data =
         determine_timing_point_data(beatmap, visible_range);
     draw_timing_points(timing_point_data);
+
+    auto circle_data = determine_circle_data(beatmap, visible_range);
+    draw_circles(circle_data);
 }
 
 void ObjectTimeline::setup_tick(Tick *tick, Dictionary data, int64_t meter,
@@ -366,4 +373,91 @@ void ObjectTimeline::setup_timing_point(Tick *tick, Dictionary data) {
     pos.x = data["x"];
     pos.y = 0;
     tick->set_position(pos);
+}
+
+/**
+ * @return a vector of dictionaries containing circle data
+ * - x: float - the x position of the circle
+ * - color: Color - the color of the circle
+ * - size: float - the size of the circle
+ */
+vector<Dictionary> ObjectTimeline::determine_circle_data(
+    Beatmap *beatmap, Dictionary visible_range) {
+    int64_t start_time = visible_range["start"];
+    int64_t end_time = visible_range["end"];
+    auto hit_objects = beatmap->find_hit_objects(start_time, end_time);
+
+    Dictionary colors = MapManager::get_singleton(this)->get_taiko_colors();
+    float size = Util::scale_value_by_resolution(64, 1080);
+
+    vector<Dictionary> ret;
+
+    for (auto ho : hit_objects) {
+        float x = determine_x_position(ho->get_start_time(), visible_range) -
+                  size / 2;
+        if (0 <= x && x <= get_size().width) {
+            Dictionary data;
+
+            data["x"] = x;
+            data["size"] = size;
+
+            Color color;
+            int64_t hit_sound = ho->get_hit_sound();
+            if (hit_sound == +HitSound::None ||
+                hit_sound == +HitSound::Finish) {
+                color = colors["red"];
+            } else if (hit_sound == +HitSound::Whistle ||
+                       hit_sound == +HitSound::Clap) {
+                color = colors["blue"];
+            }
+            data["color"] = color;
+
+            ret.push_back(data);
+        }
+    }
+
+    return ret;
+}
+
+void ObjectTimeline::draw_circles(vector<Dictionary> data) {
+    int64_t diff = data.size() - circle_container->get_child_count();
+
+    if (diff < 0) {
+        // delete
+        for (int i = 0; i < -diff; i++) {
+            Node *child = circle_container->get_child(0);
+            circle_container->remove_child(child);
+            child->queue_free();
+        }
+    } else if (diff > 0) {
+        // add
+        for (int i = 0; i < diff; i++) {
+            auto timeline_circle = Object::cast_to<TimelineCircle>(
+                timeline_circle_object->instance());
+            circle_container->add_child(timeline_circle);
+        }
+    }
+
+    Array children = circle_container->get_children();
+    for (int i = 0; i < children.size(); i++) {
+        auto timeline_circle = Object::cast_to<TimelineCircle>(children[i]);
+        setup_circle(timeline_circle, data[i]);
+    }
+}
+
+void ObjectTimeline::setup_circle(TimelineCircle *timeline_circle,
+                                  Dictionary data) {
+    timeline_circle->set_opacity(.7f);
+
+    float size = data["size"];
+    timeline_circle->set_size(Vector2(size, size));
+
+    Color color = data["color"];
+    timeline_circle->set_color(color);
+
+    float x = data["x"];
+    Vector2 pos;
+    pos.x = x;
+    pos.y = get_size().height - size;
+    timeline_circle->set_position(pos);
 }
