@@ -302,3 +302,7 @@ vector<Dictionary> ObjectTimeline::old_determine_tick_data(
 
     return ret;
 }
+
+void ObjectTimeline::initialize() {
+    on_song_position_updated(conductor->get_song_position());
+}

@@ -58,6 +58,8 @@ class ObjectTimeline : public Control {
     void on_timing_points_updated();
     void on_mouse_entered();
     void on_mouse_exited();
+
+    void initialize();
 };
 
 #endif

@@ -95,7 +95,10 @@ void Timeline::set_conductor(Conductor *conductor) {
 
 Conductor *Timeline::get_conductor() { return conductor; }
 
-void Timeline::initialize() { on_timing_points_updated(); }
+void Timeline::initialize() {
+    on_timing_points_updated();
+    on_song_position_updated(conductor->get_song_position());
+}
 
 /**
  * @return vector of Dictionaries containing the data of timing points for the

@@ -62,7 +62,7 @@ void MainEditor::_ready() {
         this, MapManager::get_singleton(this)->get_editor_beatmap()));
 
     object_timeline->set_conductor(conductor);
-    object_timeline->on_song_position_updated(0);
+    object_timeline->initialize();
 
     play_area->set_conductor(conductor);
     play_area->initialize();
