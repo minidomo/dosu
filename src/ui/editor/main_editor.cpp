@@ -232,6 +232,8 @@ void MainEditor::_process(float delta) {
 
             conductor->go_to(target_time, ConductorGoType::Maintain);
         }
+    } else if (input->is_action_just_pressed("toggle_pause")) {
+        conductor->toggle_pause();
     }
 }
 
