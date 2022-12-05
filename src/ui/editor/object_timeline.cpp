@@ -30,45 +30,6 @@ void ObjectTimeline::_ready() {
     connect("mouse_exited", this, "on_mouse_exited");
 }
 
-void ObjectTimeline::draw_ticks(float percent_missing, int64_t beat_number,
-                                TimingPoint *control_point) {
-    prev_percent_missing = percent_missing;
-    prev_beat_number = beat_number;
-    prev_control_point = control_point;
-
-    auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
-
-    float snap_length =
-        control_point->get_beat_length() / control_point->get_meter() /
-        beatmap->get_beat_divisor() * beatmap->get_timeline_zoom();
-    float offset = snap_length * percent_missing;
-
-    auto tick_data = determine_ticks(offset, snap_length, beat_number);
-    int64_t diff = tick_data.size() - tick_container->get_child_count();
-
-    if (diff < 0) {
-        // delete ticks
-        for (int i = 0; i < -diff; i++) {
-            Node *child = tick_container->get_child(0);
-            tick_container->remove_child(child);
-            child->queue_free();
-        }
-    } else if (diff > 0) {
-        // add ticks
-        for (int i = 0; i < diff; i++) {
-            auto tick = Object::cast_to<Tick>(tick_object->instance());
-            tick_container->add_child(tick);
-        }
-    }
-
-    Array children = tick_container->get_children();
-    for (int i = 0; i < children.size(); i++) {
-        auto tick = Object::cast_to<Tick>(children[i]);
-        setup_tick(tick, tick_data[i], control_point->get_meter(),
-                   beatmap->get_beat_divisor());
-    }
-}
-
 void ObjectTimeline::set_conductor(Conductor *conductor) {
     if (this->conductor != nullptr) {
         this->conductor->disconnect("song_position_updated", this,
@@ -94,59 +55,9 @@ void ObjectTimeline::on_song_position_updated(float song_position) {
         song_position, control_point->get_beat_length(),
         beatmap->get_beat_divisor(), beatmap->get_timeline_zoom());
 
-    /*
-    draw the ticks
-    get tick data
-        - get next tick
-        - get all ticks by getting times and snap = spb / control.meter /
-        beatmap.beat_divisor
-    draw ticks
-    */
-
     auto tick_data = determine_tick_data(beatmap, control_point, visible_range);
-
-    float offset = Util::to_seconds(control_point->get_time());
-    Dictionary beat_info = conductor->get_beat(song_position, offset, 1,
-                                               beatmap->get_beat_divisor());
-
-    float next_time = beat_info["time"];
-    int64_t beat_number = beat_info["index"];
-    float step = beat_info["step"];
-
-    float diff = next_time - song_position;
-    float percent_missing = diff / step;
-
-    draw_ticks(percent_missing, beat_number, control_point);
-}
-
-/**
- * @return a vector of Dictionaries containing data on each tick.
- * - x: float - the x position of the tick
- * - index: int64_t - the index of the beat this tick is on (can be negative)
- */
-vector<Dictionary> ObjectTimeline::determine_ticks(float offset,
-                                                   float snap_length,
-                                                   int64_t beat_number) {
-    vector<Dictionary> ret;
-
-    float center_x = get_size().x / 2;
-    float start = center_x + offset;
-    float prev = start - snap_length;
-    int64_t index;
-
-    index = beat_number - 1;
-    for (float pos_x = prev; pos_x >= 0; pos_x -= snap_length) {
-        ret.push_back(Dictionary::make("x", pos_x, "index", index));
-        index--;
-    }
-
-    index = beat_number;
-    for (float pos_x = start; pos_x < get_size().x; pos_x += snap_length) {
-        ret.push_back(Dictionary::make("x", pos_x, "index", index));
-        index++;
-    }
-
-    return ret;
+    // auto tick_data = old_determine_tick_data(beatmap, control_point);
+    draw_ticks(beatmap, control_point, tick_data);
 }
 
 void ObjectTimeline::setup_tick(Tick *tick, Dictionary tick_data, int64_t meter,
@@ -212,7 +123,7 @@ Color ObjectTimeline::get_tick_color(int64_t beat_divisor, int64_t index) {
 }
 
 void ObjectTimeline::on_timeline_zoom_updated(float timeline_zoom) {
-    draw_ticks(prev_percent_missing, prev_beat_number, prev_control_point);
+    on_song_position_updated(conductor->get_song_position());
 }
 
 void ObjectTimeline::set_hovering(bool hovering) { this->hovering = hovering; }
@@ -246,10 +157,6 @@ Dictionary ObjectTimeline::determine_visibile_range(float song_position,
     float beats = get_size().width / total_beat_length;
     float duration = beats * conductor->get_seconds_per_beat();
 
-    Godot::print("range: " + String::num_real(song_position) + ", " +
-                 String::num_real(beat_length) + ", " +
-                 String::num_real(timeline_zoom));
-
     Dictionary ret;
     ret["start"] = Util::to_milliseconds(song_position - duration / 2);
     ret["end"] = Util::to_milliseconds(song_position + duration / 2);
@@ -268,6 +175,12 @@ float ObjectTimeline::determine_x_position(int64_t time, Dictionary range) {
     return get_size().width * percent;
 }
 
+/**
+ * @return a vector of dictionaries containing tick data
+ * - time: int64_t the time in milliseconds a tick represents
+ * - x: float - the x position of the tick
+ * - index: int64_t - the index of the beat this tick is on (can be negative)
+ */
 vector<Dictionary> ObjectTimeline::determine_tick_data(
     Beatmap *beatmap, TimingPoint *control_point, Dictionary visible_range) {
     float beat_offset = Util::to_seconds(control_point->get_time());
@@ -275,7 +188,6 @@ vector<Dictionary> ObjectTimeline::determine_tick_data(
         conductor->get_beat(conductor->get_song_position(), beat_offset, 1,
                             beatmap->get_beat_divisor());
 
-    float next_time = beat_info["time"];
     int64_t base_index = beat_info["index"];
 
     vector<Dictionary> ret;
@@ -285,7 +197,7 @@ vector<Dictionary> ObjectTimeline::determine_tick_data(
     float step = conductor->get_seconds_per_beat() /
                  control_point->get_meter() / beatmap->get_beat_divisor() *
                  beatmap->get_timeline_zoom();
-    float base = conductor->get_song_position();
+    float base = beat_info["time"];
 
     int64_t index = base_index - 1;
     for (float time = base - step; Util::to_milliseconds(time) >= start_time;
@@ -312,6 +224,79 @@ vector<Dictionary> ObjectTimeline::determine_tick_data(
         data["x"] = determine_x_position(ms, visible_range);
 
         ret.push_back(data);
+        index++;
+    }
+
+    return ret;
+}
+
+void ObjectTimeline::draw_ticks(Beatmap *beatmap, TimingPoint *control_point,
+                                vector<Dictionary> data) {
+    int64_t diff = data.size() - tick_container->get_child_count();
+
+    if (diff < 0) {
+        // delete ticks
+        for (int i = 0; i < -diff; i++) {
+            Node *child = tick_container->get_child(0);
+            tick_container->remove_child(child);
+            child->queue_free();
+        }
+    } else if (diff > 0) {
+        // add ticks
+        for (int i = 0; i < diff; i++) {
+            auto tick = Object::cast_to<Tick>(tick_object->instance());
+            tick_container->add_child(tick);
+        }
+    }
+
+    Array children = tick_container->get_children();
+    for (int i = 0; i < children.size(); i++) {
+        auto tick = Object::cast_to<Tick>(children[i]);
+        setup_tick(tick, data[i], control_point->get_meter(),
+                   beatmap->get_beat_divisor());
+    }
+}
+
+/**
+ * @return a vector of Dictionaries containing data on each tick.
+ * - x: float - the x position of the tick
+ * - index: int64_t - the index of the beat this tick is on (can be negative)
+ */
+vector<Dictionary> ObjectTimeline::old_determine_tick_data(
+    Beatmap *beatmap, TimingPoint *control_point) {
+    float beat_offset = Util::to_seconds(control_point->get_time());
+    Dictionary beat_info =
+        conductor->get_beat(conductor->get_song_position(), beat_offset, 1,
+                            beatmap->get_beat_divisor());
+
+    float next_time = beat_info["time"];
+    int64_t beat_number = beat_info["index"];
+    float step = beat_info["step"];
+
+    float diff = next_time - conductor->get_song_position();
+    float percent_missing = diff / step;
+
+    float snap_length =
+        control_point->get_beat_length() / control_point->get_meter() /
+        beatmap->get_beat_divisor() * beatmap->get_timeline_zoom();
+    float offset = snap_length * percent_missing;
+
+    vector<Dictionary> ret;
+
+    float center_x = get_size().x / 2;
+    float start = center_x + offset;
+    float prev = start - snap_length;
+    int64_t index;
+
+    index = beat_number - 1;
+    for (float pos_x = prev; pos_x >= 0; pos_x -= snap_length) {
+        ret.push_back(Dictionary::make("x", pos_x, "index", index));
+        index--;
+    }
+
+    index = beat_number;
+    for (float pos_x = start; pos_x < get_size().x; pos_x += snap_length) {
+        ret.push_back(Dictionary::make("x", pos_x, "index", index));
         index++;
     }
 
