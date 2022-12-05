@@ -183,7 +183,7 @@ vector<Dictionary> ObjectTimeline::determine_timing_point_data(
 Dictionary ObjectTimeline::determine_visibile_range(float song_position,
                                                     float beat_length,
                                                     float timeline_zoom) {
-    float constant = 4;
+    float constant = 4;  // arbitrary
     float total_beat_length = beat_length / constant * timeline_zoom;
     float beats = get_size().width / total_beat_length;
     float duration = beats * conductor->get_seconds_per_beat();

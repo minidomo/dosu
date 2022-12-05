@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/font/torus/Torus Regular.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://bin/scripts/ui/editor/beat_snap_divisor.gdns" type="Script" id=2]
@@ -6,6 +6,16 @@
 [sub_resource type="DynamicFont" id=1]
 size = 20
 font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxLine" id=3]
+color = Color( 0.92549, 0.458824, 0.54902, 0.588235 )
+thickness = 2
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.92549, 0.458824, 0.54902, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.92549, 0.458824, 0.54902, 1 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 20
@@ -20,6 +30,7 @@ __meta__ = {
 }
 
 [node name="temp" type="ColorRect" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0.74902, 0.533333, 0.533333, 0.239216 )
@@ -43,6 +54,9 @@ anchor_left = 0.23
 anchor_top = 0.533333
 anchor_right = 0.77
 anchor_bottom = 0.866667
+custom_styles/slider = SubResource( 3 )
+custom_styles/grabber_area_highlight = SubResource( 5 )
+custom_styles/grabber_area = SubResource( 4 )
 min_value = 1.0
 max_value = 16.0
 value = 4.0
