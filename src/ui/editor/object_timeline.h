@@ -46,7 +46,7 @@ class ObjectTimeline : public Control {
     float determine_x_position(int64_t time, Dictionary range);
     vector<Dictionary> determine_tick_data(Beatmap *beatmap,
                                            TimingPoint *control_point,
-                                           Dictionary range);
+                                           Dictionary visible_range);
 
    public:
     static void _register_methods();

@@ -270,14 +270,50 @@ float ObjectTimeline::determine_x_position(int64_t time, Dictionary range) {
 
 vector<Dictionary> ObjectTimeline::determine_tick_data(
     Beatmap *beatmap, TimingPoint *control_point, Dictionary visible_range) {
-    float offset = Util::to_seconds(control_point->get_time());
-    Dictionary beat_info = conductor->get_beat(
-        conductor->get_song_position(), offset, 1, beatmap->get_beat_divisor());
+    float beat_offset = Util::to_seconds(control_point->get_time());
+    Dictionary beat_info =
+        conductor->get_beat(conductor->get_song_position(), beat_offset, 1,
+                            beatmap->get_beat_divisor());
 
     float next_time = beat_info["time"];
-    int64_t beat_number = beat_info["index"];
+    int64_t base_index = beat_info["index"];
 
     vector<Dictionary> ret;
+
+    int64_t start_time = visible_range["start"];
+    int64_t end_time = visible_range["end"];
+    float step = conductor->get_seconds_per_beat() /
+                 control_point->get_meter() / beatmap->get_beat_divisor() *
+                 beatmap->get_timeline_zoom();
+    float base = conductor->get_song_position();
+
+    int64_t index = base_index - 1;
+    for (float time = base - step; Util::to_milliseconds(time) >= start_time;
+         time -= step) {
+        Dictionary data;
+
+        int64_t ms = Util::to_milliseconds(time);
+        data["time"] = ms;
+        data["index"] = index;
+        data["x"] = determine_x_position(ms, visible_range);
+
+        ret.push_back(data);
+        index--;
+    }
+
+    index = base_index;
+    for (float time = base; Util::to_milliseconds(time) <= end_time;
+         time += step) {
+        Dictionary data;
+
+        int64_t ms = Util::to_milliseconds(time);
+        data["time"] = ms;
+        data["index"] = index;
+        data["x"] = determine_x_position(ms, visible_range);
+
+        ret.push_back(data);
+        index++;
+    }
 
     return ret;
 }
