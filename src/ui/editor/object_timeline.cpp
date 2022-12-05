@@ -11,6 +11,7 @@ void ObjectTimeline::_register_methods() {
     dev_register_method(ObjectTimeline, on_song_position_updated);
     dev_register_method(ObjectTimeline, on_timeline_zoom_updated);
     dev_register_method(ObjectTimeline, on_timing_points_updated);
+    dev_register_method(ObjectTimeline, on_hit_objects_updated);
     dev_register_method(ObjectTimeline, on_beat_divisor_updated);
     dev_register_method(ObjectTimeline, on_mouse_entered);
     dev_register_method(ObjectTimeline, on_mouse_exited);
@@ -31,6 +32,7 @@ void ObjectTimeline::_ready() {
     auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
     beatmap->connect("timeline_zoom_updated", this, "on_timeline_zoom_updated");
     beatmap->connect("timing_points_updated", this, "on_timing_points_updated");
+    beatmap->connect("hit_objects_updated", this, "on_hit_objects_updated");
     beatmap->connect("beat_divisor_updated", this, "on_beat_divisor_updated");
 
     connect("mouse_entered", this, "on_mouse_entered");
@@ -58,9 +60,9 @@ void ObjectTimeline::on_song_position_updated(float song_position) {
     auto control_point = beatmap->get_control_point_for_time(
         Util::to_milliseconds(song_position));
 
-    auto visible_range = determine_visibile_range(
-        song_position, control_point->get_beat_length(),
-        beatmap->get_timeline_zoom());
+    auto visible_range =
+        determine_visible_range(song_position, control_point->get_beat_length(),
+                                beatmap->get_timeline_zoom());
 
     auto tick_data = determine_tick_data(beatmap, control_point, visible_range);
     // auto tick_data = old_determine_tick_data(beatmap, control_point);
@@ -180,11 +182,11 @@ vector<Dictionary> ObjectTimeline::determine_timing_point_data(
  * start: int64_t
  * end: int64_t
  */
-Dictionary ObjectTimeline::determine_visibile_range(float song_position,
-                                                    float beat_length,
-                                                    float timeline_zoom) {
-    float constant = 4;  // arbitrary
-    float total_beat_length = beat_length / constant * timeline_zoom;
+Dictionary ObjectTimeline::determine_visible_range(float song_position,
+                                                   float beat_length,
+                                                   float timeline_zoom) {
+    float constant = 100;  // arbitrary
+    float total_beat_length = constant * timeline_zoom;
     float beats = get_size().width / total_beat_length;
     float duration = beats * conductor->get_seconds_per_beat();
 
@@ -463,5 +465,9 @@ void ObjectTimeline::setup_circle(TimelineCircle *timeline_circle,
 }
 
 void ObjectTimeline::on_beat_divisor_updated(int64_t beat_divisor) {
+    on_song_position_updated(conductor->get_song_position());
+}
+
+void ObjectTimeline::on_hit_objects_updated() {
     on_song_position_updated(conductor->get_song_position());
 }

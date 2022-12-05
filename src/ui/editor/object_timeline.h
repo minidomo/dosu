@@ -29,8 +29,8 @@ class ObjectTimeline : public Control {
     Color get_tick_color(int64_t beat_divisor, int64_t index);
     void init_tick_color_schemes();
 
-    Dictionary determine_visibile_range(float song_position, float beat_length,
-                                        float timeline_zoom);
+    Dictionary determine_visible_range(float song_position, float beat_length,
+                                       float timeline_zoom);
     float determine_x_position(int64_t time, Dictionary range);
 
     vector<Dictionary> old_determine_tick_data(Beatmap *beatmap,
@@ -65,6 +65,7 @@ class ObjectTimeline : public Control {
     bool is_hovering();
 
     void on_song_position_updated(float song_position);
+    void on_hit_objects_updated();
     void on_timeline_zoom_updated(float timeline_zoom);
     void on_beat_divisor_updated(int64_t beat_divisor);
     void on_timing_points_updated();
