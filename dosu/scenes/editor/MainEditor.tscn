@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://bin/scripts/ui/editor/main_editor.gdns" type="Script" id=1]
 [ext_resource path="res://scenes/Background.tscn" type="PackedScene" id=2]
@@ -16,6 +16,7 @@
 [ext_resource path="res://assets/images/icons/timeline_zoom_dec.png" type="Texture" id=14]
 [ext_resource path="res://assets/images/icons/timeline_zoom_inc.png" type="Texture" id=15]
 [ext_resource path="res://scenes/editor/ComposeBody.tscn" type="PackedScene" id=16]
+[ext_resource path="res://scenes/editor/BeatSnapDivisor.tscn" type="PackedScene" id=17]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -224,6 +225,12 @@ stretch_mode = 3
 __meta__ = {
 "_edit_use_anchors_": true
 }
+
+[node name="BeatSnapDivisor" parent="TopBar" instance=ExtResource( 17 )]
+anchor_left = 0.786458
+anchor_top = 0.0704226
+anchor_right = 0.994792
+anchor_bottom = 0.492958
 
 [node name="BottomBar" type="ColorRect" parent="."]
 anchor_top = 0.959

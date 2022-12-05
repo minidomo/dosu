@@ -1,6 +1,7 @@
 #ifndef dosu_dir_ui_editor
 #define dosu_dir_ui_editor
 
+#include "./beat_snap_divisor.h"
 #include "./editable_row.h"
 #include "./main_editor.h"
 #include "./object_timeline.h"

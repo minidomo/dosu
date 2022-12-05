@@ -11,6 +11,7 @@
 #include "common/common.h"
 #include "object/conductor.h"
 #include "ui/background.h"
+#include "ui/editor/beat_snap_divisor.h"
 #include "ui/editor/body/compose_body.h"
 #include "ui/editor/body/song_setup_body.h"
 #include "ui/editor/object_timeline.h"
@@ -37,6 +38,8 @@ class MainEditor : public Control {
     SongSetupBody *song_setup_body;
     ObjectTimeline *object_timeline;
     PlayArea *play_area;
+
+    BeatSnapDivisor *beat_snap_divisor;
 
     int tab_index;
 

@@ -37,6 +37,7 @@ void MainEditor::_ready() {
     song_setup_body = get_node<SongSetupBody>("Body/SongSetupBody");
     compose_body = get_node<ComposeBody>("Body/ComposeBody");
     object_timeline = get_node<ObjectTimeline>("TopBar/ObjectTimeline");
+    beat_snap_divisor = get_node<BeatSnapDivisor>("TopBar/BeatSnapDivisor");
     play_area = compose_body->get_play_area();
 
     /* connects */
@@ -69,6 +70,8 @@ void MainEditor::_ready() {
 
     timeline->set_conductor(conductor);
     timeline->initialize();
+
+    beat_snap_divisor->initialize();
 }
 
 void MainEditor::init_bodies() {

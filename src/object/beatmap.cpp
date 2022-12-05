@@ -39,6 +39,9 @@ void Beatmap::_register_methods() {
 
     register_signal<Beatmap>("hit_objects_updated", Dictionary());
     register_signal<Beatmap>("timing_points_updated", Dictionary());
+
+    register_signal<Beatmap>("beat_divisor_updated", "value",
+                             GODOT_VARIANT_TYPE_INT);
 }
 
 void Beatmap::_init() {}
@@ -390,6 +393,7 @@ void Beatmap::set_preview_time(int64_t preview_time) {
 
 void Beatmap::set_beat_divisor(int64_t beat_divisor) {
     this->beat_divisor = beat_divisor;
+    emit_signal("beat_divisor_updated", beat_divisor);
 }
 
 void Beatmap::set_timeline_zoom(float timeline_zoom) {

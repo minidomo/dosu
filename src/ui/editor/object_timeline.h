@@ -30,7 +30,6 @@ class ObjectTimeline : public Control {
     void init_tick_color_schemes();
 
     Dictionary determine_visibile_range(float song_position, float beat_length,
-                                        int64_t beat_divisor,
                                         float timeline_zoom);
     float determine_x_position(int64_t time, Dictionary range);
 
@@ -67,6 +66,7 @@ class ObjectTimeline : public Control {
 
     void on_song_position_updated(float song_position);
     void on_timeline_zoom_updated(float timeline_zoom);
+    void on_beat_divisor_updated(int64_t beat_divisor);
     void on_timing_points_updated();
     void on_mouse_entered();
     void on_mouse_exited();
