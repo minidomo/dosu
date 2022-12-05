@@ -19,6 +19,7 @@ class ObjectTimeline : public Control {
     Dictionary tick_color_schemes;
     Conductor *conductor;
     Control *tick_container;
+    Control *timing_point_container;
     Ref<PackedScene> tick_object;
     bool hovering;
 
@@ -37,10 +38,13 @@ class ObjectTimeline : public Control {
                                            Dictionary visible_range);
     void draw_ticks(Beatmap *beatmap, TimingPoint *control_point,
                     vector<Dictionary> data);
-    void setup_tick(Tick *tick, Dictionary tick_data, int64_t meter,
+    void setup_tick(Tick *tick, Dictionary data, int64_t meter,
                     int64_t beat_divisor);
 
-    vector<Dictionary> determine_timing_point_data();
+    vector<Dictionary> determine_timing_point_data(Beatmap *beatmap,
+                                                   Dictionary visible_range);
+    void draw_timing_points(vector<Dictionary> data);
+    void setup_timing_point(Tick *tick, Dictionary timing_point_data);
 
    public:
     static void _register_methods();

@@ -144,6 +144,8 @@ class Beatmap : public Node {
 
     TimingPoint *get_control_point_for_time(int64_t ms);
     vector<HitObject *> find_hit_objects(int64_t start_time, int64_t end_time);
+    vector<TimingPoint *> find_timing_points(int64_t start_time,
+                                             int64_t end_time);
 
     void add_hit_object(HitObject *hit_object);
     void remove_hit_object(int64_t time);

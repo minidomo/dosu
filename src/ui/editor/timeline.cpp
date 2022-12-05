@@ -103,8 +103,8 @@ void Timeline::initialize() {
 /**
  * @return vector of Dictionaries containing the data of timing points for the
  * timeline.
- * x: int64_t - the x position of the timing point
- * color: Color - the color of the timing point
+ * - x: int64_t - the x position of the timing point
+ * - color: Color - the color of the timing point
  */
 vector<Dictionary> Timeline::determine_timing_point_data() {
     auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();

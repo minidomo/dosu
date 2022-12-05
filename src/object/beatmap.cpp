@@ -668,3 +668,17 @@ int64_t Beatmap::find_hit_object_index_for_time(int64_t time) {
 
     return index;
 }
+
+vector<TimingPoint *> Beatmap::find_timing_points(int64_t start_time,
+                                                  int64_t end_time) {
+    vector<TimingPoint *> ret;
+
+    for (auto tp : timing_points) {
+        auto time = tp->get_time();
+        if (start_time <= time && time <= end_time) {
+            ret.push_back(tp);
+        }
+    }
+
+    return ret;
+}

@@ -18,6 +18,7 @@ void ObjectTimeline::_init() { init_tick_color_schemes(); }
 
 void ObjectTimeline::_ready() {
     tick_container = get_node<Control>("Ticks");
+    timing_point_container = get_node<Control>("TimingPoints");
 
     tick_object =
         ResourceLoader::get_singleton()->load("res://scenes/editor/Tick.tscn");
@@ -58,13 +59,17 @@ void ObjectTimeline::on_song_position_updated(float song_position) {
     auto tick_data = determine_tick_data(beatmap, control_point, visible_range);
     // auto tick_data = old_determine_tick_data(beatmap, control_point);
     draw_ticks(beatmap, control_point, tick_data);
+
+    auto timing_point_data =
+        determine_timing_point_data(beatmap, visible_range);
+    draw_timing_points(timing_point_data);
 }
 
-void ObjectTimeline::setup_tick(Tick *tick, Dictionary tick_data, int64_t meter,
+void ObjectTimeline::setup_tick(Tick *tick, Dictionary data, int64_t meter,
                                 int64_t beat_divisor) {
     int64_t ticks_per_measure = meter * beat_divisor;
 
-    int64_t index = tick_data["index"];
+    int64_t index = data["index"];
     if (index % ticks_per_measure == 0) {
         tick->set_height((int)Util::scale_value_by_resolution(32, 1080));
     } else if (index % beat_divisor == 0) {
@@ -78,8 +83,8 @@ void ObjectTimeline::setup_tick(Tick *tick, Dictionary tick_data, int64_t meter,
         get_tick_color(beat_divisor, Util::mod(index, beat_divisor)));
 
     Vector2 pos;
-    pos.x = tick_data["x"];
-    pos.y = get_size().y - tick->get_height();
+    pos.x = data["x"];
+    pos.y = get_size().height - tick->get_height();
     tick->set_position(pos);
 }
 
@@ -136,8 +141,27 @@ void ObjectTimeline::on_mouse_exited() { hovering = false; }
 
 void ObjectTimeline::on_timing_points_updated() {}
 
-vector<Dictionary> ObjectTimeline::determine_timing_point_data() {
+/**
+ * @return vector of dictionaries containing data for timing points
+ * - x: int64_t - the x position of the timing point
+ * - color: Color - the color of the timing point
+ */
+vector<Dictionary> ObjectTimeline::determine_timing_point_data(
+    Beatmap *beatmap, Dictionary visible_range) {
+    int64_t start_time = visible_range["start"];
+    int64_t end_time = visible_range["end"];
+    auto timing_points = beatmap->find_timing_points(start_time, end_time);
+
     vector<Dictionary> ret;
+
+    for (auto tp : timing_points) {
+        Dictionary data;
+
+        data["x"] = determine_x_position(tp->get_time(), visible_range);
+        data["color"] = tp->get_color();
+
+        ret.push_back(data);
+    }
 
     return ret;
 }
@@ -169,7 +193,7 @@ float ObjectTimeline::determine_x_position(int64_t time, Dictionary range) {
 
     dev_assert(start <= time && time <= end);
 
-    int64_t total = end - start + 1;
+    int64_t total = end - start;
     float percent = (float)(time - start) / total;
 
     return get_size().width * percent;
@@ -194,9 +218,8 @@ vector<Dictionary> ObjectTimeline::determine_tick_data(
 
     int64_t start_time = visible_range["start"];
     int64_t end_time = visible_range["end"];
-    float step = conductor->get_seconds_per_beat() /
-                 control_point->get_meter() / beatmap->get_beat_divisor() *
-                 beatmap->get_timeline_zoom();
+    float step =
+        conductor->get_seconds_per_beat() / beatmap->get_beat_divisor();
     float base = beat_info["time"];
 
     int64_t index = base_index - 1;
@@ -305,4 +328,42 @@ vector<Dictionary> ObjectTimeline::old_determine_tick_data(
 
 void ObjectTimeline::initialize() {
     on_song_position_updated(conductor->get_song_position());
+}
+
+void ObjectTimeline::draw_timing_points(vector<Dictionary> data) {
+    int64_t diff = data.size() - timing_point_container->get_child_count();
+
+    if (diff < 0) {
+        // delete ticks
+        for (int i = 0; i < -diff; i++) {
+            Node *child = timing_point_container->get_child(0);
+            timing_point_container->remove_child(child);
+            child->queue_free();
+        }
+    } else if (diff > 0) {
+        // add ticks
+        for (int i = 0; i < diff; i++) {
+            auto tick = Object::cast_to<Tick>(tick_object->instance());
+            timing_point_container->add_child(tick);
+        }
+    }
+
+    Array children = timing_point_container->get_children();
+    for (int i = 0; i < children.size(); i++) {
+        auto tick = Object::cast_to<Tick>(children[i]);
+        setup_timing_point(tick, data[i]);
+    }
+}
+
+void ObjectTimeline::setup_timing_point(Tick *tick, Dictionary data) {
+    tick->set_opacity(1);
+    tick->set_height((int)get_size().height);
+
+    Color color = data["color"];
+    tick->set_color(color);
+
+    Vector2 pos;
+    pos.x = data["x"];
+    pos.y = 0;
+    tick->set_position(pos);
 }

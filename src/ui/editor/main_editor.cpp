@@ -247,5 +247,6 @@ void MainEditor::init_timeline_zoom_buttons() {
 
 void MainEditor::on_timeline_zoom_button_pressed(float value) {
     auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
-    beatmap->set_timeline_zoom(beatmap->get_timeline_zoom() + value);
+    beatmap->set_timeline_zoom(
+        Math::max(.1f, beatmap->get_timeline_zoom() + value));
 }
