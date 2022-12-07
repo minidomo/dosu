@@ -26,6 +26,8 @@ class Game : public Node {
 
     String get_songs_dir_path();
     String get_default_background_path();
+
+    void open_directory(String path);
 };
 
 #endif

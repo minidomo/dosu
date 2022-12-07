@@ -61,3 +61,7 @@ void Game::init_songs_directory() {
 String Game::get_songs_dir_path() { return songs_dir_path; }
 
 String Game::get_default_background_path() { return default_background_path; }
+
+void Game::open_directory(String path) {
+    OS::get_singleton()->shell_open(path);
+}
