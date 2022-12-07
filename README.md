@@ -17,7 +17,7 @@ If you don't have a `config.json` file in the root directory, run the following 
 node scripts/config-init.js
 ```
 
-Follow the comments in `config.json` to properly assign values. Since it's a JSON file, delete the comments once the file is set up.
+Follow the comments in `config.json` or `config.json.example` to properly assign values. Since it's a JSON file, delete the comments once the file is set up.
 
 
 3. Build the Godot bindings for C++ 
@@ -45,3 +45,6 @@ Launch Godot and open `dosu/project.godot`. Run the project!
 - [Technical Design Document](pdf/cs354r-final-project-tech-doc.pdf)
 - [Alpha Document](pdf/cs354r-alpha.pdf)
 - [Alpha Video](https://www.youtube.com/watch?v=HFe5l2v143Q)
+- [Presentation](https://www.youtube.com/watch?v=ZM7tXxpm3rc)
+- [Trailer](https://www.youtube.com/watch?v=kaH1BPfvzns)
+- [Final Report](pdf/cs354-final-report.pdf)
