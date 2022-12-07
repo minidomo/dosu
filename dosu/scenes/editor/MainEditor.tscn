@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://bin/scripts/ui/editor/main_editor.gdns" type="Script" id=1]
 [ext_resource path="res://scenes/Background.tscn" type="PackedScene" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://assets/images/icons/timeline_zoom_inc.png" type="Texture" id=15]
 [ext_resource path="res://scenes/editor/ComposeBody.tscn" type="PackedScene" id=16]
 [ext_resource path="res://scenes/editor/BeatSnapDivisor.tscn" type="PackedScene" id=17]
+[ext_resource path="res://scenes/editor/TimingBody.tscn" type="PackedScene" id=18]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -66,19 +67,11 @@ __meta__ = {
 }
 
 [node name="ComposeBody" parent="Body" instance=ExtResource( 16 )]
-anchor_bottom = 1.0
-
-[node name="TimingBody" type="Control" parent="Body"]
 visible = false
-anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="Label" type="Label" parent="Body/TimingBody"]
-margin_left = 453.997
-margin_top = 212.712
-margin_right = 696.997
-margin_bottom = 372.712
-text = "timing"
+[node name="TimingBody" parent="Body" instance=ExtResource( 18 )]
+anchor_bottom = 1.0
 
 [node name="SongSetupBody" parent="Body" instance=ExtResource( 11 )]
 visible = false
@@ -366,6 +359,7 @@ __meta__ = {
 }
 
 [node name="PlaybackRate" type="Control" parent="BottomBar"]
+visible = false
 anchor_left = 0.807
 anchor_right = 1.0
 anchor_bottom = 1.0

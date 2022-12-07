@@ -1,0 +1,103 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://assets/font/noto_sans_mono/NotoSansMono-Bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/font/torus/Torus Bold.otf" type="DynamicFontData" id=2]
+[ext_resource path="res://bin/scripts/ui/editor/timing_point_row.gdns" type="Script" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.180392, 0.219608, 0.207843, 1 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="DynamicFont" id=4]
+size = 12
+font_data = ExtResource( 2 )
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[node name="TimingPointRow" type="Control"]
+anchor_right = 0.171875
+anchor_bottom = 0.0296296
+rect_min_size = Vector2( 330, 32 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Background" type="Panel" parent="."]
+modulate = Color( 0.2, 0.8, 0.6, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Time" type="Label" parent="."]
+anchor_left = 0.0848485
+anchor_top = 0.125
+anchor_right = 0.357576
+anchor_bottom = 0.875
+margin_right = 7.62939e-06
+mouse_filter = 1
+custom_fonts/font = SubResource( 2 )
+text = "00:00:000"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Preview" type="Control" parent="."]
+anchor_left = 0.406061
+anchor_top = 0.125
+anchor_right = 0.951515
+anchor_bottom = 0.875
+mouse_filter = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Background" type="Panel" parent="Preview"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+custom_styles/panel = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Metadata" type="Label" parent="Preview"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 1, 0.85098, 0.4, 1 )
+text = "180.0 bpm 4/4"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/focus = SubResource( 5 )
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}

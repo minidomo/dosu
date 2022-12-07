@@ -46,7 +46,6 @@ String TimingPoint::to_file_string() {
 }
 
 void TimingPoint::init_red_line() {
-    set_time(0);
     set_meter(4);
     set_uninherited(true);
     set_bpm(100);

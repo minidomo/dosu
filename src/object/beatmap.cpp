@@ -82,6 +82,7 @@ void Beatmap::initialize(String beatmap_set_id, String beatmap_id) {
     /* timing points */
     auto first_tp = TimingPoint::_new();
     first_tp->init_red_line();
+    first_tp->set_time(0);
     timing_points.push_back(first_tp);
 
     /* hit objects */
@@ -641,6 +642,9 @@ void Beatmap::remove_hit_object(int64_t time) {
 }
 
 void Beatmap::remove_hit_object_index(int64_t index) {
+    auto hit_object = hit_objects[index];
+    hit_object->queue_free();
+
     hit_objects.erase(hit_objects.begin() + index);
     emit_signal("hit_objects_updated");
 }
@@ -685,4 +689,64 @@ vector<TimingPoint *> Beatmap::find_timing_points(int64_t start_time,
     }
 
     return ret;
+}
+
+void Beatmap::add_timing_point(TimingPoint *timing_point) {
+    dev_assert(timing_point != nullptr);
+
+    int64_t index = find_timing_point_index(timing_point->get_time());
+    int64_t offset = 0;
+
+    if (index == -1) {
+        offset = find_timing_point_index_for_time(timing_point->get_time());
+    } else {
+        remove_timing_point_index(index);
+        offset = index;
+    }
+
+    timing_points.insert(timing_points.begin() + offset, timing_point);
+    emit_signal("timing_points_updated");
+}
+
+void Beatmap::remove_timing_point(int64_t time) {
+    int64_t index = find_timing_point_index(time);
+    if (index != -1) {
+        remove_timing_point_index(index);
+    }
+}
+
+void Beatmap::remove_timing_point_index(int64_t index) {
+    auto timing_point = timing_points[index];
+    timing_point->queue_free();
+
+    timing_points.erase(timing_points.begin() + index);
+    emit_signal("timing_points_updated");
+}
+
+int64_t Beatmap::find_timing_point_index(int64_t time) {
+    for (int i = 0; i < timing_points.size(); i++) {
+        auto tp = timing_points[i];
+        if (tp->get_time() == time) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+TimingPoint *Beatmap::find_timing_point(int64_t time) {
+    int64_t index = find_timing_point_index(time);
+    if (index == -1) return nullptr;
+    return timing_points[index];
+}
+
+int64_t Beatmap::find_timing_point_index_for_time(int64_t time) {
+    int64_t index = 0;
+
+    while (index < (int64_t)timing_points.size() &&
+           time > timing_points[index]->get_time()) {
+        index++;
+    }
+
+    return index;
 }

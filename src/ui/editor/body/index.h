@@ -3,5 +3,6 @@
 
 #include "./compose_body.h"
 #include "./song_setup_body.h"
+#include "./timing_body.h"
 
 #endif

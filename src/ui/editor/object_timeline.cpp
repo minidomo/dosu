@@ -150,7 +150,9 @@ void ObjectTimeline::on_mouse_entered() { hovering = true; }
 
 void ObjectTimeline::on_mouse_exited() { hovering = false; }
 
-void ObjectTimeline::on_timing_points_updated() {}
+void ObjectTimeline::on_timing_points_updated() {
+    on_song_position_updated(conductor->get_song_position());
+}
 
 /**
  * @return vector of dictionaries containing data for timing points
