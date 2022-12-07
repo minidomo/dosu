@@ -1,7 +1,6 @@
 #include "./menu_file_button.h"
 
 #include <PopupMenu.hpp>
-#include <ProjectSettings.hpp>
 
 #include "object/beatmap.h"
 #include "singleton/game.h"
@@ -19,6 +18,7 @@ void MenuFileButton::_ready() {
     auto popup = get_popup();
 
     popup->add_item("Open Directory");
+    popup->add_item("Export");
     popup->add_item("Save");
     popup->add_item("Exit");
 
@@ -36,8 +36,11 @@ void MenuFileButton::on_index_pressed(int64_t index) {
     } else if (text == "Open Directory") {
         auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
         String path = Beatmap::get_dir_path(this, beatmap);
-        String global_path =
-            ProjectSettings::get_singleton()->globalize_path(path);
-        Game::get_singleton(this)->open_directory(global_path);
+        Game::get_singleton(this)->open_directory(path, false);
+    } else if (text == "Export") {
+        auto game = Game::get_singleton(this);
+        auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
+        game->export_beatmap(beatmap);
+        game->open_directory(game->get_export_dir_path(), false);
     }
 }

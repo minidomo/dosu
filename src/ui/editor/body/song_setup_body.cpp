@@ -31,7 +31,7 @@ void SongSetupBody::_ready() {
 }
 
 void SongSetupBody::init_song_metadata() {
-    Node *container = get_node("ColorRect/SongMetadata");
+    Node *container = get_node("Body/SongMetadata");
 
     artist_row = container->get_node<EditableRow>("Artist");
     artist_unicode_row = container->get_node<EditableRow>("ArtistUnicode");
@@ -71,7 +71,7 @@ void SongSetupBody::init_song_metadata() {
 }
 
 void SongSetupBody::init_song_difficulty() {
-    Node *container = get_node("ColorRect/DifficultyMetadata");
+    Node *container = get_node("Body/DifficultyMetadata");
 
     hp_drain_rate_row = container->get_node<SlidableRow>("HpDrainRate");
     circle_size_row = container->get_node<SlidableRow>("CircleSize");

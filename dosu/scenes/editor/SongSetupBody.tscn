@@ -1,84 +1,96 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/editor/EditableRow.tscn" type="PackedScene" id=1]
 [ext_resource path="res://bin/scripts/ui/editor/body/song_setup_body.gdns" type="Script" id=2]
 [ext_resource path="res://scenes/editor/SlidableRow.tscn" type="PackedScene" id=3]
 
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.129412, 0.12549, 0.14902, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.0862745, 0.0823529, 0.0980392, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [node name="SongSetupBody" type="Control"]
-anchor_top = -0.000519647
 anchor_right = 1.0
-anchor_bottom = 0.805036
-margin_top = 0.561218
-margin_bottom = 0.561218
+anchor_bottom = 0.805556
 rect_min_size = Vector2( 1920, 870 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="ColorRect2" type="ColorRect" parent="."]
+[node name="TopBar" type="Panel" parent="."]
 anchor_left = 0.265625
 anchor_top = 0.258621
 anchor_right = 0.734375
-anchor_bottom = 0.293103
-color = Color( 0.137255, 0.129412, 0.129412, 1 )
+anchor_bottom = 0.293104
+custom_styles/panel = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="Body" type="Panel" parent="."]
 anchor_left = 0.265625
-anchor_top = 0.293104
+anchor_top = 0.293103
 anchor_right = 0.734375
-anchor_bottom = 0.706897
-color = Color( 0, 0, 0, 1 )
+anchor_bottom = 0.706896
+margin_top = 1.52588e-05
+custom_styles/panel = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="SongMetadata" type="Control" parent="ColorRect"]
+[node name="SongMetadata" type="Control" parent="Body"]
 anchor_right = 0.5
 anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Artist" parent="ColorRect/SongMetadata" instance=ExtResource( 1 )]
+[node name="Artist" parent="Body/SongMetadata" instance=ExtResource( 1 )]
 anchor_left = 0.0355556
 anchor_top = 0.0444444
 anchor_right = 0.964444
 anchor_bottom = 0.127778
 title = "Artist"
 
-[node name="ArtistUnicode" parent="ColorRect/SongMetadata" instance=ExtResource( 1 )]
+[node name="ArtistUnicode" parent="Body/SongMetadata" instance=ExtResource( 1 )]
 anchor_left = 0.0355556
 anchor_top = 0.15
 anchor_right = 0.964444
 anchor_bottom = 0.233333
 title = "Romanized Artist"
 
-[node name="Title" parent="ColorRect/SongMetadata" instance=ExtResource( 1 )]
+[node name="Title" parent="Body/SongMetadata" instance=ExtResource( 1 )]
 anchor_left = 0.0355556
 anchor_top = 0.255556
 anchor_right = 0.964444
 anchor_bottom = 0.338889
 title = "Title"
 
-[node name="TitleUnicode" parent="ColorRect/SongMetadata" instance=ExtResource( 1 )]
+[node name="TitleUnicode" parent="Body/SongMetadata" instance=ExtResource( 1 )]
 anchor_left = 0.0355556
 anchor_top = 0.361111
 anchor_right = 0.964444
 anchor_bottom = 0.444444
 title = "Romanized Title"
 
-[node name="Creator" parent="ColorRect/SongMetadata" instance=ExtResource( 1 )]
+[node name="Creator" parent="Body/SongMetadata" instance=ExtResource( 1 )]
 anchor_left = 0.0355556
 anchor_top = 0.466667
 anchor_right = 0.964444
 anchor_bottom = 0.55
 title = "Beatmap Creator"
 
-[node name="Difficulty" parent="ColorRect/SongMetadata" instance=ExtResource( 1 )]
+[node name="Difficulty" parent="Body/SongMetadata" instance=ExtResource( 1 )]
 anchor_left = 0.0355556
 anchor_top = 0.572222
 anchor_right = 0.964444
@@ -86,7 +98,7 @@ anchor_bottom = 0.655555
 margin_bottom = 1.52588e-05
 title = "Difficulty"
 
-[node name="Source" parent="ColorRect/SongMetadata" instance=ExtResource( 1 )]
+[node name="Source" parent="Body/SongMetadata" instance=ExtResource( 1 )]
 anchor_left = 0.0355556
 anchor_top = 0.677778
 anchor_right = 0.964444
@@ -94,14 +106,14 @@ anchor_bottom = 0.761111
 margin_top = 1.52588e-05
 title = "Source"
 
-[node name="Tags" parent="ColorRect/SongMetadata" instance=ExtResource( 1 )]
+[node name="Tags" parent="Body/SongMetadata" instance=ExtResource( 1 )]
 anchor_left = 0.0355556
 anchor_top = 0.783333
 anchor_right = 0.964444
 anchor_bottom = 0.866667
 title = "Tags"
 
-[node name="DifficultyMetadata" type="Control" parent="ColorRect"]
+[node name="DifficultyMetadata" type="Control" parent="Body"]
 anchor_left = 0.5
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -109,7 +121,7 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="HpDrainRate" parent="ColorRect/DifficultyMetadata" instance=ExtResource( 3 )]
+[node name="HpDrainRate" parent="Body/DifficultyMetadata" instance=ExtResource( 3 )]
 anchor_left = 0.0355556
 anchor_top = 0.0444444
 anchor_right = 0.964444
@@ -117,7 +129,7 @@ anchor_bottom = 0.266667
 title = "HP Drain Rate"
 description = "The constant rate of health-bar drain throughout the song"
 
-[node name="CircleSize" parent="ColorRect/DifficultyMetadata" instance=ExtResource( 3 )]
+[node name="CircleSize" parent="Body/DifficultyMetadata" instance=ExtResource( 3 )]
 anchor_left = 0.0355556
 anchor_top = 0.266667
 anchor_right = 0.964444
@@ -125,7 +137,7 @@ anchor_bottom = 0.488889
 title = "Circle Size"
 description = "The radial size of hit circles and sliders"
 
-[node name="ApproachRate" parent="ColorRect/DifficultyMetadata" instance=ExtResource( 3 )]
+[node name="ApproachRate" parent="Body/DifficultyMetadata" instance=ExtResource( 3 )]
 anchor_left = 0.0355556
 anchor_top = 0.488889
 anchor_right = 0.964444
@@ -133,7 +145,7 @@ anchor_bottom = 0.711111
 title = "Approach Rate"
 description = "The speed at which objects appear"
 
-[node name="OverallDifficulty" parent="ColorRect/DifficultyMetadata" instance=ExtResource( 3 )]
+[node name="OverallDifficulty" parent="Body/DifficultyMetadata" instance=ExtResource( 3 )]
 anchor_left = 0.0355556
 anchor_top = 0.711111
 anchor_right = 0.964444
