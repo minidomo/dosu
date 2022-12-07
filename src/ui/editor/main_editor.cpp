@@ -166,7 +166,6 @@ void MainEditor::init_conductor() {
     Ref<AudioStream> ref_audio_stream(audio_stream);
 
     conductor->set_stream(ref_audio_stream);
-    conductor->set_bpm(beatmap->get_timing_points()[0]->get_bpm());
 }
 
 void MainEditor::on_song_position_updated(float song_position) {
@@ -227,9 +226,9 @@ void MainEditor::_process(float delta) {
                 float song_offset = Util::to_seconds(control_point->get_time());
                 int64_t beat_offset = scroll_up ? -1 : 1;
 
-                Dictionary beat_info =
-                    conductor->get_beat(song_position, song_offset, beat_offset,
-                                        beatmap->get_beat_divisor());
+                Dictionary beat_info = conductor->get_beat(
+                    song_position, song_offset, beat_offset,
+                    beatmap->get_beat_divisor(), control_point->get_bpm());
 
                 target_time = beat_info["accessible_time"];
             }

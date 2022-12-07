@@ -14,6 +14,9 @@ void TimingBody::_register_methods() {
     dev_register_method(TimingBody, on_timing_point_row_pressed);
     dev_register_method(TimingBody, on_timing_points_updated);
     dev_register_method(TimingBody, on_current_time_button_pressed);
+    dev_register_method(TimingBody, on_time_input_entry_text_entered);
+    dev_register_method(TimingBody, on_bpm_input_entry_text_entered);
+    dev_register_method(TimingBody, on_time_signature_input_entry_text_entered);
 }
 
 void TimingBody::_init() { select_time = 0; }
@@ -45,6 +48,12 @@ void TimingBody::_ready() {
 
     current_time_button->connect("pressed", this,
                                  "on_current_time_button_pressed");
+    time_input_entry->get_input()->connect("text_entered", this,
+                                           "on_time_input_entry_text_entered");
+    bpm_input_entry->get_input()->connect("text_entered", this,
+                                          "on_bpm_input_entry_text_entered");
+    time_signature_input_entry->get_input()->connect(
+        "text_entered", this, "on_time_signature_input_entry_text_entered");
 
     auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
     beatmap->connect("timing_points_updated", this, "on_timing_points_updated");
@@ -153,11 +162,10 @@ void TimingBody::select_row(int index, bool seek) {
     auto timing_points = beatmap->get_timing_points();
     auto timing_point = timing_points[index];
 
-    time_input_entry->get_input()->set_text(
-        String::num_int64(timing_point->get_time()));
-    bpm_input_entry->get_input()->set_text(
+    time_input_entry->set_value(String::num_int64(timing_point->get_time()));
+    bpm_input_entry->set_value(
         String::num_real(timing_point->get_bpm()).pad_decimals(2));
-    time_signature_input_entry->get_input()->set_text(
+    time_signature_input_entry->set_value(
         String::num_int64(timing_point->get_meter()));
 
     if (seek) {
@@ -225,4 +233,42 @@ void TimingBody::update_time(int64_t time) {
     beatmap->remove_timing_point(old_timing_point->get_time());
     select_time = time;
     beatmap->add_timing_point(new_timing_point);
+}
+
+void TimingBody::on_time_input_entry_text_entered(String value) {
+    int64_t time = value.to_int();
+    update_time(time);
+}
+
+void TimingBody::on_bpm_input_entry_text_entered(String value) {
+    float bpm = String::num_real(value.to_float()).pad_decimals(2).to_float();
+
+    if (bpm < 1) {
+        bpm_input_entry->set_value(bpm_input_entry->get_value());
+    } else {
+        int index = find_selected_row_index();
+        auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
+        auto timing_points = beatmap->get_timing_points();
+        auto timing_point = timing_points[index];
+
+        timing_point->set_bpm(bpm);
+        beatmap->emit_signal("timing_points_updated");
+    }
+}
+
+void TimingBody::on_time_signature_input_entry_text_entered(String value) {
+    int64_t meter = value.to_int();
+
+    if (meter < 1) {
+        time_signature_input_entry->set_value(
+            time_signature_input_entry->get_value());
+    } else {
+        int index = find_selected_row_index();
+        auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
+        auto timing_points = beatmap->get_timing_points();
+        auto timing_point = timing_points[index];
+
+        timing_point->set_meter(meter);
+        beatmap->emit_signal("timing_points_updated");
+    }
 }

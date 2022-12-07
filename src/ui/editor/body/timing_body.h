@@ -54,6 +54,9 @@ class TimingBody : public Control {
     void on_timing_point_row_pressed(int index);
     void on_timing_points_updated();
     void on_current_time_button_pressed();
+    void on_time_input_entry_text_entered(String value);
+    void on_bpm_input_entry_text_entered(String value);
+    void on_time_signature_input_entry_text_entered(String value);
 };
 
 #endif

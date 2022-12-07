@@ -10,6 +10,7 @@ class TimingBodyInputEntry : public Control {
     GODOT_CLASS(TimingBodyInputEntry, Control);
 
    private:
+    String value;
     LineEdit *input;
 
    public:
@@ -18,6 +19,8 @@ class TimingBodyInputEntry : public Control {
     void _ready();
 
     LineEdit *get_input();
+    void set_value(String value);
+    String get_value();
 };
 
 #endif

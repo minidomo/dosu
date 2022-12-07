@@ -187,10 +187,11 @@ vector<Dictionary> ObjectTimeline::determine_timing_point_data(
 Dictionary ObjectTimeline::determine_visible_range(float song_position,
                                                    float beat_length,
                                                    float timeline_zoom) {
-    float constant = 100;  // arbitrary
-    float total_beat_length = constant * timeline_zoom;
+    float timeline_zoom_constant = 100;  // arbitrary
+    float beats_constant = .3f;          // arbitrary
+    float total_beat_length = timeline_zoom_constant * timeline_zoom;
     float beats = get_size().width / total_beat_length;
-    float duration = beats * conductor->get_seconds_per_beat();
+    float duration = beats * beats_constant;
 
     Dictionary ret;
     ret["start"] = Util::to_milliseconds(song_position - duration / 2);
@@ -219,9 +220,9 @@ float ObjectTimeline::determine_x_position(int64_t time, Dictionary range) {
 vector<Dictionary> ObjectTimeline::determine_tick_data(
     Beatmap *beatmap, TimingPoint *control_point, Dictionary visible_range) {
     float beat_offset = Util::to_seconds(control_point->get_time());
-    Dictionary beat_info =
-        conductor->get_beat(conductor->get_song_position(), beat_offset, 1,
-                            beatmap->get_beat_divisor());
+    Dictionary beat_info = conductor->get_beat(
+        conductor->get_song_position(), beat_offset, 1,
+        beatmap->get_beat_divisor(), control_point->get_bpm());
 
     int64_t base_index = beat_info["index"];
 
@@ -229,8 +230,8 @@ vector<Dictionary> ObjectTimeline::determine_tick_data(
 
     int64_t start_time = visible_range["start"];
     int64_t end_time = visible_range["end"];
-    float step =
-        conductor->get_seconds_per_beat() / beatmap->get_beat_divisor();
+    float seconds_per_beat = 60 / control_point->get_bpm();
+    float step = seconds_per_beat / beatmap->get_beat_divisor();
     float base = beat_info["time"];
 
     int64_t index = base_index - 1;
@@ -299,9 +300,9 @@ void ObjectTimeline::draw_ticks(Beatmap *beatmap, TimingPoint *control_point,
 vector<Dictionary> ObjectTimeline::old_determine_tick_data(
     Beatmap *beatmap, TimingPoint *control_point) {
     float beat_offset = Util::to_seconds(control_point->get_time());
-    Dictionary beat_info =
-        conductor->get_beat(conductor->get_song_position(), beat_offset, 1,
-                            beatmap->get_beat_divisor());
+    Dictionary beat_info = conductor->get_beat(
+        conductor->get_song_position(), beat_offset, 1,
+        beatmap->get_beat_divisor(), control_point->get_bpm());
 
     float next_time = beat_info["time"];
     int64_t beat_number = beat_info["index"];
