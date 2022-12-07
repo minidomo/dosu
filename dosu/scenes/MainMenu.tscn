@@ -19,9 +19,6 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-play_button_path = NodePath("VBoxContainer/PlayButton")
-edit_button_path = NodePath("VBoxContainer/EditButton")
-exit_button_path = NodePath("VBoxContainer/ExitButton")
 
 [node name="Background" parent="." instance=ExtResource( 3 )]
 
@@ -51,10 +48,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="EditButton" type="Button" parent="VBoxContainer"]
-margin_top = 112.0
+[node name="OpenGameFolderButton" type="Button" parent="VBoxContainer"]
+margin_top = 77.0
 margin_right = 826.0
-margin_bottom = 166.0
+margin_bottom = 131.0
+custom_fonts/font = SubResource( 2 )
+text = "Open Game Folder"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EditButton" type="Button" parent="VBoxContainer"]
+margin_top = 147.0
+margin_right = 826.0
+margin_bottom = 201.0
 custom_fonts/font = SubResource( 2 )
 text = "Edit"
 __meta__ = {
@@ -62,9 +69,9 @@ __meta__ = {
 }
 
 [node name="ExitButton" type="Button" parent="VBoxContainer"]
-margin_top = 182.0
+margin_top = 217.0
 margin_right = 826.0
-margin_bottom = 236.0
+margin_bottom = 271.0
 custom_fonts/font = SubResource( 2 )
 text = "Exit"
 __meta__ = {

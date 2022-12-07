@@ -11,13 +11,9 @@ class MainMenu : public Node {
 
    private:
     Button *play_button;
-    NodePath play_button_path;
-
     Button *edit_button;
-    NodePath edit_button_path;
-
     Button *exit_button;
-    NodePath exit_button_path;
+    Button *open_game_folder_button;
 
    public:
     static void _register_methods();
@@ -28,6 +24,7 @@ class MainMenu : public Node {
     void on_play_button_pressed();
     void on_edit_button_pressed();
     void on_exit_button_pressed();
+    void on_open_game_folder_button_pressed();
 };
 
 #endif

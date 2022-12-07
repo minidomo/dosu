@@ -73,7 +73,9 @@ void Game::open_directory(String path, bool is_global) {
         global_path = ProjectSettings::get_singleton()->globalize_path(path);
     }
 
-    OS::get_singleton()->shell_open(global_path);
+    auto code = OS::get_singleton()->shell_open(global_path);
+    Godot::print("opening dir(" + String::num_int64(+code) +
+                 "): " + global_path);
 }
 
 void Game::export_beatmap(Beatmap* beatmap) {
