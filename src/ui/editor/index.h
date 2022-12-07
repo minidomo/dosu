@@ -11,6 +11,7 @@
 #include "./tick.h"
 #include "./timeline.h"
 #include "./timeline_circle.h"
+#include "./timing_body_input_entry.h"
 #include "./timing_point_row.h"
 #include "body/index.h"
 #include "menu_bar/index.h"

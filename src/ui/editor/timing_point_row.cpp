@@ -63,7 +63,7 @@ int64_t TimingPointRow::get_meter() { return meter; }
 int64_t TimingPointRow::get_time() { return time; }
 
 void TimingPointRow::update_metadata() {
-    String text_bpm = String::num_real(bpm).pad_decimals(1);
+    String text_bpm = String::num_real(bpm).pad_decimals(2);
     String text_meter = String::num_int64(meter);
     metadata_label->set_text(text_bpm + " bpm " + text_meter + "/4");
 }

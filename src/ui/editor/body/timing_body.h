@@ -9,6 +9,7 @@
 #include "common/common.h"
 #include "object/conductor.h"
 #include "object/timing_point.h"
+#include "ui/editor/timing_body_input_entry.h"
 #include "ui/editor/timing_point_row.h"
 
 class TimingBody : public Control {
@@ -18,6 +19,10 @@ class TimingBody : public Control {
     BaseButton *add_timing_point_button;
     BaseButton *delete_timing_point_button;
     Control *timing_point_row_container;
+    BaseButton *current_time_button;
+    TimingBodyInputEntry *time_input_entry;
+    TimingBodyInputEntry *bpm_input_entry;
+    TimingBodyInputEntry *time_signature_input_entry;
 
     Conductor *conductor;
     Ref<PackedScene> timing_point_row_object;
@@ -31,6 +36,8 @@ class TimingBody : public Control {
     void deselect_all_rows();
     int find_selected_row_index();
     int find_index_for_time(int64_t time);
+
+    void update_time(int64_t time);
 
    public:
     static void _register_methods();
@@ -46,6 +53,7 @@ class TimingBody : public Control {
     void on_delete_timing_point_button_pressed();
     void on_timing_point_row_pressed(int index);
     void on_timing_points_updated();
+    void on_current_time_button_pressed();
 };
 
 #endif

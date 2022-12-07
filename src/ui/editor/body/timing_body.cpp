@@ -13,6 +13,7 @@ void TimingBody::_register_methods() {
     dev_register_method(TimingBody, on_delete_timing_point_button_pressed);
     dev_register_method(TimingBody, on_timing_point_row_pressed);
     dev_register_method(TimingBody, on_timing_points_updated);
+    dev_register_method(TimingBody, on_current_time_button_pressed);
 }
 
 void TimingBody::_init() { select_time = 0; }
@@ -24,6 +25,15 @@ void TimingBody::_ready() {
         get_node<BaseButton>("LeftBar/TimingPointButtons/DeleteButton");
     timing_point_row_container =
         get_node<Control>("LeftBar/TimingPoints/ScrollContainer/VBoxContainer");
+    current_time_button =
+        get_node<BaseButton>("Body/TimeContainer/CurrentTimeButton");
+    time_input_entry =
+        get_node<TimingBodyInputEntry>("Body/TimeContainer/Time");
+    bpm_input_entry = get_node<TimingBodyInputEntry>("Body/Bpm");
+    time_signature_input_entry =
+        get_node<TimingBodyInputEntry>("Body/TimeSignature");
+
+    Util::recursive_scale_font(get_node<Control>("Body"));
 
     timing_point_row_object = ResourceLoader::get_singleton()->load(
         "res://scenes/editor/TimingPointRow.tscn");
@@ -32,6 +42,9 @@ void TimingBody::_ready() {
                                      "on_add_timing_point_button_pressed");
     delete_timing_point_button->connect(
         "pressed", this, "on_delete_timing_point_button_pressed");
+
+    current_time_button->connect("pressed", this,
+                                 "on_current_time_button_pressed");
 
     auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
     beatmap->connect("timing_points_updated", this, "on_timing_points_updated");
@@ -136,6 +149,17 @@ void TimingBody::select_row(int index, bool seek) {
         timing_point_row_container->get_child(index));
     row->color_scheme_select();
 
+    auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
+    auto timing_points = beatmap->get_timing_points();
+    auto timing_point = timing_points[index];
+
+    time_input_entry->get_input()->set_text(
+        String::num_int64(timing_point->get_time()));
+    bpm_input_entry->get_input()->set_text(
+        String::num_real(timing_point->get_bpm()).pad_decimals(2));
+    time_signature_input_entry->get_input()->set_text(
+        String::num_int64(timing_point->get_meter()));
+
     if (seek) {
         float time = Math::clamp<float>(Util::to_seconds(row->get_time()), 0,
                                         conductor->get_total_duration());
@@ -181,4 +205,24 @@ int TimingBody::find_index_for_time(int64_t time) {
     }
 
     return ret;
+}
+
+void TimingBody::on_current_time_button_pressed() {
+    int64_t time = Util::to_milliseconds(conductor->get_song_position());
+    update_time(time);
+}
+
+void TimingBody::update_time(int64_t time) {
+    int index = find_selected_row_index();
+    auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
+    auto timing_points = beatmap->get_timing_points();
+    auto old_timing_point = timing_points[index];
+
+    auto new_timing_point = TimingPoint::_new();
+    new_timing_point->copy(old_timing_point);
+    new_timing_point->set_time(time);
+
+    beatmap->remove_timing_point(old_timing_point->get_time());
+    select_time = time;
+    beatmap->add_timing_point(new_timing_point);
 }

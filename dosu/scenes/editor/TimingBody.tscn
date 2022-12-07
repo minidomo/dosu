@@ -1,13 +1,66 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://bin/scripts/ui/editor/body/timing_body.gdns" type="Script" id=1]
 [ext_resource path="res://assets/theme/timing_body/timing_point_buttons.tres" type="Theme" id=2]
 [ext_resource path="res://assets/font/torus/Torus Bold.otf" type="DynamicFontData" id=3]
 [ext_resource path="res://scenes/editor/TimingPointRow.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/font/torus/Torus Regular.otf" type="DynamicFontData" id=5]
+[ext_resource path="res://bin/scripts/ui/editor/timing_body_input_entry.gdns" type="Script" id=6]
 
 [sub_resource type="DynamicFont" id=1]
 size = 20
 font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="DynamicFont" id=12]
+size = 20
+font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxEmpty" id=13]
+
+[sub_resource type="StyleBoxEmpty" id=14]
+
+[sub_resource type="DynamicFont" id=15]
+size = 20
+font_data = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=20]
+size = 20
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=16]
+size = 20
+font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxEmpty" id=17]
+
+[sub_resource type="StyleBoxEmpty" id=18]
+
+[sub_resource type="DynamicFont" id=19]
+size = 20
+font_data = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 20
+font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxEmpty" id=9]
+
+[sub_resource type="StyleBoxEmpty" id=10]
+
+[sub_resource type="DynamicFont" id=11]
+size = 20
+font_data = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 20
+font_data = ExtResource( 5 )
 
 [node name="TimingBody" type="Control"]
 anchor_right = 1.0
@@ -151,4 +204,170 @@ anchor_bottom = 1.0
 color = Color( 0.180392, 0.219608, 0.207843, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
+}
+
+[node name="TimeContainer" type="Control" parent="Body"]
+anchor_left = 0.0188679
+anchor_top = 0.0344828
+anchor_right = 0.289308
+anchor_bottom = 0.167816
+margin_right = -3.05176e-05
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Time" type="Control" parent="Body/TimeContainer"]
+anchor_right = 1.0
+anchor_bottom = 0.431034
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Panel" type="Panel" parent="Body/TimeContainer/Time"]
+modulate = Color( 0.133333, 0.164706, 0.152941, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Body/TimeContainer/Time"]
+anchor_left = 0.0465116
+anchor_top = 0.26
+anchor_right = 0.148837
+anchor_bottom = 0.74
+custom_fonts/font = SubResource( 12 )
+text = "Time"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Value" type="LineEdit" parent="Body/TimeContainer/Time"]
+anchor_left = 0.232558
+anchor_top = 0.16
+anchor_right = 0.953488
+anchor_bottom = 0.84
+custom_styles/focus = SubResource( 13 )
+custom_styles/normal = SubResource( 14 )
+custom_fonts/font = SubResource( 15 )
+text = "395"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="CurrentTimeButton" type="Button" parent="Body/TimeContainer"]
+anchor_top = 0.568965
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+custom_fonts/font = SubResource( 20 )
+text = "Use current time"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Bpm" type="Control" parent="Body"]
+anchor_left = 0.0188679
+anchor_top = 0.195402
+anchor_right = 0.289308
+anchor_bottom = 0.252874
+margin_right = -3.05176e-05
+margin_bottom = 1.52588e-05
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Panel" type="Panel" parent="Body/Bpm"]
+modulate = Color( 0.133333, 0.164706, 0.152941, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Body/Bpm"]
+anchor_left = 0.0465116
+anchor_top = 0.26
+anchor_right = 0.148837
+anchor_bottom = 0.74
+custom_fonts/font = SubResource( 16 )
+text = "BPM"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Value" type="LineEdit" parent="Body/Bpm"]
+anchor_left = 0.232558
+anchor_top = 0.16
+anchor_right = 0.953488
+anchor_bottom = 0.84
+custom_styles/focus = SubResource( 17 )
+custom_styles/normal = SubResource( 18 )
+custom_fonts/font = SubResource( 19 )
+text = "180.00"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="TimeSignature" type="Control" parent="Body"]
+anchor_left = 0.0188679
+anchor_top = 0.28046
+anchor_right = 0.289308
+anchor_bottom = 0.337931
+margin_right = -3.05176e-05
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Panel" type="Panel" parent="Body/TimeSignature"]
+modulate = Color( 0.133333, 0.164706, 0.152941, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Body/TimeSignature"]
+anchor_left = 0.0465116
+anchor_top = 0.26
+anchor_right = 0.374419
+anchor_bottom = 0.74
+margin_right = 1.0
+custom_fonts/font = SubResource( 8 )
+text = "Time Signature"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Value" type="LineEdit" parent="Body/TimeSignature"]
+anchor_left = 0.460465
+anchor_top = 0.16
+anchor_right = 0.8
+anchor_bottom = 0.84
+custom_styles/focus = SubResource( 9 )
+custom_styles/normal = SubResource( 10 )
+custom_fonts/font = SubResource( 11 )
+text = "4"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Label2" type="Label" parent="Body/TimeSignature"]
+anchor_left = 0.883721
+anchor_top = 0.26
+anchor_right = 0.953488
+anchor_bottom = 0.74
+custom_fonts/font = SubResource( 7 )
+text = "/ 4"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": true
 }

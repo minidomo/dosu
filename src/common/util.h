@@ -1,10 +1,10 @@
 #ifndef dosu_file_util
 #define dosu_file_util
 
+#include <Control.hpp>
 #include <Node.hpp>
 
 #include "common/common.h"
-
 class Util {
    public:
     static void delete_children(Node *node);
@@ -21,6 +21,7 @@ class Util {
                              float target_reference);
     static float scale_value_by_resolution(float base_value,
                                            float base_resolution);
+    static void recursive_scale_font(Control *node);
 };
 
 #endif
