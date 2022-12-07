@@ -43,19 +43,26 @@ String Background::get_background_path() { return background_path; }
 float Background::get_dim() { return dim; }
 
 void Background::update_image() {
-    File *file = File::_new();
-    dev_assert(file->open(background_path, File::READ) == Error::OK);
+    Ref<Texture> ref_texture;
 
-    auto bytes = file->get_buffer(file->get_len());
-    file->close();
+    if (background_path ==
+        Game::get_singleton(this)->get_default_background_path()) {
+        ref_texture = ResourceLoader::get_singleton()->load(background_path);
+    } else {
+        File *file = File::_new();
+        dev_assert(file->open(background_path, File::READ) == Error::OK);
 
-    Image *image = Image::_new();
-    dev_assert(image->load_jpg_from_buffer(bytes) == Error::OK);
-    Ref<Image> ref_image(image);
+        auto bytes = file->get_buffer(file->get_len());
+        file->close();
 
-    auto texture = ImageTexture::_new();
-    texture->create_from_image(ref_image);
-    Ref<Texture> ref_texture(texture);
+        Image *image = Image::_new();
+        dev_assert(image->load_jpg_from_buffer(bytes) == Error::OK);
+        Ref<Image> ref_image(image);
+
+        auto texture = ImageTexture::_new();
+        texture->create_from_image(ref_image);
+        ref_texture = Ref<Texture>(texture);
+    }
 
     background_image->set_texture(ref_texture);
 }
