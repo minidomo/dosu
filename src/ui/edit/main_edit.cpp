@@ -12,17 +12,13 @@
 #include "singleton/scene_manager.h"
 
 void MainEdit::_register_methods() {
-    register_method("_ready", &MainEdit::_ready);
-
-    register_method("on_select_button_pressed",
-                    &MainEdit::on_select_button_pressed);
-    register_method("on_back_button_pressed",
-                    &MainEdit::on_back_button_pressed);
-
-    register_method("on_files_dropped", &MainEdit::on_files_dropped);
-    register_method("on_text_changed", &MainEdit::on_text_changed);
-    register_method("on_beatmap_index_changed",
-                    &MainEdit::on_beatmap_index_changed);
+    dev_register_method(MainEdit, _ready);
+    dev_register_method(MainEdit, on_select_button_pressed);
+    dev_register_method(MainEdit, on_back_button_pressed);
+    dev_register_method(MainEdit, on_files_dropped);
+    dev_register_method(MainEdit, on_text_changed);
+    dev_register_method(MainEdit, on_beatmap_index_changed);
+    dev_register_method(MainEdit, on_refresh_button_pressed);
 }
 
 void MainEdit::_init() {}
@@ -31,11 +27,13 @@ void MainEdit::_ready() {
     Game::get_singleton(this)->set_borderless(true);
     Game::get_singleton(this)->set_confine_mouse(false);
 
-    select_button = get_node<Button>("BottomBar/MarginContainer2/SelectButton");
-    back_button = get_node<Button>("BottomBar/MarginContainer/BackButton");
+    select_button = get_node<Button>("BottomBar/SelectButton");
+    back_button = get_node<Button>("BottomBar/BackButton");
+    refresh_button = get_node<Button>("BottomBar/RefreshButton");
 
     select_button->connect("pressed", this, "on_select_button_pressed");
     back_button->connect("pressed", this, "on_back_button_pressed");
+    refresh_button->connect("pressed", this, "on_refresh_button_pressed");
 
     get_tree()->connect("files_dropped", this, "on_files_dropped");
 
@@ -48,6 +46,8 @@ void MainEdit::_ready() {
 
     search_bar = get_node<LineEdit>("RightBody/SearchBody/SearchBar");
     search_bar->connect("text_changed", this, "on_text_changed");
+
+    SceneManager::get_singleton(this)->recursive_scale_font(this);
 
     MapManager::get_singleton(this)->connect("beatmap_index_changed", this,
                                              "on_beatmap_index_changed");
@@ -153,4 +153,11 @@ BeatmapListing *MainEdit::find_beatmap_listing(int64_t global_index) {
     }
 
     return nullptr;
+}
+
+void MainEdit::on_refresh_button_pressed() {
+    MapManager::get_singleton(this)->load_beatmaps();
+    MapManager::get_singleton(this)->randomize_selected_beatmap_index();
+    search_bar->set_text("");
+    update_beatmaps("");
 }

@@ -1,5 +1,6 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
+[ext_resource path="res://assets/font/torus/Torus Regular.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/Background.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/font/torus/Torus SemiBold.otf" type="DynamicFontData" id=3]
 [ext_resource path="res://bin/scripts/ui/edit/main_edit.gdns" type="Script" id=4]
@@ -22,6 +23,18 @@ font_data = ExtResource( 3 )
 [sub_resource type="DynamicFont" id=6]
 size = 24
 font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="DynamicFont" id=8]
+size = 20
+outline_color = Color( 0.737255, 0.737255, 0.737255, 1 )
+font_data = ExtResource( 1 )
 
 [node name="MainEdit" type="Control"]
 anchor_right = 1.0
@@ -52,46 +65,37 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="BottomBar"]
+[node name="SelectButton" type="Button" parent="BottomBar"]
+anchor_left = 0.911458
 anchor_top = 0.3
-anchor_right = 0.073
+anchor_right = 0.979167
 anchor_bottom = 0.7
-margin_right = 19.84
-margin_bottom = -7.62939e-06
-custom_constants/margin_left = 40
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="BackButton" type="Button" parent="BottomBar/MarginContainer"]
-margin_left = 40.0
-margin_right = 160.0
-margin_bottom = 50.0
-custom_fonts/font = SubResource( 1 )
-text = "Back"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MarginContainer2" type="MarginContainer" parent="BottomBar"]
-anchor_left = 0.917
-anchor_top = 0.3
-anchor_right = 1.0
-anchor_bottom = 0.7
-margin_left = -0.640137
-margin_bottom = -7.62939e-06
-custom_constants/margin_right = 40
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="SelectButton" type="Button" parent="BottomBar/MarginContainer2"]
-margin_right = 120.0
-margin_bottom = 50.0
 custom_fonts/font = SubResource( 1 )
 text = "Select"
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": true
+}
+
+[node name="BackButton" type="Button" parent="BottomBar"]
+anchor_left = 0.0208333
+anchor_top = 0.3
+anchor_right = 0.0885417
+anchor_bottom = 0.7
+custom_fonts/font = SubResource( 1 )
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="RefreshButton" type="Button" parent="BottomBar"]
+anchor_left = 0.822917
+anchor_top = 0.3
+anchor_right = 0.890625
+anchor_bottom = 0.7
+custom_fonts/font = SubResource( 1 )
+text = "Refresh"
+__meta__ = {
+"_edit_use_anchors_": true
 }
 
 [node name="RightBody" type="Control" parent="."]
@@ -167,4 +171,42 @@ custom_fonts/font = SubResource( 6 )
 placeholder_text = "Type here!"
 __meta__ = {
 "_edit_use_anchors_": true
+}
+
+[node name="LeftBody" type="Control" parent="."]
+anchor_left = 0.0125
+anchor_top = 0.112963
+anchor_right = 0.254167
+anchor_bottom = 0.884259
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Indicator" type="Control" parent="LeftBody"]
+anchor_top = 0.333733
+anchor_right = 1.0
+anchor_bottom = 0.52581
+margin_bottom = 3.05176e-05
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Panel" type="Panel" parent="LeftBody/Indicator"]
+modulate = Color( 0, 0, 0, 0.784314 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="LeftBody/Indicator"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 8 )
+text = "Drop an mp3 file here to start mapping"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
 }

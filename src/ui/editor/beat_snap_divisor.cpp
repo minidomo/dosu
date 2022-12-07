@@ -1,6 +1,7 @@
 #include "./beat_snap_divisor.h"
 
 #include "singleton/map_manager.h"
+#include "singleton/scene_manager.h"
 
 void BeatSnapDivisor::_register_methods() {
     dev_register_method(BeatSnapDivisor, _ready);
@@ -12,6 +13,8 @@ void BeatSnapDivisor::_init() { value = 4; }
 void BeatSnapDivisor::_ready() {
     value_label = get_node<Label>("Value");
     slider = get_node<HSlider>("HSlider");
+
+    SceneManager::get_singleton(this)->recursive_scale_font(this);
 
     slider->connect("value_changed", this, "on_value_changed");
 }

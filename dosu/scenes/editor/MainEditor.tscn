@@ -119,6 +119,7 @@ switch_on_hover = true
 script = ExtResource( 8 )
 
 [node name="EditButton" type="MenuButton" parent="MenuBar/MarginContainer/HBoxContainer"]
+visible = false
 margin_left = 45.0
 margin_right = 86.0
 margin_bottom = 26.0
@@ -132,8 +133,9 @@ text = "Edit"
 switch_on_hover = true
 
 [node name="HelpButton" type="MenuButton" parent="MenuBar/MarginContainer/HBoxContainer"]
-margin_left = 94.0
-margin_right = 140.0
+visible = false
+margin_left = 45.0
+margin_right = 91.0
 margin_bottom = 26.0
 focus_mode = 2
 custom_styles/focus = SubResource( 1 )

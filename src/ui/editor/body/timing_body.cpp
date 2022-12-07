@@ -6,6 +6,7 @@
 #include "object/enum/conductor_go_type.h"
 #include "object/timing_point.h"
 #include "singleton/map_manager.h"
+#include "singleton/scene_manager.h"
 
 void TimingBody::_register_methods() {
     dev_register_method(TimingBody, _ready);
@@ -36,7 +37,8 @@ void TimingBody::_ready() {
     time_signature_input_entry =
         get_node<TimingBodyInputEntry>("Body/TimeSignature");
 
-    Util::recursive_scale_font(get_node<Control>("Body"));
+    SceneManager::get_singleton(this)->recursive_scale_font(
+        get_node<Control>("Body"));
 
     timing_point_row_object = ResourceLoader::get_singleton()->load(
         "res://scenes/editor/TimingPointRow.tscn");

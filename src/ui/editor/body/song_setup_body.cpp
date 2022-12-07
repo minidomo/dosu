@@ -1,6 +1,7 @@
 #include "./song_setup_body.h"
 
 #include "singleton/map_manager.h"
+#include "singleton/scene_manager.h"
 
 void SongSetupBody::_register_methods() {
     dev_register_method(SongSetupBody, _ready);
@@ -25,11 +26,12 @@ void SongSetupBody::_init() {}
 void SongSetupBody::_ready() {
     init_song_metadata();
     init_song_difficulty();
+
+    SceneManager::get_singleton(this)->recursive_scale_font(this);
 }
 
 void SongSetupBody::init_song_metadata() {
-    Node *container =
-        get_node("ColorRect/SongMetadata/MarginContainer/VBoxContainer");
+    Node *container = get_node("ColorRect/SongMetadata");
 
     artist_row = container->get_node<EditableRow>("Artist");
     artist_unicode_row = container->get_node<EditableRow>("ArtistUnicode");
@@ -69,8 +71,7 @@ void SongSetupBody::init_song_metadata() {
 }
 
 void SongSetupBody::init_song_difficulty() {
-    Node *container =
-        get_node("ColorRect/DifficultyMetadata/MarginContainer/VBoxContainer");
+    Node *container = get_node("ColorRect/DifficultyMetadata");
 
     hp_drain_rate_row = container->get_node<SlidableRow>("HpDrainRate");
     circle_size_row = container->get_node<SlidableRow>("CircleSize");

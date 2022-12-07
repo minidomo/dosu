@@ -79,19 +79,23 @@ float Util::scale_value_by_resolution(float base_value, float base_resolution) {
                        OS::get_singleton()->get_window_size().height);
 }
 
-void Util::recursive_scale_font(Control *node) {
+void Util::recursive_scale_font(Control *node, Dictionary ids) {
     if (node == nullptr) return;
 
     auto font = Object::cast_to<DynamicFont>(node->get("custom_fonts/font"));
     if (font) {
-        int64_t cur_size = font->get_size();
-        int64_t new_size =
-            (int64_t)scale_value_by_resolution((float)cur_size, 1080);
-        font->set_size(new_size);
+        String key = String::num_int64(font->get_instance_id());
+        if (!ids.has(key)) {
+            ids[key] = true;
+            int64_t cur_size = font->get_size();
+            int64_t new_size =
+                (int64_t)scale_value_by_resolution((float)cur_size, 1080);
+            font->set_size(new_size);
+        }
     }
 
     for (int i = 0; i < node->get_child_count(); i++) {
         auto next = Object::cast_to<Control>(node->get_child(i));
-        recursive_scale_font(next);
+        recursive_scale_font(next, ids);
     }
 }

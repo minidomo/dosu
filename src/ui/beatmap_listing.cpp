@@ -1,6 +1,8 @@
 #include "./beatmap_listing.h"
 
+#include "common/util.h"
 #include "singleton/map_manager.h"
+#include "singleton/scene_manager.h"
 
 void BeatmapListing::_register_methods() {
     register_method("_ready", &BeatmapListing::_ready);
@@ -15,6 +17,12 @@ void BeatmapListing::_ready() {
     title_label = get_node<Label>("TitleLabel");
     artist_mapper_label = get_node<Label>("ArtistMapperLabel");
     version_label = get_node<Label>("VersionLabel");
+
+    Vector2 size = get_custom_minimum_size();
+    size.height = Util::scale_value_by_resolution(size.height, 1080);
+    set_custom_minimum_size(size);
+
+    SceneManager::get_singleton(this)->recursive_scale_font(this);
 
     update_view();
 }

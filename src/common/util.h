@@ -21,7 +21,7 @@ class Util {
                              float target_reference);
     static float scale_value_by_resolution(float base_value,
                                            float base_resolution);
-    static void recursive_scale_font(Control *node);
+    static void recursive_scale_font(Control *node, Dictionary ids);
 };
 
 #endif

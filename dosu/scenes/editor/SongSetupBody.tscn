@@ -43,85 +43,62 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="ColorRect/SongMetadata"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_constants/margin_right = 16
-custom_constants/margin_top = 16
-custom_constants/margin_left = 16
-custom_constants/margin_bottom = 16
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/SongMetadata/MarginContainer"]
-margin_left = 16.0
-margin_top = 16.0
-margin_right = 434.0
-margin_bottom = 344.0
-custom_constants/separation = 8
-
-[node name="Artist" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 418.0
-margin_bottom = 30.0
+[node name="Artist" parent="ColorRect/SongMetadata" instance=ExtResource( 1 )]
+anchor_left = 0.0355556
+anchor_top = 0.0444444
+anchor_right = 0.964444
+anchor_bottom = 0.127778
 title = "Artist"
 
-[node name="ArtistUnicode" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 38.0
-margin_right = 418.0
-margin_bottom = 68.0
+[node name="ArtistUnicode" parent="ColorRect/SongMetadata" instance=ExtResource( 1 )]
+anchor_left = 0.0355556
+anchor_top = 0.15
+anchor_right = 0.964444
+anchor_bottom = 0.233333
 title = "Romanized Artist"
 
-[node name="Title" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 76.0
-margin_right = 418.0
-margin_bottom = 106.0
+[node name="Title" parent="ColorRect/SongMetadata" instance=ExtResource( 1 )]
+anchor_left = 0.0355556
+anchor_top = 0.255556
+anchor_right = 0.964444
+anchor_bottom = 0.338889
 title = "Title"
 
-[node name="TitleUnicode" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 114.0
-margin_right = 418.0
-margin_bottom = 144.0
+[node name="TitleUnicode" parent="ColorRect/SongMetadata" instance=ExtResource( 1 )]
+anchor_left = 0.0355556
+anchor_top = 0.361111
+anchor_right = 0.964444
+anchor_bottom = 0.444444
 title = "Romanized Title"
 
-[node name="Creator" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 152.0
-margin_right = 418.0
-margin_bottom = 182.0
+[node name="Creator" parent="ColorRect/SongMetadata" instance=ExtResource( 1 )]
+anchor_left = 0.0355556
+anchor_top = 0.466667
+anchor_right = 0.964444
+anchor_bottom = 0.55
 title = "Beatmap Creator"
 
-[node name="Difficulty" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 190.0
-margin_right = 418.0
-margin_bottom = 220.0
+[node name="Difficulty" parent="ColorRect/SongMetadata" instance=ExtResource( 1 )]
+anchor_left = 0.0355556
+anchor_top = 0.572222
+anchor_right = 0.964444
+anchor_bottom = 0.655555
+margin_bottom = 1.52588e-05
 title = "Difficulty"
 
-[node name="Source" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 228.0
-margin_right = 418.0
-margin_bottom = 258.0
+[node name="Source" parent="ColorRect/SongMetadata" instance=ExtResource( 1 )]
+anchor_left = 0.0355556
+anchor_top = 0.677778
+anchor_right = 0.964444
+anchor_bottom = 0.761111
+margin_top = 1.52588e-05
 title = "Source"
 
-[node name="Tags" parent="ColorRect/SongMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 266.0
-margin_right = 418.0
-margin_bottom = 296.0
+[node name="Tags" parent="ColorRect/SongMetadata" instance=ExtResource( 1 )]
+anchor_left = 0.0355556
+anchor_top = 0.783333
+anchor_right = 0.964444
+anchor_bottom = 0.866667
 title = "Tags"
 
 [node name="DifficultyMetadata" type="Control" parent="ColorRect"]
@@ -132,55 +109,34 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="ColorRect/DifficultyMetadata"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_constants/margin_right = 16
-custom_constants/margin_top = 16
-custom_constants/margin_left = 16
-custom_constants/margin_bottom = 16
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/DifficultyMetadata/MarginContainer"]
-margin_left = 16.0
-margin_top = 16.0
-margin_right = 434.0
-margin_bottom = 344.0
-custom_constants/separation = 0
-
-[node name="HpDrainRate" parent="ColorRect/DifficultyMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 418.0
-margin_bottom = 80.0
+[node name="HpDrainRate" parent="ColorRect/DifficultyMetadata" instance=ExtResource( 3 )]
+anchor_left = 0.0355556
+anchor_top = 0.0444444
+anchor_right = 0.964444
+anchor_bottom = 0.266667
 title = "HP Drain Rate"
 description = "The constant rate of health-bar drain throughout the song"
 
-[node name="CircleSize" parent="ColorRect/DifficultyMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 80.0
-margin_right = 418.0
-margin_bottom = 160.0
+[node name="CircleSize" parent="ColorRect/DifficultyMetadata" instance=ExtResource( 3 )]
+anchor_left = 0.0355556
+anchor_top = 0.266667
+anchor_right = 0.964444
+anchor_bottom = 0.488889
 title = "Circle Size"
 description = "The radial size of hit circles and sliders"
 
-[node name="ApproachRate" parent="ColorRect/DifficultyMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 160.0
-margin_right = 418.0
-margin_bottom = 240.0
+[node name="ApproachRate" parent="ColorRect/DifficultyMetadata" instance=ExtResource( 3 )]
+anchor_left = 0.0355556
+anchor_top = 0.488889
+anchor_right = 0.964444
+anchor_bottom = 0.711111
 title = "Approach Rate"
 description = "The speed at which objects appear"
 
-[node name="OverallDifficulty" parent="ColorRect/DifficultyMetadata/MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 240.0
-margin_right = 418.0
-margin_bottom = 320.0
+[node name="OverallDifficulty" parent="ColorRect/DifficultyMetadata" instance=ExtResource( 3 )]
+anchor_left = 0.0355556
+anchor_top = 0.711111
+anchor_right = 0.964444
+anchor_bottom = 0.933333
 title = "Overall Difficulty"
 description = "The harshness of the hit window and the difficulty of spinners"
