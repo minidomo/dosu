@@ -226,15 +226,13 @@ void TimingBody::update_time(int64_t time) {
     int index = find_selected_row_index();
     auto beatmap = MapManager::get_singleton(this)->get_editor_beatmap();
     auto timing_points = beatmap->get_timing_points();
-    auto old_timing_point = timing_points[index];
+    auto timing_point = timing_points[index];
 
-    auto new_timing_point = TimingPoint::_new();
-    new_timing_point->copy(old_timing_point);
-    new_timing_point->set_time(time);
+    timing_point->set_time(time);
+    beatmap->sort_timing_points();
 
-    beatmap->remove_timing_point(old_timing_point->get_time());
     select_time = time;
-    beatmap->add_timing_point(new_timing_point);
+    beatmap->emit_signal("timing_points_updated");
 }
 
 void TimingBody::on_time_input_entry_text_entered(String value) {

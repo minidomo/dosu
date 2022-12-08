@@ -40,6 +40,10 @@ make plugin
 
 Launch Godot and open `dosu/project.godot`. Run the project!
 
+## Tutorial
+
+Check out the tutorial [here](TUTORIAL.md)!
+
 ## Other
 
 - [Technical Design Document](pdf/cs354r-final-project-tech-doc.pdf)
@@ -47,4 +51,4 @@ Launch Godot and open `dosu/project.godot`. Run the project!
 - [Alpha Video](https://www.youtube.com/watch?v=HFe5l2v143Q)
 - [Presentation](https://www.youtube.com/watch?v=ZM7tXxpm3rc)
 - [Trailer](https://www.youtube.com/watch?v=kaH1BPfvzns)
-- [Final Report](pdf/cs354-final-report.pdf)
+- [Final Report](pdf/cs354r-final-report.pdf)

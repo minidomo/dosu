@@ -159,6 +159,7 @@ class Beatmap : public Node {
     void remove_timing_point_index(int64_t index);
     int64_t find_timing_point_index(int64_t time);
     TimingPoint *find_timing_point(int64_t time);
+    void sort_timing_points();
 };
 
 #endif

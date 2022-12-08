@@ -1,5 +1,7 @@
 #include "./beatmap.h"
 
+#include <algorithm>
+
 #include "common/util.h"
 #include "singleton/game.h"
 #include "singleton/map_manager.h"
@@ -749,4 +751,11 @@ int64_t Beatmap::find_timing_point_index_for_time(int64_t time) {
     }
 
     return index;
+}
+
+void Beatmap::sort_timing_points() {
+    sort(timing_points.begin(), timing_points.end(),
+         [](TimingPoint *a, TimingPoint *b) {
+             return a->get_time() < b->get_time();
+         });
 }
